@@ -37,8 +37,7 @@ Currently, I&amp;rsquo;ve got my OS X &amp;amp; *nix infrastructure under the co
       
       <guid>https://bdwyertech.net/2014/09/12/chef-berkshelf-ssl-certificate-validation-error-on-windows/</guid>
       <description>When using Windows, Chef, Vagrant and Berkshelf, you may encounter an issue with certificate validation. The error you may encounter is as follows:
-[code lang=&amp;ldquo;bash&amp;rdquo;] Faraday::SSLError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed [/code]
-The problem is Ruby is expecting the SSL_CERT_FILE environmental variable to be set. This should point to a CA bundle to use for SSL certificate validation. If this is not set, certificate validation will fail.</description>
+Faraday::SSLError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed The problem is Ruby is expecting the SSL_CERT_FILE environmental variable to be set. This should point to a CA bundle to use for SSL certificate validation. If this is not set, certificate validation will fail. You can adjust the Berkshelf configuration to not verify SSL certificates, but I have found this setting to be problematic and sporadically not work.</description>
     </item>
     
     <item>

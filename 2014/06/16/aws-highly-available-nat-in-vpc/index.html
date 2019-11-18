@@ -133,65 +133,57 @@
 <p>Amazon has furnished <a href="http://aws.amazon.com/articles/2781451301784570">a document</a> with a workaround for this situation. Essentially, a script running on each NAT instance performs a health check on the other NAT instance, and should the other instance go down, the healthy instance will take over. It does so by adjusting the routing tables via AWS API calls. The script will also attempt to bring the failed instance back online.</p>
 
 <p><strong>UPDATE:</strong> The NAT Monitor script outlined by Amazon has a flaw. The ec2-describe-instances call to determine the state of the other NAT instance does not function properly. The documentation references using $5 instead of $4 to set the NAT_STATE variable, however I have found $6 to work best, but test this because your EC2-API-tools version might yield different results. I also highly suggest the &ndash;show-empty-fields argument because if the number of fields changes, the awk statement could potentially grab the incorrect field.</p>
-
-<p>[code lang=text]
-NAT_STATE=<code>/opt/aws/bin/ec2-describe-instances $NAT_ID -U $EC2_URL --show-empty-fields | grep INSTANCE | awk '{print $6;}'</code>
-[/code]</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">NAT_STATE</span><span class="o">=</span><span class="sb">`</span>/opt/aws/bin/ec2-describe-instances <span class="nv">$NAT_ID</span> -U <span class="nv">$EC2_URL</span> --show-empty-fields <span class="p">|</span> grep INSTANCE <span class="p">|</span> awk <span class="s1">&#39;{print $6;}&#39;</span><span class="sb">`</span></code></pre></div>
 <p>There is one issue with the configuration outlined by the Amazon document; the IAM roles permissions are too loose. Using the policy defined in the document, the NAT instance is granted permissions to restart every instance belonging to the account. Additionally, the NAT instance could modify any and all routing tables, such as those in other regions, VPC&rsquo;s, etc. You probably don&rsquo;t want your NAT instances in US-West-2 making any modifications whatsoever to US-East-1. The below policy is an attempt to restrict permissions as best as permitted by supported IAM policy conditions. Just substitute/replace the region and VPC information with your own. Also, tag the NAT instances with a &lsquo;Type&rsquo; and &lsquo;VPC&rsquo; field, setting &lsquo;Type&rsquo; to &lsquo;NAT&rsquo; and &lsquo;VPC&rsquo; with the VPC&rsquo;s ID.</p>
 
 <p>Restricted IAM Policy</p>
-
-<p>[code lang=text]
-{
-   &ldquo;Statement&rdquo;:[
-      {
-         &ldquo;Sid&rdquo;:&ldquo;DescribeStuff&rdquo;,
-         &ldquo;Action&rdquo;:[
-            &ldquo;ec2:DescribeInstances&rdquo;
-         ],
-         &ldquo;Effect&rdquo;:&ldquo;Allow&rdquo;,
-         &ldquo;Resource&rdquo;:&rdquo;<em>&rdquo;,
-         &ldquo;Condition&rdquo;:{
-            &ldquo;StringLike&rdquo;:{
-               &ldquo;ec2:Region&rdquo;:&ldquo;us-west-2&rdquo;,
-               &ldquo;ec2:ResourceTag/VPC&rdquo;:&ldquo;vpc-abcd1234&rdquo;
-            }
-         }
-      },
-      {
-         &ldquo;Sid&rdquo;:&ldquo;RoutingTableAccess&rdquo;,
-         &ldquo;Action&rdquo;:[
-            &ldquo;ec2:CreateRoute&rdquo;,
-            &ldquo;ec2:ReplaceRoute&rdquo;
-         ],
-         &ldquo;Effect&rdquo;:&ldquo;Allow&rdquo;,
-         &ldquo;Resource&rdquo;:&rdquo;</em>&rdquo;,
-         &ldquo;Condition&rdquo;:{
-            &ldquo;StringEquals&rdquo;:{
-               &ldquo;ec2:Region&rdquo;:&ldquo;us-west-2&rdquo;
-            }
-         }
-      },
-      {
-         &ldquo;Sid&rdquo;:&ldquo;NATInstanceControl&rdquo;,
-         &ldquo;Action&rdquo;:[
-            &ldquo;ec2:StartInstances&rdquo;,
-            &ldquo;ec2:StopInstances&rdquo;
-         ],
-         &ldquo;Effect&rdquo;:&ldquo;Allow&rdquo;,
-         &ldquo;Resource&rdquo;:&ldquo;arn:aws:ec2:us-west-2:*&ldquo;,
-         &ldquo;Condition&rdquo;:{
-            &ldquo;StringLike&rdquo;:{
-               &ldquo;ec2:ResourceTag/Type&rdquo;:&ldquo;NAT&rdquo;,
-               &ldquo;ec2:ResourceTag/VPC&rdquo;:&ldquo;vpc-abcd1234&rdquo;
-            }
-         }
-      }
-   ]
-}
-[/code]</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+   <span class="nt">&#34;Statement&#34;</span><span class="p">:[</span>
+      <span class="p">{</span>
+         <span class="nt">&#34;Sid&#34;</span><span class="p">:</span><span class="s2">&#34;DescribeStuff&#34;</span><span class="p">,</span>
+         <span class="nt">&#34;Action&#34;</span><span class="p">:[</span>
+            <span class="s2">&#34;ec2:DescribeInstances&#34;</span>
+         <span class="p">],</span>
+         <span class="nt">&#34;Effect&#34;</span><span class="p">:</span><span class="s2">&#34;Allow&#34;</span><span class="p">,</span>
+         <span class="nt">&#34;Resource&#34;</span><span class="p">:</span><span class="s2">&#34;*&#34;</span><span class="p">,</span>
+         <span class="nt">&#34;Condition&#34;</span><span class="p">:{</span>
+            <span class="nt">&#34;StringLike&#34;</span><span class="p">:{</span>
+               <span class="nt">&#34;ec2:Region&#34;</span><span class="p">:</span><span class="s2">&#34;us-west-2&#34;</span><span class="p">,</span>
+               <span class="nt">&#34;ec2:ResourceTag/VPC&#34;</span><span class="p">:</span><span class="s2">&#34;vpc-abcd1234&#34;</span>
+            <span class="p">}</span>
+         <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="nt">&#34;Sid&#34;</span><span class="p">:</span><span class="s2">&#34;RoutingTableAccess&#34;</span><span class="p">,</span>
+         <span class="nt">&#34;Action&#34;</span><span class="p">:[</span>
+            <span class="s2">&#34;ec2:CreateRoute&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;ec2:ReplaceRoute&#34;</span>
+         <span class="p">],</span>
+         <span class="nt">&#34;Effect&#34;</span><span class="p">:</span><span class="s2">&#34;Allow&#34;</span><span class="p">,</span>
+         <span class="nt">&#34;Resource&#34;</span><span class="p">:</span><span class="s2">&#34;*&#34;</span><span class="p">,</span>
+         <span class="nt">&#34;Condition&#34;</span><span class="p">:{</span>
+            <span class="nt">&#34;StringEquals&#34;</span><span class="p">:{</span>
+               <span class="nt">&#34;ec2:Region&#34;</span><span class="p">:</span><span class="s2">&#34;us-west-2&#34;</span>
+            <span class="p">}</span>
+         <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="nt">&#34;Sid&#34;</span><span class="p">:</span><span class="s2">&#34;NATInstanceControl&#34;</span><span class="p">,</span>
+         <span class="nt">&#34;Action&#34;</span><span class="p">:[</span>
+            <span class="s2">&#34;ec2:StartInstances&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;ec2:StopInstances&#34;</span>
+         <span class="p">],</span>
+         <span class="nt">&#34;Effect&#34;</span><span class="p">:</span><span class="s2">&#34;Allow&#34;</span><span class="p">,</span>
+         <span class="nt">&#34;Resource&#34;</span><span class="p">:</span><span class="s2">&#34;arn:aws:ec2:us-west-2:*&#34;</span><span class="p">,</span>
+         <span class="nt">&#34;Condition&#34;</span><span class="p">:{</span>
+            <span class="nt">&#34;StringLike&#34;</span><span class="p">:{</span>
+               <span class="nt">&#34;ec2:ResourceTag/Type&#34;</span><span class="p">:</span><span class="s2">&#34;NAT&#34;</span><span class="p">,</span>
+               <span class="nt">&#34;ec2:ResourceTag/VPC&#34;</span><span class="p">:</span><span class="s2">&#34;vpc-abcd1234&#34;</span>
+            <span class="p">}</span>
+         <span class="p">}</span>
+      <span class="p">}</span>
+   <span class="p">]</span>
+<span class="p">}</span></code></pre></div>
       </div>
 
       <footer>
