@@ -132,54 +132,52 @@ Currently, I&rsquo;ve got my OS X &amp; *nix infrastructure under the control of
 <p>I noticed that Windows 7 SP1 in particular seems to consume a TON of resources when looking for updates; this issue can literally cost you hours&hellip; It seems Microsoft has addressed this with KB3102810.</p>
 
 <p>Here is a PowerShell function which you can throw in your provisioning script to tackle this issue.</p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="k">Function</span> <span class="n">Fix-WinUpdate</span> <span class="p">{</span>
+  <span class="c"># Retrieve Operating System Information</span>
+  <span class="nv">$OSInfo</span><span class="p">=(</span><span class="nb">Get-WmiObject</span> <span class="n">-Class</span> <span class="n">Win32_OperatingSystem</span><span class="p">)</span>
+  <span class="c"># FixUp Windows 7 SP1 &amp; Server 2008 R2</span>
+  <span class="k">If</span> <span class="p">((</span><span class="nv">$OSInfo</span><span class="p">).</span><span class="n">Version</span> <span class="o">-eq</span> <span class="s1">&#39;6.1.7601&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">If</span> <span class="p">(</span><span class="no">[System.IntPtr]</span><span class="p">::</span><span class="n">Size</span> <span class="o">-eq</span> <span class="n">4</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$osarch</span><span class="p">=</span><span class="s1">&#39;x86&#39;</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nv">$osarch</span><span class="p">=</span><span class="s1">&#39;x64&#39;</span> <span class="p">}</span>
+    <span class="k">If</span> <span class="p">((</span><span class="nv">$OSInfo</span><span class="p">).</span><span class="n">ProductType</span> <span class="o">-eq</span> <span class="n">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nb">Write-Host</span> <span class="s1">&#39;Windows 7 SP1 Detected&#39;</span> <span class="n">-ForegroundColor</span> <span class="s1">&#39;Green&#39;</span>
+      <span class="nv">$WUHotFixUrl</span> <span class="p">=</span> <span class="s2">&#34;https://download.microsoft.com/download/F/A/A/FAABD5C2-4600-45F8-96F1-B25B137E3C87/Windows6.1-KB3102810-${osarch}.msu&#34;</span>
+    <span class="p">}</span>
+    <span class="k">Else</span>
+    <span class="p">{</span>
+      <span class="nb">Write-Host</span> <span class="s1">&#39;Windows Server 2008 R2 Detected&#39;</span> <span class="n">-ForegroundColor</span> <span class="s1">&#39;Green&#39;</span>
+      <span class="nv">$WUHotFixURL</span> <span class="p">=</span> <span class="s1">&#39;https://download.microsoft.com/download/1/E/1/1E1E4FBD-9E64-4AF5-9494-592605CAE5D6/Windows6.1-KB3102810-x64.msu&#39;</span>
+    <span class="p">}</span>
 
-<p>[sourcecode language=&ldquo;powershell&rdquo;]
-Function Fix-WinUpdate {
-  # Retrieve Operating System Information
-  $OSInfo=(Get-WmiObject -Class Win32_OperatingSystem)
-  # FixUp Windows 7 SP1 &amp; Server 2008 R2
-  If (($OSInfo).Version -eq &lsquo;6.1.7601&rsquo;) {
-    If ([System.IntPtr]::Size -eq 4) { $osarch=&lsquo;x86&rsquo; } else { $osarch=&lsquo;x64&rsquo; }
-    If (($OSInfo).ProductType -eq 1) {
-      Write-Host &lsquo;Windows 7 SP1 Detected&rsquo; -ForegroundColor &lsquo;Green&rsquo;
-      $WUHotFixUrl = &ldquo;<a href="https://download.microsoft.com/download/F/A/A/FAABD5C2-4600-45F8-96F1-B25B137E3C87/Windows6.1-KB3102810-${osarch}.msu&quot;">https://download.microsoft.com/download/F/A/A/FAABD5C2-4600-45F8-96F1-B25B137E3C87/Windows6.1-KB3102810-${osarch}.msu&quot;</a>
-    }
-    Else
-    {
-      Write-Host &lsquo;Windows Server 2008 R2 Detected&rsquo; -ForegroundColor &lsquo;Green&rsquo;
-      $WUHotFixURL = &lsquo;<a href="https://download.microsoft.com/download/1/E/1/1E1E4FBD-9E64-4AF5-9494-592605CAE5D6/Windows6.1-KB3102810-x64.msu'">https://download.microsoft.com/download/1/E/1/1E1E4FBD-9E64-4AF5-9494-592605CAE5D6/Windows6.1-KB3102810-x64.msu'</a>
-    }</p>
-<div class="highlight"><pre class="chroma">$WUHotFix = &#34;C:\Windows\Temp\$($WUHotFixURL.Substring($WUHotFixURL.LastIndexOf(&#39;/&#39;) + 1))&#34;
+    <span class="nv">$WUHotFix</span> <span class="p">=</span> <span class="s2">&#34;C:\Windows\Temp\</span><span class="p">$(</span><span class="nv">$WUHotFixURL</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$WUHotFixURL</span><span class="p">.</span><span class="n">LastIndexOf</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="p">+</span> <span class="n">1</span><span class="p">))</span><span class="s2">&#34;</span>
 
-# Download &amp; Install Latest Windows Update Client
-If (!(Get-HotFix -Id &#39;KB3102810&#39; -ErrorAction SilentlyContinue)) {
-  Write-Host &#34;Downloading $(${OSInfo}.Caption) WU Client Update (KB3102810)&#34;
-  (new-object net.webclient).DownloadFile($WUHotFixUrl, $WUHotFix)
-  Write-Host &#34;Installing $(${OSInfo}.Caption) WU Client Update (KB3102810)&#34;
-  Start-Process wusa -ArgumentList &#34;${WUHotFix}&#34;, &#39;/quiet&#39; -Wait
-  Write-Host &#39;This update requires a reboot&#39;
-  Restart-Host
-}</pre></div>
-<p>}
-    # Windows Management Instrumentation Framework
-    $WMIUpdateUrl = &ldquo;<a href="https://download.microsoft.com/download/3/D/6/3D61D262-8549-4769-A660-230B67E15B25/Windows6.1-KB2819745-${osarch}-MultiPkg.msu&quot;">https://download.microsoft.com/download/3/D/6/3D61D262-8549-4769-A660-230B67E15B25/Windows6.1-KB2819745-${osarch}-MultiPkg.msu&quot;</a>
-    $WMIUpdate = &ldquo;C:\Windows\Temp\$($WMIUpdateUrl.Substring($WMIUpdateUrl.LastIndexOf(&lsquo;/&rsquo;) + 1))&rdquo;</p>
-<div class="highlight"><pre class="chroma"># Download &amp; Install Windows Management Instrumentation Framework 4.0
-If (Test-Path &#39;HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client&#39;)
-{
-  If (!(Get-HotFix -Id &#39;KB2819745&#39; -ErrorAction SilentlyContinue)) {
-    Write-Host &#34;Downloading $(${OSInfo}.Caption) WMI 4.0 (KB2819745)&#34;
-    (new-object net.webclient).DownloadFile($WMIUpdateUrl, $WMIUpdate)
-    Write-Host &#34;Installing $(${OSInfo}.Caption) WMI 4.0 (KB2819745)&#34;
-    Start-Process wusa -ArgumentList &#34;${WMIUpdate}&#34;, &#39;/quiet&#39; -Wait
-    Write-Host &#39;This update requires a reboot&#39;
-    Restart-Host
-  }
-}</pre></div>
-<p>}
-}
-[/sourcecode]</p>
+    <span class="c"># Download &amp; Install Latest Windows Update Client</span>
+    <span class="k">If</span> <span class="p">(!(</span><span class="nb">Get-HotFix</span> <span class="n">-Id</span> <span class="s1">&#39;KB3102810&#39;</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nb">Write-Host</span> <span class="s2">&#34;Downloading </span><span class="p">$(${</span><span class="n">OSInfo</span><span class="p">}.</span><span class="n">Caption</span><span class="p">)</span><span class="s2"> WU Client Update (KB3102810)&#34;</span>
+      <span class="p">(</span><span class="nb">new-object</span> <span class="n">net</span><span class="p">.</span><span class="n">webclient</span><span class="p">).</span><span class="n">DownloadFile</span><span class="p">(</span><span class="nv">$WUHotFixUrl</span><span class="p">,</span> <span class="nv">$WUHotFix</span><span class="p">)</span>
+      <span class="nb">Write-Host</span> <span class="s2">&#34;Installing </span><span class="p">$(${</span><span class="n">OSInfo</span><span class="p">}.</span><span class="n">Caption</span><span class="p">)</span><span class="s2"> WU Client Update (KB3102810)&#34;</span>
+      <span class="nb">Start-Process</span> <span class="n">wusa</span> <span class="n">-ArgumentList</span> <span class="s2">&#34;${WUHotFix}&#34;</span><span class="p">,</span> <span class="s1">&#39;/quiet&#39;</span> <span class="n">-Wait</span>
+      <span class="nb">Write-Host</span> <span class="s1">&#39;This update requires a reboot&#39;</span>
+      <span class="nb">Restart-Host</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+    <span class="c"># Windows Management Instrumentation Framework</span>
+    <span class="nv">$WMIUpdateUrl</span> <span class="p">=</span> <span class="s2">&#34;https://download.microsoft.com/download/3/D/6/3D61D262-8549-4769-A660-230B67E15B25/Windows6.1-KB2819745-${osarch}-MultiPkg.msu&#34;</span>
+    <span class="nv">$WMIUpdate</span> <span class="p">=</span> <span class="s2">&#34;C:\Windows\Temp\</span><span class="p">$(</span><span class="nv">$WMIUpdateUrl</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$WMIUpdateUrl</span><span class="p">.</span><span class="n">LastIndexOf</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="p">+</span> <span class="n">1</span><span class="p">))</span><span class="s2">&#34;</span>
 
+    <span class="c"># Download &amp; Install Windows Management Instrumentation Framework 4.0</span>
+    <span class="k">If</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="s1">&#39;HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client&#39;</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">If</span> <span class="p">(!(</span><span class="nb">Get-HotFix</span> <span class="n">-Id</span> <span class="s1">&#39;KB2819745&#39;</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&#34;Downloading </span><span class="p">$(${</span><span class="n">OSInfo</span><span class="p">}.</span><span class="n">Caption</span><span class="p">)</span><span class="s2"> WMI 4.0 (KB2819745)&#34;</span>
+        <span class="p">(</span><span class="nb">new-object</span> <span class="n">net</span><span class="p">.</span><span class="n">webclient</span><span class="p">).</span><span class="n">DownloadFile</span><span class="p">(</span><span class="nv">$WMIUpdateUrl</span><span class="p">,</span> <span class="nv">$WMIUpdate</span><span class="p">)</span>
+        <span class="nb">Write-Host</span> <span class="s2">&#34;Installing </span><span class="p">$(${</span><span class="n">OSInfo</span><span class="p">}.</span><span class="n">Caption</span><span class="p">)</span><span class="s2"> WMI 4.0 (KB2819745)&#34;</span>
+        <span class="nb">Start-Process</span> <span class="n">wusa</span> <span class="n">-ArgumentList</span> <span class="s2">&#34;${WMIUpdate}&#34;</span><span class="p">,</span> <span class="s1">&#39;/quiet&#39;</span> <span class="n">-Wait</span>
+        <span class="nb">Write-Host</span> <span class="s1">&#39;This update requires a reboot&#39;</span>
+        <span class="nb">Restart-Host</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
       </div>
 
       <footer>
