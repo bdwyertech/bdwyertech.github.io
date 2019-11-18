@@ -16,20 +16,20 @@
     <meta property="og:title" content="Switch Security - DHCP Snooping, IP Source Guard and Dynamic ARP Inspection" />
 <meta property="og:description" content="A few years back, I was designing an Enterprise MDM strategy for iPhone deployments. At some point, I was browsing the Apple Enterprise iOS forum and saw a post about an iOS bug where devices sometimes retain a previously assigned IP (from another network) when joining a new network. In this case, someone was joining a network with a retained IP which coincided with the organization&rsquo;s e-mail server. When this occurred, it apparently disabled e-mail service throughout the organization." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://bdwyertech.github.io/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/" />
+<meta property="og:url" content="https://bdwyertech.github.io/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/" />
 <meta property="article:published_time" content="2016-03-02T16:00:49+00:00" />
 <meta property="article:modified_time" content="2016-03-02T16:00:49+00:00" />
 
 
     
-      <base href="http://bdwyertech.github.io/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/">
+      <base href="https://bdwyertech.github.io/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/">
     
     <title>
   Switch Security - DHCP Snooping, IP Source Guard and Dynamic ARP Inspection · bdwyertech.net
 </title>
 
     
-      <link rel="canonical" href="http://bdwyertech.github.io/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/">
+      <link rel="canonical" href="https://bdwyertech.github.io/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
@@ -39,7 +39,7 @@
     
       
       
-      <link rel="stylesheet" href="http://bdwyertech.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://bdwyertech.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -60,7 +60,7 @@
     <main class="wrapper">
       <nav class="navigation">
   <section class="container">
-    <a class="navigation-title" href="http://bdwyertech.github.io/">
+    <a class="navigation-title" href="https://bdwyertech.github.io/">
       bdwyertech.net
     </a>
     <input type="checkbox" id="menu-toggle" />
@@ -69,15 +69,15 @@
       
         
           <li class="navigation-item">
-            <a class="navigation-link" href="http://bdwyertech.github.io/posts/">Blog</a>
+            <a class="navigation-link" href="https://bdwyertech.github.io/posts/">Blog</a>
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="http://bdwyertech.github.io/portfolio/">Portfolio</a>
+            <a class="navigation-link" href="https://bdwyertech.github.io/portfolio/">Portfolio</a>
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="http://bdwyertech.github.io/about/">About</a>
+            <a class="navigation-link" href="https://bdwyertech.github.io/about/">About</a>
           </li>
         
       
@@ -125,7 +125,7 @@
 
 <h3 id="lab-scenario">Lab Scenario</h3>
 
-<h3 id="image-2012-05-image9-png"><img src="http://bdwyertech.github.io/2012/05/image9.png" alt="image" /></h3>
+<h3 id="image-2012-05-image9-png"><img src="https://bdwyertech.github.io/2012/05/image9.png" alt="image" /></h3>
 
 <h3 id="configuring-dhcp-snooping">Configuring DHCP Snooping</h3>
 
@@ -133,34 +133,34 @@
 
 <p><em>Remember, configuration of an port-channel interface automatically does the same on all port-channel member interfaces, in this case fa0/1 and fa0/2. It is not necessary to manually enter the trust configuration on individual ports which are members of a port-channel.</em></p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi2.png" alt="image" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi2.png" alt="image" /></p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi3.png" alt="image" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi3.png" alt="image" /></p>
 
 <p>Above, you can see that DHCP snooping must be enabled globally and then on a per-VLAN basis. In this case, things are simple and there is only one VLAN. Multiple VLANs can be configured concurrently by using a VLAN list such as 1,5,7-10.</p>
 
 <p><strong>Verification of the DHCP Snooping Configuration</strong></p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi4.png" alt="image" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi4.png" alt="image" /></p>
 
 <p>Now I will connect a client and record what happens using &ldquo;debug ip dhcp snooping event&rdquo;. The client is not getting an IP address. As you can see below, the DHCP packet is being received, relay information is being added, and then it is being sent out other active ports.</p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/image2.png" alt="image" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/image2.png" alt="image" /></p>
 
 <p>Seeing only the switch side, our understanding of the situation is precarious at best. In the final step, we can see that the packet is in fact being sent out, so let&rsquo;s check what is getting to the DHCP server.</p>
 
-<p><a href="http://bdwyertech.github.io/2012/05/image3.png"><img src="http://bdwyertech.github.io/2012/05/image_thumb1.png" alt="image" />
+<p><a href="https://bdwyertech.github.io/2012/05/image3.png"><img src="https://bdwyertech.github.io/2012/05/image_thumb1.png" alt="image" />
 </a></p>
 
 <p>Aha! Debugging is a beautiful feature. From here, we can see that there is a problem with the relay information. By default, a DHCP Snooping adds Relay Information, or DHCP Option 82. My understanding from the above output is that the switch intercepts DHCP Requests and injects it&rsquo;s relay information into it prior to forwarding it on. The problem here seems to be that it sets the &ldquo;giaddress&rdquo; to a null value, which would normally be the DHCP Relay&rsquo;s IP address. Under normal circumstances, a DHCP Relay is used when a subnet does not locally contain a DHCP server which could overhear the layer-2 broadcast DHCP Requests. A DHCP relay acts as a relay for subnets without a DHCP server inside the layer-2 boundary, listening for DHCP Requests and relaying them past layer-2 boundaries to a configured DHCP server. When enabling DHCP snooping on a VLAN which has a directly connected DHCP server, the relay process is not necessary and the null giaddr value confuses the DHCP server which thinks the request came from a relay, not directly from the requester.</p>
 
 <p>By default, the relay function is enabled. It is turned off by disabling the information option.</p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi7.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi7.png" alt="" /></p>
 
 <p>Now lets see what happens.</p>
 
-<p><a href="http://bdwyertech.github.io/2012/05/image4.png"><img src="http://bdwyertech.github.io/2012/05/image_thumb2.png" alt="image" />
+<p><a href="https://bdwyertech.github.io/2012/05/image4.png"><img src="https://bdwyertech.github.io/2012/05/image_thumb2.png" alt="image" />
 </a></p>
 
 <p>As you can see, the client now received its IP, and the switch recorded the transaction. It now knows the MAC, IP, Lease time, VLAN and Source Interface of the transaction. This information can now be leveraged by Dynamic ARP Inspection and IP Source Guard to help protect our network.</p>
@@ -171,21 +171,21 @@
 
 <p><strong>Enable IPSG (Per-Interface)</strong></p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi9.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi9.png" alt="" /></p>
 
-<p>We can also see what the dynamic PACL contains below.<img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi10.png" alt="" /></p>
+<p>We can also see what the dynamic PACL contains below.<img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi10.png" alt="" /></p>
 
-<p>With ip verify source port-security enabled, the result is the following:<img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi11.png" alt="" /></p>
+<p>With ip verify source port-security enabled, the result is the following:<img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi11.png" alt="" /></p>
 
 <p>As you can see above, the mac-address field shows permit-all. IPSG relies upon Port-Security to enforce the MAC validation. In order for it to do this, port-security must be enabled on the port using switchport port-security. After adding this command, the result is the following:</p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi12.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi12.png" alt="" /></p>
 
 <p>As you can see, IP Source Guard is now validating both MAC and IP. It utilizes a PACL to enforce the IP, and Port-Security for MAC. It is important to note that the only reason this worked is because I turned it on AFTER the host already had a MAC and IP binding present in the DHCP Snooping database. You should probably leave the port-security function of IPSG disabled unless you have manually configured bindings. When enabled and a binding is not present, IPSG&rsquo;s port-security function defaults to a deny-all MAC function making it impossible for the switch to dynamically learn MAC bindings such as via the switchport mac-address sticky function. I would suggest you configure port-security separately unless you have a specific need for this functionality.</p>
 
 <p>Lets see what happens if a host plugs into a port with IPSG enabled and tries to set a static IP. As seen below, if a host plugs in and no static binding or DHCP Snooping entry exists, a deny-all PACL and deny-all MAC port-security function is configured on the port.</p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi13.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi13.png" alt="" /></p>
 
 <p><em>This configuration makes it impossible for any communication to take place on the port without manually configuring a MAC for port security. All host traffic will be dropped at the switchport because of the deny-all rules.</em></p>
 
@@ -193,12 +193,12 @@
 
 <p>In the case of a host with a static IP, a static source binding must be configured, binding a MAC to a specific VLAN and IP on a specific interface. For example:</p>
 
-<p><a href="http://bdwyertech.github.io/2012/05/image5.png"><img src="http://bdwyertech.github.io/2012/05/image_thumb3.png" alt="image" />
+<p><a href="https://bdwyertech.github.io/2012/05/image5.png"><img src="https://bdwyertech.github.io/2012/05/image_thumb3.png" alt="image" />
 </a></p>
 
 <p>The result of configuring the static binding entry is shown below.</p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi15.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi15.png" alt="" /></p>
 
 <p><em>The ip verify source port-security function plays much nicer with static bindings. Since IPSG is configured on a port-by-port basis, utilize &ldquo;ip verify source&rdquo; for DHCP ports and save &ldquo;ip verify source port-security&rdquo; functionality for ports with statically configured hosts. This function more or less facilitates automatic port-security MAC configuration so you do not have to enter it in two places if you wish to use the feature.</em></p>
 
@@ -208,58 +208,58 @@
 
 <p>First, lets redact the static binding from the earlier IPSG config and disable the port-security portion of its configuration since I want to demonstrate DAI using the DHCP Snooping database.</p>
 
-<p><a href="http://bdwyertech.github.io/2012/05/image6.png"><img src="http://bdwyertech.github.io/2012/05/image_thumb4.png" alt="image" />
+<p><a href="https://bdwyertech.github.io/2012/05/image6.png"><img src="https://bdwyertech.github.io/2012/05/image_thumb4.png" alt="image" />
 </a></p>
 
 <p><strong>Enable DHCP Snooping on the appropriate VLAN(s), in this case, VLAN 1.</strong></p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi17.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi17.png" alt="" /></p>
 
 <p><strong>Configure trust on our links to other switches, in this case, po1.</strong></p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi18.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi18.png" alt="" /></p>
 
 <p>Now, lets see the results. What happens when someone sets a static IP? Below I have set the IP of a host to 10.0.0.111. When I brought it online, it cannot even resolve the MAC address of the default gateway, 10.0.0.1!</p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi19.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi19.png" alt="" /></p>
 
 <p>When the host attempts to perform an ARP request, DAI blocks the unknown binding since it cannot validate the source address.</p>
 
-<p><a href="http://bdwyertech.github.io/2012/05/image7.png"><img src="http://bdwyertech.github.io/2012/05/image_thumb5.png" alt="image" />
+<p><a href="https://bdwyertech.github.io/2012/05/image7.png"><img src="https://bdwyertech.github.io/2012/05/image_thumb5.png" alt="image" />
 </a></p>
 
 <p>Lets pretend that this static host binding is valid and we need to allow it. In order to do so, we must utilize an ARP ACL and add it to the DAI Filter to allow it.</p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi21.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi21.png" alt="" /></p>
 
 <p><em>The console cut off the rest of the line. The resulting ACL is shown below.</em></p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi22.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi22.png" alt="" /></p>
 
 <p>Now that we have created the ARP ACL, we must add it to the DAI filter.</p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi23.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi23.png" alt="" /></p>
 
 <p><em>The static keyword can be added at the end of this line to force DAI to use only the ARP ACL and not utilize the DHCP Snooping bindings. Be careful!</em></p>
 
 <p>At this point, the statically configured host should be able to successfully perform an ARP Request for the default gateway. Lets see.</p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi24.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi24.png" alt="" /></p>
 
 <p>Now, lets see what happens if we change the IP address of the host to an ip different than the ARP ACL entry.</p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi25.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi25.png" alt="" /></p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi26.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi26.png" alt="" /></p>
 
 <p>Success! The host is blocked again. This switch is blocking communication.</p>
 
-<p><a href="http://bdwyertech.github.io/2012/05/image8.png"><img src="http://bdwyertech.github.io/2012/05/image_thumb6.png" alt="image" />
+<p><a href="https://bdwyertech.github.io/2012/05/image8.png"><img src="https://bdwyertech.github.io/2012/05/image_thumb6.png" alt="image" />
 </a></p>
 
 <p>Finally, we can verify DAI operation. As seen below, the ACL Match shows that our STATIC_ARP_ACL is being utilized alongside the DHCP Snooping database for VLAN 1. If the filter was configured to utilize only the ACL and not the DHCP Snooping database, the Static ACL field would say Yes.</p>
 
-<p><img src="http://bdwyertech.github.io/2012/05/050312_2255_securingswi28.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/05/050312_2255_securingswi28.png" alt="" /></p>
 
 <h3 id="summary">Summary</h3>
 

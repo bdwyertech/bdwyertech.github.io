@@ -16,20 +16,20 @@
     <meta property="og:title" content="Cisco IP SLA" />
 <meta property="og:description" content="So while studying for CCNP Route, I came across the concept of IP SLA and utilizing probes to check availability of next-hop addresses prior to instating them inside a route-map. An objective was to have two ISP&rsquo;s listed in a route-map statement, and set all traffic originating from the local router with a next-hop IP of ISP1 as long as it was deemed reachable by the IP SLA tracker probe status." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://bdwyertech.github.io/2012/02/20/cisco-ip-sla/" />
+<meta property="og:url" content="https://bdwyertech.github.io/2012/02/20/cisco-ip-sla/" />
 <meta property="article:published_time" content="2012-02-20T23:18:45+00:00" />
 <meta property="article:modified_time" content="2012-02-20T23:18:45+00:00" />
 
 
     
-      <base href="http://bdwyertech.github.io/2012/02/20/cisco-ip-sla/">
+      <base href="https://bdwyertech.github.io/2012/02/20/cisco-ip-sla/">
     
     <title>
   Cisco IP SLA · bdwyertech.net
 </title>
 
     
-      <link rel="canonical" href="http://bdwyertech.github.io/2012/02/20/cisco-ip-sla/">
+      <link rel="canonical" href="https://bdwyertech.github.io/2012/02/20/cisco-ip-sla/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
@@ -39,7 +39,7 @@
     
       
       
-      <link rel="stylesheet" href="http://bdwyertech.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://bdwyertech.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -60,7 +60,7 @@
     <main class="wrapper">
       <nav class="navigation">
   <section class="container">
-    <a class="navigation-title" href="http://bdwyertech.github.io/">
+    <a class="navigation-title" href="https://bdwyertech.github.io/">
       bdwyertech.net
     </a>
     <input type="checkbox" id="menu-toggle" />
@@ -69,15 +69,15 @@
       
         
           <li class="navigation-item">
-            <a class="navigation-link" href="http://bdwyertech.github.io/posts/">Blog</a>
+            <a class="navigation-link" href="https://bdwyertech.github.io/posts/">Blog</a>
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="http://bdwyertech.github.io/portfolio/">Portfolio</a>
+            <a class="navigation-link" href="https://bdwyertech.github.io/portfolio/">Portfolio</a>
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="http://bdwyertech.github.io/about/">About</a>
+            <a class="navigation-link" href="https://bdwyertech.github.io/about/">About</a>
           </li>
         
       
@@ -101,7 +101,7 @@
 
 <p><strong>Diagram</strong></p>
 
-<p><img src="http://bdwyertech.github.io/2012/02/isp.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/02/isp.png" alt="" /></p>
 
 <p><strong>The Configuration (</strong>**Cisco 2691 - IOS **ADVENTERPRISE <strong>12.4(15)T14)</strong></p>
 
@@ -136,15 +136,15 @@ PolicyRouter(config-route-map)#set ip next-hop 201.1.1.2</p>
 
 <p><strong>Route Map Status</strong></p>
 
-<p><img src="http://bdwyertech.github.io/2012/02/untitled-picture4.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/02/untitled-picture4.png" alt="" /></p>
 
 <p><strong>Traceroute with Both ISP&rsquo;s Reachable</strong></p>
 
-<p><img src="http://bdwyertech.github.io/2012/02/down.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/02/down.png" alt="" /></p>
 
 <p><strong> Traceroute with ISP1 Down</strong></p>
 
-<p><img src="http://bdwyertech.github.io/2012/02/up.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/02/up.png" alt="" /></p>
 
 <p>The result was good.  The next probe was working and traffic was being routed fine.  The fail-over to ISP2 upon failure of Serial0/0 also works fine.</p>
 
@@ -152,9 +152,9 @@ PolicyRouter(config-route-map)#set ip next-hop 201.1.1.2</p>
 
 <p>When Serial0/0 comes back on-line, the PBR sticks with the route through ISP2.  After looking at the route map again after the failover and the restoration of Serial0/0, I saw that the tracker was still registering the next-hop as down.</p>
 
-<p><img src="http://bdwyertech.github.io/2012/02/untitled-picture5.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/02/untitled-picture5.png" alt="" /></p>
 
-<p><img src="http://bdwyertech.github.io/2012/02/untitled-picture6.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/02/untitled-picture6.png" alt="" /></p>
 
 <p>I did some testing and noticed that pings to 200.1.1.2 would fail.  This is because of the route-map applied to locally generated traffic.  The locally-generated ICMP-echo probes were being set with the route-map&rsquo;s active next-hop interface, sending the probe incorrectly to ISP2.  For the purpose of the probe, it is necessary the probe traffic to be permitted to travel to the correct next-hop of ISP1 regardless of where other traffic is destined.</p>
 
@@ -172,7 +172,7 @@ PolicyRouter(config-route-map)#match ip address RTR_PING_S0/0</p>
 
 <h2 id="result-1">Result</h2>
 
-<p><img src="http://bdwyertech.github.io/2012/02/untitled-picture7.png" alt="" /></p>
+<p><img src="https://bdwyertech.github.io/2012/02/untitled-picture7.png" alt="" /></p>
 
 <p>This fix resulted in next-hop redundancy including preempting when the specified next-hop ISP comes back on-line.  This could be applied to a router with more ISP connections, so long as an ACL and route-map are created with respect to the necessary traffic-flow characteristics.</p>
 
