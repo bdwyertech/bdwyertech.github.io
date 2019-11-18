@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="Brian Dwyer&#39;s Personal Website">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AWS - Highly-Available NAT in VPC"/>
+<meta name="twitter:description" content="Like most sysadmins, one of my primary responsibilities is ensuring high-availability in our environments. Recently, I&rsquo;ve been working a lot more with Amazon AWS. Amazon recently began forcing new accounts to make use of VPC. When you create a VPC, an Internet Gateway must be provisioned to route traffic to the Internet. VPC&rsquo;s utilize subnet constructs for virtual networking. Subnets are assigned a routing table, and in the case of a Public subnet, the default route of this table is pointed at the Internet Gateway."/>
+
+    <meta property="og:title" content="AWS - Highly-Available NAT in VPC" />
+<meta property="og:description" content="Like most sysadmins, one of my primary responsibilities is ensuring high-availability in our environments. Recently, I&rsquo;ve been working a lot more with Amazon AWS. Amazon recently began forcing new accounts to make use of VPC. When you create a VPC, an Internet Gateway must be provisioned to route traffic to the Internet. VPC&rsquo;s utilize subnet constructs for virtual networking. Subnets are assigned a routing table, and in the case of a Public subnet, the default route of this table is pointed at the Internet Gateway." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://bdwyertech.github.io/2014/06/16/aws-highly-available-nat-in-vpc/" />
+<meta property="article:published_time" content="2014-06-16T16:52:45+00:00" />
+<meta property="article:modified_time" content="2014-06-16T16:52:45+00:00" />
+
+
+    
+      <base href="http://bdwyertech.github.io/2014/06/16/aws-highly-available-nat-in-vpc/">
+    
+    <title>
+  AWS - Highly-Available NAT in VPC · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="http://bdwyertech.github.io/2014/06/16/aws-highly-available-nat-in-vpc/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="http://bdwyertech.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.59.1" />
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="http://bdwyertech.github.io/">
+      bdwyertech.net
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://bdwyertech.github.io/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://bdwyertech.github.io/portfolio/">Portfolio</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://bdwyertech.github.io/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container page">
+  <article>
+    <header>
+      <h1>AWS - Highly-Available NAT in VPC</h1>
+    </header>
+
+    <p><a href="https://bdwyertech.files.wordpress.com/2014/06/arch_nat_active.jpg"><img src="https://bdwyertech.files.wordpress.com/2014/06/arch_nat_active.jpg" alt="arch_nat_active" />
+</a></p>
+
+<p>Like most sysadmins, one of my primary responsibilities is ensuring high-availability in our environments. Recently, I&rsquo;ve been working a lot more with Amazon AWS. Amazon recently began forcing new accounts to make use of VPC. When you create a VPC, an Internet Gateway must be provisioned to route traffic to the Internet. VPC&rsquo;s utilize subnet constructs for virtual networking. Subnets are assigned a routing table, and in the case of a Public subnet, the default route of this table is pointed at the Internet Gateway. Instances in this public subnet are assigned public, non-RFC1918 Elastic IP addresses. At the moment, only 5 Elastic IP addresses may be requested per account. You can request more via support, but obviously they are trying to ween people away from using them for everything. Consequently, NAT &amp; supporting instances must be in place to facilitate external communication for non-public subnets.</p>
+
+<p>In the case of these subnets, the default-route should be pointed at a NAT instance residing in the Public subnet. This brings about a single point of failure. Should the NAT instance go down, nothing in that subnet can speak to the outside world; the default-route becomes a black-hole. In order to combat this, multiple NAT instances can be provisioned in different availability zones, and with a little magic, configured to take over each others traffic-routing responsibilities on-demand.</p>
+
+<p>Amazon has furnished <a href="http://aws.amazon.com/articles/2781451301784570">a document</a> with a workaround for this situation. Essentially, a script running on each NAT instance performs a health check on the other NAT instance, and should the other instance go down, the healthy instance will take over. It does so by adjusting the routing tables via AWS API calls. The script will also attempt to bring the failed instance back online.</p>
+
+<p><strong>UPDATE:</strong> The NAT Monitor script outlined by Amazon has a flaw. The ec2-describe-instances call to determine the state of the other NAT instance does not function properly. The documentation references using $5 instead of $4 to set the NAT_STATE variable, however I have found $6 to work best, but test this because your EC2-API-tools version might yield different results. I also highly suggest the &ndash;show-empty-fields argument because if the number of fields changes, the awk statement could potentially grab the incorrect field.</p>
+
+<p>[code lang=text]
+NAT_STATE=<code>/opt/aws/bin/ec2-describe-instances $NAT_ID -U $EC2_URL --show-empty-fields | grep INSTANCE | awk '{print $6;}'</code>
+[/code]</p>
+
+<p>There is one issue with the configuration outlined by the Amazon document; the IAM roles permissions are too loose. Using the policy defined in the document, the NAT instance is granted permissions to restart every instance belonging to the account. Additionally, the NAT instance could modify any and all routing tables, such as those in other regions, VPC&rsquo;s, etc. You probably don&rsquo;t want your NAT instances in US-West-2 making any modifications whatsoever to US-East-1. The below policy is an attempt to restrict permissions as best as permitted by supported IAM policy conditions. Just substitute/replace the region and VPC information with your own. Also, tag the NAT instances with a &lsquo;Type&rsquo; and &lsquo;VPC&rsquo; field, setting &lsquo;Type&rsquo; to &lsquo;NAT&rsquo; and &lsquo;VPC&rsquo; with the VPC&rsquo;s ID.</p>
+
+<p>Restricted IAM Policy</p>
+
+<p>[code lang=text]
+{
+   &ldquo;Statement&rdquo;:[
+      {
+         &ldquo;Sid&rdquo;:&ldquo;DescribeStuff&rdquo;,
+         &ldquo;Action&rdquo;:[
+            &ldquo;ec2:DescribeInstances&rdquo;
+         ],
+         &ldquo;Effect&rdquo;:&ldquo;Allow&rdquo;,
+         &ldquo;Resource&rdquo;:&rdquo;<em>&rdquo;,
+         &ldquo;Condition&rdquo;:{
+            &ldquo;StringLike&rdquo;:{
+               &ldquo;ec2:Region&rdquo;:&ldquo;us-west-2&rdquo;,
+               &ldquo;ec2:ResourceTag/VPC&rdquo;:&ldquo;vpc-abcd1234&rdquo;
+            }
+         }
+      },
+      {
+         &ldquo;Sid&rdquo;:&ldquo;RoutingTableAccess&rdquo;,
+         &ldquo;Action&rdquo;:[
+            &ldquo;ec2:CreateRoute&rdquo;,
+            &ldquo;ec2:ReplaceRoute&rdquo;
+         ],
+         &ldquo;Effect&rdquo;:&ldquo;Allow&rdquo;,
+         &ldquo;Resource&rdquo;:&rdquo;</em>&rdquo;,
+         &ldquo;Condition&rdquo;:{
+            &ldquo;StringEquals&rdquo;:{
+               &ldquo;ec2:Region&rdquo;:&ldquo;us-west-2&rdquo;
+            }
+         }
+      },
+      {
+         &ldquo;Sid&rdquo;:&ldquo;NATInstanceControl&rdquo;,
+         &ldquo;Action&rdquo;:[
+            &ldquo;ec2:StartInstances&rdquo;,
+            &ldquo;ec2:StopInstances&rdquo;
+         ],
+         &ldquo;Effect&rdquo;:&ldquo;Allow&rdquo;,
+         &ldquo;Resource&rdquo;:&ldquo;arn:aws:ec2:us-west-2:*&ldquo;,
+         &ldquo;Condition&rdquo;:{
+            &ldquo;StringLike&rdquo;:{
+               &ldquo;ec2:ResourceTag/Type&rdquo;:&ldquo;NAT&rdquo;,
+               &ldquo;ec2:ResourceTag/VPC&rdquo;:&ldquo;vpc-abcd1234&rdquo;
+            }
+         }
+      }
+   ]
+}
+[/code]</p>
+
+  </article>
+</section>
+
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>My place to record ideas and encounters with technology</p>
+    
+     © 2019
+    
+    
+       · 
+      [<a href="https://github.com/bdwyertech/bdwyertech.github.io/tree/master"></a>]
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

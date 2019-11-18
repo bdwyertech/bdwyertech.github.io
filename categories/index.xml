@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on bdwyertech.net</title>
+    <link>http://bdwyertech.github.io/categories/</link>
+    <description>Recent content in Categories on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 Mar 2016 16:00:49 +0000</lastBuildDate>
+    
+	<atom:link href="http://bdwyertech.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Networking</title>
+      <link>http://bdwyertech.github.io/categories/networking/</link>
+      <pubDate>Wed, 02 Mar 2016 16:00:49 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/networking/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>http://bdwyertech.github.io/categories/security/</link>
+      <pubDate>Wed, 02 Mar 2016 16:00:49 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DevOps</title>
+      <link>http://bdwyertech.github.io/categories/devops/</link>
+      <pubDate>Wed, 24 Feb 2016 08:30:43 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/devops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PowerShell</title>
+      <link>http://bdwyertech.github.io/categories/powershell/</link>
+      <pubDate>Wed, 24 Feb 2016 08:30:43 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/powershell/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Windows</title>
+      <link>http://bdwyertech.github.io/categories/windows/</link>
+      <pubDate>Wed, 24 Feb 2016 08:30:43 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/windows/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>*nix</title>
+      <link>http://bdwyertech.github.io/categories/nix/</link>
+      <pubDate>Fri, 30 Oct 2015 21:49:28 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/nix/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Chef</title>
+      <link>http://bdwyertech.github.io/categories/chef/</link>
+      <pubDate>Fri, 30 Oct 2015 21:49:28 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/chef/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cloud</title>
+      <link>http://bdwyertech.github.io/categories/cloud/</link>
+      <pubDate>Fri, 30 Oct 2015 21:49:28 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/cloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DigitalOcean</title>
+      <link>http://bdwyertech.github.io/categories/digitalocean/</link>
+      <pubDate>Fri, 30 Oct 2015 21:49:28 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/digitalocean/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AWS</title>
+      <link>http://bdwyertech.github.io/categories/aws/</link>
+      <pubDate>Fri, 24 Apr 2015 20:18:15 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Certification</title>
+      <link>http://bdwyertech.github.io/categories/certification/</link>
+      <pubDate>Wed, 10 Dec 2014 02:21:11 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/certification/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cisco</title>
+      <link>http://bdwyertech.github.io/categories/cisco/</link>
+      <pubDate>Wed, 10 Dec 2014 02:21:11 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/cisco/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vagrant</title>
+      <link>http://bdwyertech.github.io/categories/vagrant/</link>
+      <pubDate>Fri, 12 Sep 2014 21:14:15 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/vagrant/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Virtualization</title>
+      <link>http://bdwyertech.github.io/categories/virtualization/</link>
+      <pubDate>Fri, 19 Jul 2013 19:46:22 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/virtualization/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Database</title>
+      <link>http://bdwyertech.github.io/categories/database/</link>
+      <pubDate>Fri, 10 May 2013 22:06:54 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/database/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tweaks</title>
+      <link>http://bdwyertech.github.io/categories/tweaks/</link>
+      <pubDate>Tue, 22 Jan 2013 16:38:28 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/tweaks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hardware &amp;amp; Electronics</title>
+      <link>http://bdwyertech.github.io/categories/hardware-amp-electronics/</link>
+      <pubDate>Sun, 22 Jan 2012 20:31:41 +0000</pubDate>
+      
+      <guid>http://bdwyertech.github.io/categories/hardware-amp-electronics/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="Brian Dwyer&#39;s Personal Website">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Apple Configurator - Backup &amp; Restoration"/>
+<meta name="twitter:description" content="I work a bit with Apple Configurator to provision, supervise and join various Apple devices to mobile device management (MDM) servers. One thing not integrated into Apple Configurator is the ability to backup and restore data easily. The need for this might arise if you have a remote operator who may need to remotely provision devices, or if you&rsquo;d like to hand off a set configuration to a client. Hopefully, the below bash script makes life a little easier in this regard."/>
+
+    <meta property="og:title" content="Apple Configurator - Backup &amp; Restoration" />
+<meta property="og:description" content="I work a bit with Apple Configurator to provision, supervise and join various Apple devices to mobile device management (MDM) servers. One thing not integrated into Apple Configurator is the ability to backup and restore data easily. The need for this might arise if you have a remote operator who may need to remotely provision devices, or if you&rsquo;d like to hand off a set configuration to a client. Hopefully, the below bash script makes life a little easier in this regard." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://bdwyertech.github.io/2014/06/10/apple-configurator-backup-restoration/" />
+<meta property="article:published_time" content="2014-06-10T22:15:01+00:00" />
+<meta property="article:modified_time" content="2014-06-10T22:15:01+00:00" />
+
+
+    
+      <base href="http://bdwyertech.github.io/2014/06/10/apple-configurator-backup-restoration/">
+    
+    <title>
+  Apple Configurator - Backup &amp; Restoration · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="http://bdwyertech.github.io/2014/06/10/apple-configurator-backup-restoration/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="http://bdwyertech.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.59.1" />
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="http://bdwyertech.github.io/">
+      bdwyertech.net
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://bdwyertech.github.io/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://bdwyertech.github.io/portfolio/">Portfolio</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://bdwyertech.github.io/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container page">
+  <article>
+    <header>
+      <h1>Apple Configurator - Backup &amp; Restoration</h1>
+    </header>
+
+    
+
+<p>I work a bit with Apple Configurator to provision, supervise and join various Apple devices to mobile device management (MDM) servers.  One thing not integrated into Apple Configurator is the ability to backup and restore data easily.  The need for this might arise if you have a remote operator who may need to remotely provision devices, or if you&rsquo;d like to hand off a set configuration to a client.  Hopefully, the below bash script makes life a little easier in this regard.</p>
+
+<p>If the directories change, adjust accordingly.  This is current as of Apple Configurator 1.5.  On a second note, if you&rsquo;d like to supervise devices which <em>have already been supervised</em>, you will also need to copy the Apple Configurator certificate and key from your keychain.  Meraki has created a utility which extracts this <a href="http://dl.meraki.net/sm/IdentityExporter.dmg">here</a>.  I have not tested this, but in theory, you should be able to delete the Configurator certificate &amp; key from the remote user&rsquo;s keychain and have them import yours.</p>
+
+<p>[code lang=bash]
+#!/bin/bash</p>
+
+<h1 id="apple-configurator-backup-restoration-script">Apple Configurator Backup &amp; Restoration Script</h1>
+
+<h1 id="brian-dwyer-intelligent-digital-services-6-18-14">Brian Dwyer - Intelligent Digital Services 6/18/14</h1>
+
+<h1 id="ipsw-file-location-library-containers-com-apple-configurator-data-library-caches-com-apple-configurator-firmware">IPSW File Location - ~/Library/Containers/com.apple.configurator/Data/Library/Caches/com.apple.configurator/Firmware/</h1>
+
+<h1 id="configuration-files-location">Configuration Files Location</h1>
+
+<p>config_dir=&ldquo;/Users/$USER/Library/Containers/com.apple.configurator/Data/Library/Application Support/com.apple.configurator&rdquo;
+db_dir=&ldquo;/var/db/lockdown&rdquo;</p>
+
+<p>ConfigName=ConfiguratorFiles_Backup
+ConfigDBName=ConfiguratorDB_Backup</p>
+
+<p>function backup() {
+  # Backup the Restore Files &amp; Stuff
+  if [ -d &ldquo;$config_dir&rdquo; ]; then
+    echo &lsquo;Backing up the Configurator Files&hellip;&rsquo;
+    nohup tar zpcvf $ConfigName.tar.gz -C &ldquo;$config_dir&rdquo; . &gt;/dev/null 2&gt;&amp;1
+    echo &lsquo;Done&rsquo;
+  fi</p>
+
+<p># Backup the Database
+  if [ -d &ldquo;$db_dir&rdquo; ]; then
+    echo &lsquo;Backing up the Configurator Database&hellip;&rsquo;
+    nohup tar zpcvf $ConfigDBName.tar.gz -C &ldquo;$db_dir&rdquo; . &gt;/dev/null 2&gt;&amp;1
+    echo &lsquo;Done&rsquo;
+  fi
+}</p>
+
+<p>function restore() {
+  if [ -e &ldquo;$ConfigName.tar.gz&rdquo; ]; then
+      # Use -o to make the current user the owner of extracted files
+      tar xvpof $ConfigName.tar.gz -C &ldquo;$config_dir&rdquo;
+  else
+    echo &ldquo;Configurator File Backup does not exist. Make sure $ConfigName.tar.gz exists&hellip;&rdquo;
+  fi</p>
+
+<p>if [ -e &ldquo;$ConfigDBName.tar.gz&rdquo; ]; then<br />
+    echo &ldquo;We needs sudo to preserve ownership on the database files at $db_dir&rdquo;
+      sudo tar xvpf $ConfigDBName.tar.gz -C &ldquo;$db_dir&rdquo;
+  else
+    echo &ldquo;Configurator Database Backup does not exist. Make sure $ConfigDBName.tar.gz exists&hellip;&rdquo;
+  fi
+}</p>
+
+<p>case &ldquo;$1&rdquo; in</p>
+
+<p>backup)
+        backup
+        ;;
+   restore)
+        restore
+        ;;
+        *)
+       echo &ldquo;Usage:  {backup|restore}&rdquo;
+       echo &ldquo;Backup: Backs up Configurator data to the current directory&rdquo;
+       echo &ldquo;Restore: Restores backups in the current directory&rdquo;
+       RETVAL=2
+esac
+[/code]</p>
+
+  </article>
+</section>
+
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>My place to record ideas and encounters with technology</p>
+    
+     © 2019
+    
+    
+       · 
+      [<a href="https://github.com/bdwyertech/bdwyertech.github.io/tree/master"></a>]
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

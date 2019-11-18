@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="Brian Dwyer&#39;s Personal Website">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Windows 7 SP1 - Slow Windows Updates"/>
+<meta name="twitter:description" content="As an MCITP I&rsquo;m well-versed in Group Policy and what not, but building a clean Windows base image with all updates applied and some prerequisite software has always always been a relatively manual, inconsistent, and annoying process. I recently did a major overhaul of our Operations Network/Server Infrastructure and figured there&rsquo;s no better time to give my trusty Chef, Packer &amp; Vagrant tool set a shot with our workstations.
+Currently, I&rsquo;ve got my OS X &amp; *nix infrastructure under the control of Chef, and I&rsquo;ve got e2e OS build &amp; deployment processes in place (Packer -&gt; Vagrant -&gt; Chef )."/>
+
+    <meta property="og:title" content="Windows 7 SP1 - Slow Windows Updates" />
+<meta property="og:description" content="As an MCITP I&rsquo;m well-versed in Group Policy and what not, but building a clean Windows base image with all updates applied and some prerequisite software has always always been a relatively manual, inconsistent, and annoying process. I recently did a major overhaul of our Operations Network/Server Infrastructure and figured there&rsquo;s no better time to give my trusty Chef, Packer &amp; Vagrant tool set a shot with our workstations.
+Currently, I&rsquo;ve got my OS X &amp; *nix infrastructure under the control of Chef, and I&rsquo;ve got e2e OS build &amp; deployment processes in place (Packer -&gt; Vagrant -&gt; Chef )." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://bdwyertech.github.io/2016/02/24/windows-7-sp1-slow-windows-updates/" />
+<meta property="article:published_time" content="2016-02-24T08:30:43+00:00" />
+<meta property="article:modified_time" content="2016-02-24T08:30:43+00:00" />
+
+
+    
+      <base href="http://bdwyertech.github.io/2016/02/24/windows-7-sp1-slow-windows-updates/">
+    
+    <title>
+  Windows 7 SP1 - Slow Windows Updates · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="http://bdwyertech.github.io/2016/02/24/windows-7-sp1-slow-windows-updates/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="http://bdwyertech.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.59.1" />
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="http://bdwyertech.github.io/">
+      bdwyertech.net
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://bdwyertech.github.io/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://bdwyertech.github.io/portfolio/">Portfolio</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://bdwyertech.github.io/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container page">
+  <article>
+    <header>
+      <h1>Windows 7 SP1 - Slow Windows Updates</h1>
+    </header>
+
+    <p>As an MCITP I&rsquo;m well-versed in Group Policy and what not, but building a clean Windows base image with all updates applied and some prerequisite software has always always been a relatively manual, inconsistent, and annoying process. I recently did a major overhaul of our Operations Network/Server Infrastructure and figured there&rsquo;s no better time to give my trusty Chef, Packer &amp; Vagrant tool set a shot with our workstations.</p>
+
+<p>Currently, I&rsquo;ve got my OS X &amp; *nix infrastructure under the control of Chef, and I&rsquo;ve got e2e OS build &amp; deployment processes in place (Packer -&gt; Vagrant -&gt; Chef ). As a well-versed, cross-platform expert, I figured it was about time to bring some of that over to the Windows side of our operation. Leveraging a DevOps skill set can cut back on the need for IT support personnel by automating trivial IT processes. In my opinion, anything that can be automated, should be automated&hellip; It is more efficient no matter which way you look at it.</p>
+
+<p>I noticed that Windows 7 SP1 in particular seems to consume a TON of resources when looking for updates; this issue can literally cost you hours&hellip; It seems Microsoft has addressed this with KB3102810.</p>
+
+<p>Here is a PowerShell function which you can throw in your provisioning script to tackle this issue.</p>
+
+<p>[sourcecode language=&ldquo;powershell&rdquo;]
+Function Fix-WinUpdate {
+  # Retrieve Operating System Information
+  $OSInfo=(Get-WmiObject -Class Win32_OperatingSystem)
+  # FixUp Windows 7 SP1 &amp; Server 2008 R2
+  If (($OSInfo).Version -eq &lsquo;6.1.7601&rsquo;) {
+    If ([System.IntPtr]::Size -eq 4) { $osarch=&lsquo;x86&rsquo; } else { $osarch=&lsquo;x64&rsquo; }
+    If (($OSInfo).ProductType -eq 1) {
+      Write-Host &lsquo;Windows 7 SP1 Detected&rsquo; -ForegroundColor &lsquo;Green&rsquo;
+      $WUHotFixUrl = &ldquo;<a href="https://download.microsoft.com/download/F/A/A/FAABD5C2-4600-45F8-96F1-B25B137E3C87/Windows6.1-KB3102810-${osarch}.msu&quot;">https://download.microsoft.com/download/F/A/A/FAABD5C2-4600-45F8-96F1-B25B137E3C87/Windows6.1-KB3102810-${osarch}.msu&quot;</a>
+    }
+    Else
+    {
+      Write-Host &lsquo;Windows Server 2008 R2 Detected&rsquo; -ForegroundColor &lsquo;Green&rsquo;
+      $WUHotFixURL = &lsquo;<a href="https://download.microsoft.com/download/1/E/1/1E1E4FBD-9E64-4AF5-9494-592605CAE5D6/Windows6.1-KB3102810-x64.msu'">https://download.microsoft.com/download/1/E/1/1E1E4FBD-9E64-4AF5-9494-592605CAE5D6/Windows6.1-KB3102810-x64.msu'</a>
+    }</p>
+<div class="highlight"><pre class="chroma">$WUHotFix = &#34;C:\Windows\Temp\$($WUHotFixURL.Substring($WUHotFixURL.LastIndexOf(&#39;/&#39;) + 1))&#34;
+
+# Download &amp; Install Latest Windows Update Client
+If (!(Get-HotFix -Id &#39;KB3102810&#39; -ErrorAction SilentlyContinue)) {
+  Write-Host &#34;Downloading $(${OSInfo}.Caption) WU Client Update (KB3102810)&#34;
+  (new-object net.webclient).DownloadFile($WUHotFixUrl, $WUHotFix)
+  Write-Host &#34;Installing $(${OSInfo}.Caption) WU Client Update (KB3102810)&#34;
+  Start-Process wusa -ArgumentList &#34;${WUHotFix}&#34;, &#39;/quiet&#39; -Wait
+  Write-Host &#39;This update requires a reboot&#39;
+  Restart-Host
+}</pre></div>
+<p>}
+    # Windows Management Instrumentation Framework
+    $WMIUpdateUrl = &ldquo;<a href="https://download.microsoft.com/download/3/D/6/3D61D262-8549-4769-A660-230B67E15B25/Windows6.1-KB2819745-${osarch}-MultiPkg.msu&quot;">https://download.microsoft.com/download/3/D/6/3D61D262-8549-4769-A660-230B67E15B25/Windows6.1-KB2819745-${osarch}-MultiPkg.msu&quot;</a>
+    $WMIUpdate = &ldquo;C:\Windows\Temp\$($WMIUpdateUrl.Substring($WMIUpdateUrl.LastIndexOf(&lsquo;/&rsquo;) + 1))&rdquo;</p>
+<div class="highlight"><pre class="chroma"># Download &amp; Install Windows Management Instrumentation Framework 4.0
+If (Test-Path &#39;HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client&#39;)
+{
+  If (!(Get-HotFix -Id &#39;KB2819745&#39; -ErrorAction SilentlyContinue)) {
+    Write-Host &#34;Downloading $(${OSInfo}.Caption) WMI 4.0 (KB2819745)&#34;
+    (new-object net.webclient).DownloadFile($WMIUpdateUrl, $WMIUpdate)
+    Write-Host &#34;Installing $(${OSInfo}.Caption) WMI 4.0 (KB2819745)&#34;
+    Start-Process wusa -ArgumentList &#34;${WMIUpdate}&#34;, &#39;/quiet&#39; -Wait
+    Write-Host &#39;This update requires a reboot&#39;
+    Restart-Host
+  }
+}</pre></div>
+<p>}
+}
+[/sourcecode]</p>
+
+  </article>
+</section>
+
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>My place to record ideas and encounters with technology</p>
+    
+     © 2019
+    
+    
+       · 
+      [<a href="https://github.com/bdwyertech/bdwyertech.github.io/tree/master"></a>]
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>
