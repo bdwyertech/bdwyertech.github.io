@@ -16,20 +16,20 @@
     <meta property="og:title" content="Branch Office Connections - GRE over IPSec VPN" />
 <meta property="og:description" content="While studying for the CCNP Route exam, I noticed that GRE Tunneling and IPSec were mentioned as topics, however configuration of the two was never really covered in the certification guide. In addition, I did not see any labs involving this type of scenario, so I decided to create my own. Hopefully this provides some insight to others about how to configure GRE Tunnels over IPsec. Don&rsquo;t feel bad if this takes you a while, setting up this scenario and writing this up took a whole Saturday afternoon." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bdwyertech.github.io/2012/02/25/branch-office-connections/" />
+<meta property="og:url" content="https://bdwyertech.net/2012/02/25/branch-office-connections/" />
 <meta property="article:published_time" content="2012-02-25T22:58:33+00:00" />
 <meta property="article:modified_time" content="2012-02-25T22:58:33+00:00" />
 
 
     
-      <base href="https://bdwyertech.github.io/2012/02/25/branch-office-connections/">
+      <base href="https://bdwyertech.net/2012/02/25/branch-office-connections/">
     
     <title>
   Branch Office Connections - GRE over IPSec VPN · bdwyertech.net
 </title>
 
     
-      <link rel="canonical" href="https://bdwyertech.github.io/2012/02/25/branch-office-connections/">
+      <link rel="canonical" href="https://bdwyertech.net/2012/02/25/branch-office-connections/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
@@ -39,7 +39,7 @@
     
       
       
-      <link rel="stylesheet" href="https://bdwyertech.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -47,7 +47,7 @@
     
 
     
-      <link rel="stylesheet" href="https://bdwyertech.github.io/css/syntax.css" />
+      <link rel="stylesheet" href="https://bdwyertech.net/css/syntax.css" />
     
 
     
@@ -62,7 +62,7 @@
     <main class="wrapper">
       <nav class="navigation">
   <section class="container">
-    <a class="navigation-title" href="https://bdwyertech.github.io/">
+    <a class="navigation-title" href="https://bdwyertech.net/">
       bdwyertech.net
     </a>
     <input type="checkbox" id="menu-toggle" />
@@ -71,15 +71,15 @@
       
         
           <li class="navigation-item">
-            <a class="navigation-link" href="https://bdwyertech.github.io/posts/">Blog</a>
+            <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="https://bdwyertech.github.io/portfolio/">Portfolio</a>
+            <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="https://bdwyertech.github.io/about/">About</a>
+            <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
           </li>
         
       
@@ -112,11 +112,11 @@
           </div>
           <div class="categories">
   <i class="fas fa-folder"></i>
-    <a href="https://bdwyertech.github.io/categories/certification/">Certification</a>
+    <a href="https://bdwyertech.net/categories/certification/">Certification</a>
       <span class="separator">•</span>
-    <a href="https://bdwyertech.github.io/categories/networking/">Networking</a>
+    <a href="https://bdwyertech.net/categories/networking/">Networking</a>
       <span class="separator">•</span>
-    <a href="https://bdwyertech.github.io/categories/security/">Security</a></div>
+    <a href="https://bdwyertech.net/categories/security/">Security</a></div>
 
           
         </div>
@@ -144,7 +144,7 @@
 
 <p>All routers (except ISP1 obviously) will participate in EIGRP AS 1. Each participating router shall be configured with the <strong>network 10.0.0.0</strong> and **no auto-summary **commands.</p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic1.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic1.png" alt="" /></p>
 
 <h2 id="configure-the-gre-tunnels-on-r2-and-r4">Configure the GRE Tunnels on R2 and R4</h2>
 
@@ -159,25 +159,25 @@
 
 <h4 id="r2">R2</h4>
 
-<h4 id="2012-02-022512-2257-branchoffic2-png"><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic2.png" alt="" /></h4>
+<h4 id="2012-02-022512-2257-branchoffic2-png"><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic2.png" alt="" /></h4>
 
 <h4 id="r4">R4</h4>
 
-<h4 id="2012-02-022512-2257-branchoffic3-png"><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic3.png" alt="" /></h4>
+<h4 id="2012-02-022512-2257-branchoffic3-png"><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic3.png" alt="" /></h4>
 
 <h4 id="r2-gre-route-map">R2 GRE Route-Map</h4>
 
 <p>Here, we will configure a route-map to prevent a default route from ever being advertised over the GRE tunnel. The only way for R4 to ever learn R2&rsquo;s default route should be via the serial connection to R3, and it should only be utilized if R4&rsquo;s fa0/0 interface goes down. We could also utilize this to block other networks from being advertised over the GRE tunnel by modifying the ACL.</p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic4.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic4.png" alt="" /></p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic5.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic5.png" alt="" /></p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic6.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic6.png" alt="" /></p>
 
 <p>Now, you can see that R4 only learns a backup Default-Route through R3. Previously, it learned it through the tunnel as well, which would be silly to utilize and might break split-tunnel if the static default-route was lost for some reason.</p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic7.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic7.png" alt="" /></p>
 
 <h2 id="encrypt-gre-tunnel-traffic-using-ipsec">Encrypt GRE Tunnel traffic using IPSec</h2>
 
@@ -187,15 +187,15 @@
 
 <h4 id="acl-catch-gre-to-r4">ACL (Catch GRE to R4)</h4>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic8.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic8.png" alt="" /></p>
 
 <h4 id="isakmp-policy">ISAKMP Policy</h4>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic9.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic9.png" alt="" /></p>
 
 <h4 id="isakmp-key-ipsec-transform-set-transport-mode">ISAKMP Key &amp; IPSec Transform Set (Transport Mode)</h4>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic10.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic10.png" alt="" /></p>
 
 <p>_Keep in mind that transport mode is used only because we are not traversing NAT, we are going from R2 to R4&rsquo;s public IP for both IPSec and GRE Tunnels.   _Tunnel mode is required if the GRE destination is different from the IPSec destination.  <em>If the endpoints were each behind a NAT router, the situation requires a combination of NAT-T and Tunnel Mode.  Tunnel mode adds an extra 20 bytes to the overall packet size. NAT-T also adds an extra 20 bytes per packet and encapsulates the IPSec traffic into UDP packets over port 4500.</em></p>
 
@@ -203,13 +203,13 @@
 
 <p>Here, we configure the Crypto Map to R4. We will use the previously created GRE catching ACL.</p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic11.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic11.png" alt="" /></p>
 
 <h4 id="apply-crypto-map-to-gre-tunnel">Apply Crypto Map to GRE Tunnel</h4>
 
 <p>The Crypto Map should be applied to the physical exit interface. Cisco recommends applying it to the logical tunnel interface as well.</p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic12.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic12.png" alt="" /></p>
 
 <h3 id="r4-ipsec-policy-creation">R4 IPsec Policy Creation</h3>
 
@@ -217,47 +217,47 @@
 
 <h4 id="acl-catch-gre-to-r2">ACL (Catch GRE to R2)</h4>
 
-<h4 id="2012-02-022512-2257-branchoffic13-png"><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic13.png" alt="" /></h4>
+<h4 id="2012-02-022512-2257-branchoffic13-png"><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic13.png" alt="" /></h4>
 
 <h4 id="isakmp-policy-1">ISAKMP Policy</h4>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic14.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic14.png" alt="" /></p>
 
 <h4 id="isakmp-key-ipsec-transform-set-transport-mode-1">ISAKMP Key &amp; IPSec Transform Set (Transport Mode)</h4>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic15.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic15.png" alt="" /></p>
 
 <h4 id="crypto-map-configuration-1">Crypto Map Configuration</h4>
 
 <p>Here, we configure the Crypto Map to R4. We will use the previously created GRE catching ACL.</p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic16.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic16.png" alt="" /></p>
 
 <h4 id="apply-crypto-map-to-gre-tunnel-1">Apply Crypto Map to GRE Tunnel</h4>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic17.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic17.png" alt="" /></p>
 
 <h2 id="verify-ipsec-and-split-tunnel-functionality">Verify IPsec and Split-Tunnel Functionality</h2>
 
 <p>You can utilize Wireshark to verify only ESP traffic traverses between the GRE endpoints. I found that the Crypto Map did not need to be applied to the logical Tunnel 0 interface to function, but only the physical exit interface. I am not sure why Cisco recommends applying it to both.</p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic18.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic18.png" alt="" /></p>
 
 <p>You can see that the Crypto traffic for Tunnel 0 and FastEthernet 0/0 is identical. I am not sure if running the crypto map VPN on both the Tunnel 0 and FastEthernet 0/0 is causing excess encryption overhead, or if it only encrypts the traffic once.</p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic19.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic19.png" alt="" /></p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic20.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic20.png" alt="" /></p>
 
 <p>After disabling Crypto Map VPN on the Tunnel 0 interface, I confirmed via Wireshark that the GRE traffic continued to be encrypted. A show crypto ipsec sa detail shows that the traffic continues to be encrypted as well.</p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic21.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic21.png" alt="" /></p>
 
 <h2 id="verify-split-tunnel">Verify Split-Tunnel</h2>
 
 <p>To test this, I will simply ping a simulated public internet address of 1.2.3.4 from the inside interface of R4.</p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/022512_2257_branchoffic22.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic22.png" alt="" /></p>
 
 <h1 id="conclusion">Conclusion</h1>
 
@@ -265,23 +265,23 @@
 
 <p><strong>Normal Conditions</strong></p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/sh-ip-route.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/sh-ip-route.png" alt="" /></p>
 
 <p><strong>Downed Serial Link to HQ</strong></p>
 
-<p><img src="https://bdwyertech.github.io/2012/02/sh-ip-route1.png" alt="" /></p>
+<p><img src="https://bdwyertech.net/2012/02/sh-ip-route1.png" alt="" /></p>
 
 <h2 id="configuration-files"><em>Configuration Files</em></h2>
 
-<p><a href="https://bdwyertech.github.io/2012/02/isp1.docx">ISP1 Configuration</a></p>
+<p><a href="https://bdwyertech.net/2012/02/isp1.docx">ISP1 Configuration</a></p>
 
-<p><a href="https://bdwyertech.github.io/2012/02/r1.docx">R1 Configuration</a></p>
+<p><a href="https://bdwyertech.net/2012/02/r1.docx">R1 Configuration</a></p>
 
-<p><a href="https://bdwyertech.github.io/2012/02/r2.docx">R2 Configuration</a></p>
+<p><a href="https://bdwyertech.net/2012/02/r2.docx">R2 Configuration</a></p>
 
-<p><a href="https://bdwyertech.github.io/2012/02/r3.docx">R3 Configuration</a></p>
+<p><a href="https://bdwyertech.net/2012/02/r3.docx">R3 Configuration</a></p>
 
-<p><a href="https://bdwyertech.github.io/2012/02/r4.docx">R4 Configuration</a></p>
+<p><a href="https://bdwyertech.net/2012/02/r4.docx">R4 Configuration</a></p>
 
       </div>
 

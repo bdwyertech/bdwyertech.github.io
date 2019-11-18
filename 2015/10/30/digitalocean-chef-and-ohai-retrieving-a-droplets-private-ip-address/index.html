@@ -18,20 +18,20 @@ According to DigitalOcean documentation, if Private Networking is enabled, the I
 <meta property="og:description" content="Recently, I attempted to use the Ohai value for node[&#39;cloud_v2&#39;][&#39;local_ipv4&#39;] and node[&#39;cloud&#39;][&#39;local_ipv4&#39;][&#39;ip_address&#39;] to determine the Private IP address of my Cloud-based nodes in a Chef cookbook. Unfortunately, it does not work accurately for DigitalOcean instances any longer.
 According to DigitalOcean documentation, if Private Networking is enabled, the IP will be assigned to eth1. Recently, I noticed that a second Private IP address has begun to be assigned to the eth0 interface." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bdwyertech.github.io/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/" />
+<meta property="og:url" content="https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/" />
 <meta property="article:published_time" content="2015-10-30T21:49:28+00:00" />
 <meta property="article:modified_time" content="2015-10-30T21:49:28+00:00" />
 
 
     
-      <base href="https://bdwyertech.github.io/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/">
+      <base href="https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/">
     
     <title>
   DigitalOcean, Chef and Ohai - Retrieving a Droplet&#39;s Private IP Address · bdwyertech.net
 </title>
 
     
-      <link rel="canonical" href="https://bdwyertech.github.io/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/">
+      <link rel="canonical" href="https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
@@ -41,7 +41,7 @@ According to DigitalOcean documentation, if Private Networking is enabled, the I
     
       
       
-      <link rel="stylesheet" href="https://bdwyertech.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -49,7 +49,7 @@ According to DigitalOcean documentation, if Private Networking is enabled, the I
     
 
     
-      <link rel="stylesheet" href="https://bdwyertech.github.io/css/syntax.css" />
+      <link rel="stylesheet" href="https://bdwyertech.net/css/syntax.css" />
     
 
     
@@ -64,7 +64,7 @@ According to DigitalOcean documentation, if Private Networking is enabled, the I
     <main class="wrapper">
       <nav class="navigation">
   <section class="container">
-    <a class="navigation-title" href="https://bdwyertech.github.io/">
+    <a class="navigation-title" href="https://bdwyertech.net/">
       bdwyertech.net
     </a>
     <input type="checkbox" id="menu-toggle" />
@@ -73,15 +73,15 @@ According to DigitalOcean documentation, if Private Networking is enabled, the I
       
         
           <li class="navigation-item">
-            <a class="navigation-link" href="https://bdwyertech.github.io/posts/">Blog</a>
+            <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="https://bdwyertech.github.io/portfolio/">Portfolio</a>
+            <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="https://bdwyertech.github.io/about/">About</a>
+            <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
           </li>
         
       
@@ -114,15 +114,15 @@ According to DigitalOcean documentation, if Private Networking is enabled, the I
           </div>
           <div class="categories">
   <i class="fas fa-folder"></i>
-    <a href="https://bdwyertech.github.io/categories/nix/">*nix</a>
+    <a href="https://bdwyertech.net/categories/nix/">*nix</a>
       <span class="separator">•</span>
-    <a href="https://bdwyertech.github.io/categories/chef/">Chef</a>
+    <a href="https://bdwyertech.net/categories/chef/">Chef</a>
       <span class="separator">•</span>
-    <a href="https://bdwyertech.github.io/categories/cloud/">Cloud</a>
+    <a href="https://bdwyertech.net/categories/cloud/">Cloud</a>
       <span class="separator">•</span>
-    <a href="https://bdwyertech.github.io/categories/digitalocean/">DigitalOcean</a>
+    <a href="https://bdwyertech.net/categories/digitalocean/">DigitalOcean</a>
       <span class="separator">•</span>
-    <a href="https://bdwyertech.github.io/categories/networking/">Networking</a></div>
+    <a href="https://bdwyertech.net/categories/networking/">Networking</a></div>
 
           
         </div>
