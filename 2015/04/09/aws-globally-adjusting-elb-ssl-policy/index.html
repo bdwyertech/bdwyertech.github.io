@@ -159,7 +159,7 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="c"># Display ELB Regions &amp;amp; Count</span>
+<span class="c"># Display ELB Regions &amp; Count</span>
 <span class="nv">$tformat</span> <span class="p">=</span> <span class="p">@{</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Name</span><span class="p">};</span><span class="n">Label</span><span class="p">=</span><span class="s2">&#34;Region&#34;</span><span class="p">},</span> <span class="p">@{</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Value</span><span class="p">};</span><span class="n">Label</span><span class="p">=</span><span class="s2">&#34;ELB Count&#34;</span><span class="p">}</span>
 <span class="nv">$RegionsWithELBs</span><span class="p">.</span><span class="n">GetEnumerator</span><span class="p">()</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">Value</span> <span class="n">-Descending</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="nv">$tformat</span> <span class="n">-AutoSize</span>
 
