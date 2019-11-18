@@ -91,13 +91,43 @@ According to DigitalOcean documentation, if Private Networking is enabled, the I
 
       <div class="content">
         
-  <section class="container page">
-  <article>
-    <header>
-      <h1>DigitalOcean, Chef and Ohai - Retrieving a Droplet&#39;s Private IP Address</h1>
-    </header>
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">DigitalOcean, Chef and Ohai - Retrieving a Droplet&#39;s Private IP Address</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2015-10-30T21:49:28Z'>
+                October 30, 2015
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              3 minutes read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://bdwyertech.github.io/categories/nix/">*nix</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/chef/">Chef</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/cloud/">Cloud</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/digitalocean/">DigitalOcean</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/networking/">Networking</a></div>
 
-    <p>Recently, I attempted to use the Ohai value for <code>node['cloud_v2']['local_ipv4']</code> and <code>node['cloud']['local_ipv4']['ip_address']</code> to determine the Private IP address of my Cloud-based nodes in a Chef cookbook.  Unfortunately, it does not work accurately for DigitalOcean instances any longer.</p>
+          
+        </div>
+      </header>
+
+      <div>
+        <p>Recently, I attempted to use the Ohai value for <code>node['cloud_v2']['local_ipv4']</code> and <code>node['cloud']['local_ipv4']['ip_address']</code> to determine the Private IP address of my Cloud-based nodes in a Chef cookbook.  Unfortunately, it does not work accurately for DigitalOcean instances any longer.</p>
 
 <p>According to DigitalOcean documentation, if Private Networking is enabled, the IP will be assigned to <code>eth1</code>.  Recently, I noticed that a second Private IP address has begun to be assigned to the <code>eth0</code> interface.  This is/was causing Ohai to assign the <code>eth0</code> secondary (private) IP address to <code>node['cloud_v2']['local_ipv4']</code> and <code>node['cloud']['local_ipv4']['ip_address']</code></p>
 
@@ -173,9 +203,39 @@ iface eth1 inet static
 
 <span class="n">metadata</span><span class="o">[</span><span class="s1">&#39;interfaces&#39;</span><span class="o">][</span><span class="s1">&#39;private&#39;</span><span class="o">][</span><span class="mi">0</span><span class="o">][</span><span class="s1">&#39;ipv4&#39;</span><span class="o">][</span><span class="s1">&#39;ip_address&#39;</span><span class="o">]</span> <span class="c1"># =&gt; Droplet&#39;s Private IP Address</span>
 <span class="n">metadata</span><span class="o">[</span><span class="s1">&#39;interfaces&#39;</span><span class="o">][</span><span class="s1">&#39;private&#39;</span><span class="o">][</span><span class="mi">0</span><span class="o">][</span><span class="s1">&#39;ipv4&#39;</span><span class="o">][</span><span class="s1">&#39;netmask&#39;</span><span class="o">]</span> <span class="c1"># =&gt; Droplet&#39;s Private Subnet Mask</span></code></pre></div>
-  </article>
-</section>
+      </div>
 
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
 
       </div>
 
@@ -186,6 +246,9 @@ iface eth1 inet static
     
      © 2019
     
+    
+       · 
+      [<a href="https://github.com/bdwyertech/bdwyertech.github.io/tree/master"></a>]
     
   </section>
 </footer>

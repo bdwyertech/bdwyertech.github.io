@@ -91,13 +91,35 @@ The current MySQL server RPM packages available from Percona and others have SS
 
       <div class="content">
         
-  <section class="container page">
-  <article>
-    <header>
-      <h1>Securing MySQL Replication Traffic</h1>
-    </header>
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Securing MySQL Replication Traffic</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2013-05-10T22:06:54Z'>
+                May 10, 2013
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              4 minutes read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://bdwyertech.github.io/categories/database/">Database</a></div>
 
-    
+          
+        </div>
+      </header>
+
+      <div>
+        
 
 <p>If you ever find the need to replicate MySQL traffic up to a service such as Amazon AWS or want to replicate from site-to-site without establishing a VPN tunnel, you can secure the traffic using SSL.  I have found this to be especially helpful in the case of configuring AWS instances for replication.</p>
 
@@ -240,9 +262,39 @@ SHOW SLAVE STATUS\G
 
 <p>The auto_increment_increment and auto_increment_offset values can be changed on the fly using  SET GLOBAL.  Make sure you set these values correctly and you utilize the auto_increment function on non-unique tables!</p>
 
-  </article>
-</section>
+      </div>
 
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
 
       </div>
 
@@ -253,6 +305,9 @@ SHOW SLAVE STATUS\G
     
      © 2019
     
+    
+       · 
+      [<a href="https://github.com/bdwyertech/bdwyertech.github.io/tree/master"></a>]
     
   </section>
 </footer>

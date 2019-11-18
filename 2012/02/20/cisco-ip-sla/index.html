@@ -89,13 +89,37 @@
 
       <div class="content">
         
-  <section class="container page">
-  <article>
-    <header>
-      <h1>Cisco IP SLA</h1>
-    </header>
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Cisco IP SLA</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2012-02-20T23:18:45Z'>
+                February 20, 2012
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              3 minutes read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://bdwyertech.github.io/categories/certification/">Certification</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/networking/">Networking</a></div>
 
-    
+          
+        </div>
+      </header>
+
+      <div>
+        
 
 <p>So while studying for CCNP Route, I came across the concept of IP SLA and utilizing probes to check availability of next-hop addresses prior to instating them inside a route-map.  An objective was to have two ISP&rsquo;s listed in a route-map statement, and set all traffic originating from the local router with a next-hop IP of ISP1 as long as it was deemed reachable by the IP SLA tracker probe status.</p>
 
@@ -178,9 +202,39 @@ PolicyRouter(config-route-map)#match ip address RTR_PING_S0/0</p>
 
 <p><strong>NOTE: Be very careful applying route-maps to locally-generated traffic.  You must be aware of the implications to router functionality.</strong></p>
 
-  </article>
-</section>
+      </div>
 
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
 
       </div>
 
@@ -191,6 +245,9 @@ PolicyRouter(config-route-map)#match ip address RTR_PING_S0/0</p>
     
      © 2019
     
+    
+       · 
+      [<a href="https://github.com/bdwyertech/bdwyertech.github.io/tree/master"></a>]
     
   </section>
 </footer>

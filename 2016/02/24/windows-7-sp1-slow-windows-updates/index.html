@@ -91,13 +91,39 @@ Currently, I&rsquo;ve got my OS X &amp; *nix infrastructure under the control of
 
       <div class="content">
         
-  <section class="container page">
-  <article>
-    <header>
-      <h1>Windows 7 SP1 - Slow Windows Updates</h1>
-    </header>
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Windows 7 SP1 - Slow Windows Updates</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2016-02-24T08:30:43Z'>
+                February 24, 2016
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              2 minutes read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://bdwyertech.github.io/categories/devops/">DevOps</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/powershell/">PowerShell</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/windows/">Windows</a></div>
 
-    <p>As an MCITP I&rsquo;m well-versed in Group Policy and what not, but building a clean Windows base image with all updates applied and some prerequisite software has always always been a relatively manual, inconsistent, and annoying process. I recently did a major overhaul of our Operations Network/Server Infrastructure and figured there&rsquo;s no better time to give my trusty Chef, Packer &amp; Vagrant tool set a shot with our workstations.</p>
+          
+        </div>
+      </header>
+
+      <div>
+        <p>As an MCITP I&rsquo;m well-versed in Group Policy and what not, but building a clean Windows base image with all updates applied and some prerequisite software has always always been a relatively manual, inconsistent, and annoying process. I recently did a major overhaul of our Operations Network/Server Infrastructure and figured there&rsquo;s no better time to give my trusty Chef, Packer &amp; Vagrant tool set a shot with our workstations.</p>
 
 <p>Currently, I&rsquo;ve got my OS X &amp; *nix infrastructure under the control of Chef, and I&rsquo;ve got e2e OS build &amp; deployment processes in place (Packer -&gt; Vagrant -&gt; Chef ). As a well-versed, cross-platform expert, I figured it was about time to bring some of that over to the Windows side of our operation. Leveraging a DevOps skill set can cut back on the need for IT support personnel by automating trivial IT processes. In my opinion, anything that can be automated, should be automated&hellip; It is more efficient no matter which way you look at it.</p>
 
@@ -152,9 +178,39 @@ If (Test-Path &#39;HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client&#3
 }
 [/sourcecode]</p>
 
-  </article>
-</section>
+      </div>
 
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
 
       </div>
 
@@ -165,6 +221,9 @@ If (Test-Path &#39;HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client&#3
     
      © 2019
     
+    
+       · 
+      [<a href="https://github.com/bdwyertech/bdwyertech.github.io/tree/master"></a>]
     
   </section>
 </footer>

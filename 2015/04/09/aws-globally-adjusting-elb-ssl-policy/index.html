@@ -89,13 +89,41 @@
 
       <div class="content">
         
-  <section class="container page">
-  <article>
-    <header>
-      <h1>AWS - Globally Adjusting ELB SSL Policy</h1>
-    </header>
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">AWS - Globally Adjusting ELB SSL Policy</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2015-04-09T22:17:54Z'>
+                April 9, 2015
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              3 minutes read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://bdwyertech.github.io/categories/aws/">AWS</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/cloud/">Cloud</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/powershell/">PowerShell</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/security/">Security</a></div>
 
-    
+          
+        </div>
+      </header>
+
+      <div>
+        
 
 <p>A while back, I had to adjust the policy of all Elastic Load Balancers in my organization to disable SSLv3 due to the POODLE exploit. This can be an error-prone task if done by hand, especially if your architecture spans multiple regions and/or more than a handful of ELBs. The nice thing about cloud architecture, is that nearly everything can be  automated and/or scripted.  For that reason, I went ahead and wrote a PowerShell script to handle this.</p>
 
@@ -193,9 +221,39 @@ Else
 <p>}
 [/sourcecode]</p>
 
-  </article>
-</section>
+      </div>
 
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
 
       </div>
 
@@ -206,6 +264,9 @@ Else
     
      © 2019
     
+    
+       · 
+      [<a href="https://github.com/bdwyertech/bdwyertech.github.io/tree/master"></a>]
     
   </section>
 </footer>

@@ -89,13 +89,39 @@
 
       <div class="content">
         
-  <section class="container page">
-  <article>
-    <header>
-      <h1>UPDATE: Branch Office Connections – GRE over IPSec VPN</h1>
-    </header>
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">UPDATE: Branch Office Connections – GRE over IPSec VPN</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2014-11-07T19:19:22Z'>
+                November 7, 2014
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              3 minutes read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://bdwyertech.github.io/categories/certification/">Certification</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/cisco/">Cisco</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.github.io/categories/networking/">Networking</a></div>
 
-    <p><a href="https://bdwyertech.files.wordpress.com/2012/02/022512_2257_branchoffic1.png"><img src="https://bdwyertech.files.wordpress.com/2012/02/022512_2257_branchoffic1.png" alt="022512_2257_BranchOffic1.png" />
+          
+        </div>
+      </header>
+
+      <div>
+        <p><a href="https://bdwyertech.files.wordpress.com/2012/02/022512_2257_branchoffic1.png"><img src="https://bdwyertech.files.wordpress.com/2012/02/022512_2257_branchoffic1.png" alt="022512_2257_BranchOffic1.png" />
 </a></p>
 
 <p>It has been almost 3 years since I wrote <a href="http://bdwyertech.wordpress.com/2012/02/25/branch-office-connections/"><em>Branch Office Connections – GRE over IPSec VPN</em></a>!  For those of you who are familiar with Cisco certification, that means time to renew!  Anyway, I&rsquo;m coming back now and looking at this lab, I noticed that we are preferring the serial link for traffic!  In this day and age, the serial link would likely be the fallback, and a faster, cheaper GRE/IPSEC VPN would likely be the preferable route!  Anyway, to accomplish this, we need to look at EIGRP and its determination of the best route.  EIGRP uses bandwidth, delay, reliability, load, and MTU. Essentially, bandwidth and delay are what we are going to play with here; hopefully your ISP is reliable, and not over-provisioned.  Manipulation of bandwidth and delay will affect the feasible route&rsquo;s metric, and in turn affect which route EIGRP will prefer.  Manipulation of these values will not affect the actual throughput or latency on the link, they are purely for manipulating routing decisions, as we are doing here.</p>
@@ -141,9 +167,39 @@
 
 <p>Bingo.  We&rsquo;ve fixed it all up.  It is critical that any interface metric manipulations are performed on both sides of the link, otherwise the result is a non-symmetrical traffic pattern, which may result in confusion and difficult troubleshooting weeks, months, or years down the road.</p>
 
-  </article>
-</section>
+      </div>
 
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
 
       </div>
 
@@ -154,6 +210,9 @@
     
      © 2019
     
+    
+       · 
+      [<a href="https://github.com/bdwyertech/bdwyertech.github.io/tree/master"></a>]
     
   </section>
 </footer>
