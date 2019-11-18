@@ -119,77 +119,70 @@
       </header>
 
       <div>
-        
-
-<p>I work a bit with Apple Configurator to provision, supervise and join various Apple devices to mobile device management (MDM) servers.  One thing not integrated into Apple Configurator is the ability to backup and restore data easily.  The need for this might arise if you have a remote operator who may need to remotely provision devices, or if you&rsquo;d like to hand off a set configuration to a client.  Hopefully, the below bash script makes life a little easier in this regard.</p>
+        <p>I work a bit with Apple Configurator to provision, supervise and join various Apple devices to mobile device management (MDM) servers.  One thing not integrated into Apple Configurator is the ability to backup and restore data easily.  The need for this might arise if you have a remote operator who may need to remotely provision devices, or if you&rsquo;d like to hand off a set configuration to a client.  Hopefully, the below bash script makes life a little easier in this regard.</p>
 
 <p>If the directories change, adjust accordingly.  This is current as of Apple Configurator 1.5.  On a second note, if you&rsquo;d like to supervise devices which <em>have already been supervised</em>, you will also need to copy the Apple Configurator certificate and key from your keychain.  Meraki has created a utility which extracts this <a href="http://dl.meraki.net/sm/IdentityExporter.dmg">here</a>.  I have not tested this, but in theory, you should be able to delete the Configurator certificate &amp; key from the remote user&rsquo;s keychain and have them import yours.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="c1"># Apple Configurator Backup &amp; Restoration Script</span>
+<span class="c1"># Brian Dwyer - Intelligent Digital Services 6/18/14</span>
 
-<p>[code lang=bash]
-#!/bin/bash</p>
+<span class="c1"># IPSW File Location - ~/Library/Containers/com.apple.configurator/Data/Library/Caches/com.apple.configurator/Firmware/</span>
 
-<h1 id="apple-configurator-backup-restoration-script">Apple Configurator Backup &amp; Restoration Script</h1>
+<span class="c1"># Configuration Files Location</span>
+<span class="nv">config_dir</span><span class="o">=</span><span class="s2">&#34;/Users/</span><span class="nv">$USER</span><span class="s2">/Library/Containers/com.apple.configurator/Data/Library/Application Support/com.apple.configurator&#34;</span>
+<span class="nv">db_dir</span><span class="o">=</span><span class="s2">&#34;/var/db/lockdown&#34;</span>
 
-<h1 id="brian-dwyer-intelligent-digital-services-6-18-14">Brian Dwyer - Intelligent Digital Services 6/18/14</h1>
+<span class="nv">ConfigName</span><span class="o">=</span>ConfiguratorFiles_Backup
+<span class="nv">ConfigDBName</span><span class="o">=</span>ConfiguratorDB_Backup
 
-<h1 id="ipsw-file-location-library-containers-com-apple-configurator-data-library-caches-com-apple-configurator-firmware">IPSW File Location - ~/Library/Containers/com.apple.configurator/Data/Library/Caches/com.apple.configurator/Firmware/</h1>
+<span class="k">function</span> backup<span class="o">()</span> <span class="o">{</span>
+  <span class="c1"># Backup the Restore Files &amp; Stuff</span>
+  <span class="k">if</span> <span class="o">[</span> -d <span class="s2">&#34;</span><span class="nv">$config_dir</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s1">&#39;Backing up the Configurator Files...&#39;</span>
+    nohup tar zpcvf <span class="nv">$ConfigName</span>.tar.gz -C <span class="s2">&#34;</span><span class="nv">$config_dir</span><span class="s2">&#34;</span> . &gt;/dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+    <span class="nb">echo</span> <span class="s1">&#39;Done&#39;</span>
+  <span class="k">fi</span>
 
-<h1 id="configuration-files-location">Configuration Files Location</h1>
+  <span class="c1"># Backup the Database</span>
+  <span class="k">if</span> <span class="o">[</span> -d <span class="s2">&#34;</span><span class="nv">$db_dir</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s1">&#39;Backing up the Configurator Database...&#39;</span>
+    nohup tar zpcvf <span class="nv">$ConfigDBName</span>.tar.gz -C <span class="s2">&#34;</span><span class="nv">$db_dir</span><span class="s2">&#34;</span> . &gt;/dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+    <span class="nb">echo</span> <span class="s1">&#39;Done&#39;</span>
+  <span class="k">fi</span>
+<span class="o">}</span>
 
-<p>config_dir=&ldquo;/Users/$USER/Library/Containers/com.apple.configurator/Data/Library/Application Support/com.apple.configurator&rdquo;
-db_dir=&ldquo;/var/db/lockdown&rdquo;</p>
 
-<p>ConfigName=ConfiguratorFiles_Backup
-ConfigDBName=ConfiguratorDB_Backup</p>
+<span class="k">function</span> restore<span class="o">()</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">[</span> -e <span class="s2">&#34;</span><span class="nv">$ConfigName</span><span class="s2">.tar.gz&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+      <span class="c1"># Use -o to make the current user the owner of extracted files</span>
+      tar xvpof <span class="nv">$ConfigName</span>.tar.gz -C <span class="s2">&#34;</span><span class="nv">$config_dir</span><span class="s2">&#34;</span>
+  <span class="k">else</span>
+    <span class="nb">echo</span> <span class="s2">&#34;Configurator File Backup does not exist. Make sure </span><span class="nv">$ConfigName</span><span class="s2">.tar.gz exists...&#34;</span>
+  <span class="k">fi</span>
 
-<p>function backup() {
-  # Backup the Restore Files &amp; Stuff
-  if [ -d &ldquo;$config_dir&rdquo; ]; then
-    echo &lsquo;Backing up the Configurator Files&hellip;&rsquo;
-    nohup tar zpcvf $ConfigName.tar.gz -C &ldquo;$config_dir&rdquo; . &gt;/dev/null 2&gt;&amp;1
-    echo &lsquo;Done&rsquo;
-  fi</p>
+  <span class="k">if</span> <span class="o">[</span> -e <span class="s2">&#34;</span><span class="nv">$ConfigDBName</span><span class="s2">.tar.gz&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&#34;We needs sudo to preserve ownership on the database files at </span><span class="nv">$db_dir</span><span class="s2">&#34;</span>
+      sudo tar xvpf <span class="nv">$ConfigDBName</span>.tar.gz -C <span class="s2">&#34;</span><span class="nv">$db_dir</span><span class="s2">&#34;</span>
+  <span class="k">else</span>
+    <span class="nb">echo</span> <span class="s2">&#34;Configurator Database Backup does not exist. Make sure </span><span class="nv">$ConfigDBName</span><span class="s2">.tar.gz exists...&#34;</span>
+  <span class="k">fi</span>
+<span class="o">}</span>
 
-<p># Backup the Database
-  if [ -d &ldquo;$db_dir&rdquo; ]; then
-    echo &lsquo;Backing up the Configurator Database&hellip;&rsquo;
-    nohup tar zpcvf $ConfigDBName.tar.gz -C &ldquo;$db_dir&rdquo; . &gt;/dev/null 2&gt;&amp;1
-    echo &lsquo;Done&rsquo;
-  fi
-}</p>
 
-<p>function restore() {
-  if [ -e &ldquo;$ConfigName.tar.gz&rdquo; ]; then
-      # Use -o to make the current user the owner of extracted files
-      tar xvpof $ConfigName.tar.gz -C &ldquo;$config_dir&rdquo;
-  else
-    echo &ldquo;Configurator File Backup does not exist. Make sure $ConfigName.tar.gz exists&hellip;&rdquo;
-  fi</p>
+<span class="k">case</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> in
 
-<p>if [ -e &ldquo;$ConfigDBName.tar.gz&rdquo; ]; then<br />
-    echo &ldquo;We needs sudo to preserve ownership on the database files at $db_dir&rdquo;
-      sudo tar xvpf $ConfigDBName.tar.gz -C &ldquo;$db_dir&rdquo;
-  else
-    echo &ldquo;Configurator Database Backup does not exist. Make sure $ConfigDBName.tar.gz exists&hellip;&rdquo;
-  fi
-}</p>
-
-<p>case &ldquo;$1&rdquo; in</p>
-
-<p>backup)
+   backup<span class="o">)</span>
         backup
-        ;;
-   restore)
+        <span class="p">;;</span>
+   restore<span class="o">)</span>
         restore
-        ;;
-        *)
-       echo &ldquo;Usage:  {backup|restore}&rdquo;
-       echo &ldquo;Backup: Backs up Configurator data to the current directory&rdquo;
-       echo &ldquo;Restore: Restores backups in the current directory&rdquo;
-       RETVAL=2
-esac
-[/code]</p>
-
+        <span class="p">;;</span>
+        *<span class="o">)</span>
+       <span class="nb">echo</span> <span class="s2">&#34;Usage:  {backup|restore}&#34;</span>
+       <span class="nb">echo</span> <span class="s2">&#34;Backup: Backs up Configurator data to the current directory&#34;</span>
+       <span class="nb">echo</span> <span class="s2">&#34;Restore: Restores backups in the current directory&#34;</span>
+       <span class="nv">RETVAL</span><span class="o">=</span><span class="m">2</span>
+<span class="k">esac</span></code></pre></div>
       </div>
 
       <footer>

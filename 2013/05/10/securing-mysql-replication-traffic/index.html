@@ -134,124 +134,96 @@ The current MySQL server RPM packages available from Percona and others have SS
 <p><em><strong>Make sure you utilize a unique common name (CN) on each of the generated certificates, otherwise they will not work!</strong></em></p>
 
 <p><em><strong>UPDATE! : Make sure the MySQL User has permissions to walk the SSL Certificate folder!!!  This would be a chmod +x on the folder.  Granting the execute bit on a folder allows the user or group to &lsquo;walk&rsquo; the folder, IE, see it&rsquo;s contents! chown/chmod 750 the folder, chmod 640 the certs/keys, and chown root:mysql the keys as well.</strong></em></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># USE DIFFERENT COMMON NAMES FOR ALL CERTS!!!!</span>
 
-<p>[code language=&ldquo;bash&rdquo;]</p>
+<span class="c1">#Make directory</span>
+mkdir -p /etc/mysql/newcerts <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /etc/mysql/newcerts
 
-<h1 id="use-different-common-names-for-all-certs">USE DIFFERENT COMMON NAMES FOR ALL CERTS!!!!</h1>
+<span class="c1">#Generate CA Certs</span>
+openssl genrsa <span class="m">2048</span> &gt; ca-key.pem
+openssl req -new -x509 -nodes -days <span class="m">3650</span> -key ca-key.pem &gt; ca-cert.pem
 
-<p>#Make directory
-mkdir -p /etc/mysql/newcerts &amp;&amp; cd /etc/mysql/newcerts</p>
-
-<p>#Generate CA Certs
-openssl genrsa 2048 &gt; ca-key.pem
-openssl req -new -x509 -nodes -days 3650 -key ca-key.pem &gt; ca-cert.pem</p>
-
-<p>#Generate Server Certs
-openssl req -newkey rsa:2048 -days 3650 -nodes -keyout server-key.pem -out server-req.pem
+<span class="c1">#Generate Server Certs</span>
+openssl req -newkey rsa:2048 -days <span class="m">3650</span> -nodes -keyout server-key.pem -out server-req.pem
 openssl rsa -in server-key.pem -out server-key.pem
-openssl x509 -req -in server-req.pem -days 3650 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.pem</p>
+openssl x509 -req -in server-req.pem -days <span class="m">3650</span> -CA ca-cert.pem -CAkey ca-key.pem -set_serial <span class="m">01</span> -out server-cert.pem
 
-<p>#Generate Client Certs
-openssl req -newkey rsa:2048 -days 3650 -nodes -keyout client-key.pem -out client-req.pem
+<span class="c1">#Generate Client Certs</span>
+openssl req -newkey rsa:2048 -days <span class="m">3650</span> -nodes -keyout client-key.pem -out client-req.pem
 openssl rsa -in client-key.pem -out client-key.pem
-openssl x509 -req -in client-req.pem -days 3650 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out client-cert.pem</p>
+openssl x509 -req -in client-req.pem -days <span class="m">3650</span> -CA ca-cert.pem -CAkey ca-key.pem -set_serial <span class="m">01</span> -out client-cert.pem
 
-<p>#Verify the Certificates
-openssl verify -CAfile ca-cert.pem server-cert.pem client-cert.pem
-[/code]</p>
-
+<span class="c1">#Verify the Certificates</span>
+openssl verify -CAfile ca-cert.pem server-cert.pem client-cert.pem</code></pre></div>
 <h3 id="place-certificates-on-mysql-servers">Place Certificates on MySQL Servers</h3>
 
 <p>Place the certificates on each MySQL Server participating in replication. Make sure you create the folder /etc/mysql/certs on each server first.</p>
-
-<p>[code language=&ldquo;bash&rdquo;] #On each server
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#On each server</span>
 mkdir -p /etc/mysql/certs
-#Copy certs to all servers using rsync or scp (See Example Below)
+<span class="c1">#Copy certs to all servers using rsync or scp (See Example Below)</span>
 scp /etc/mysql/newcerts/ca-cert.pem root@10.0.1.234:/etc/mysql/certs/
 scp /etc/mysql/newcerts/server-cert.pem root@10.0.1.234:/etc/mysql/certs/
 scp /etc/mysql/newcerts/server-key.pem root@10.0.1.234:/etc/mysql/certs/
 scp /etc/mysql/newcerts/client-cert.pem root@10.0.1.234:/etc/mysql/certs/
-scp /etc/mysql/newcerts/client-key.pem root@10.0.1.234:/etc/mysql/certs/[/code]</p>
-
+scp /etc/mysql/newcerts/client-key.pem root@10.0.1.234:/etc/mysql/certs/<span class="o">[</span>/code<span class="o">]</span></code></pre></div>
 <h2 id="edit-configuration-files-my-cnf">Edit Configuration Files (my.cnf)</h2>
 
 <p>On the master server, make the following edits to my.cnf.  You should be familiar with configuring MySQL replication before attempting to add SSL to the configuration.  Your server-id and other variables will likely vary depending on your environment and how you have your existing replication set up.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#Configure Master</span>
+mkdir -p /data/mysql/binlog/ <span class="o">&amp;&amp;</span> chown mysql:mysql /data/mysql/binlog/
 
-<p>[code language=&ldquo;bash&rdquo;]
-#Configure Master
-mkdir -p /data/mysql/binlog/ &amp;&amp; chown mysql:mysql /data/mysql/binlog/</p>
-
-<p>#Edit my.cnf
+<span class="c1">#Edit my.cnf</span>
 ssl
-ssl-cipher=AES128-SHA
-ssl-ca=/etc/mysql/certs/ca-cert.pem
-ssl-cert=/etc/mysql/certs/server-cert.pem
-ssl-key=/etc/mysql/certs/server-key.pem
-server-id=10
-log-slave-updates=0</p>
+ssl-cipher<span class="o">=</span>AES128-SHA
+ssl-ca<span class="o">=</span>/etc/mysql/certs/ca-cert.pem
+ssl-cert<span class="o">=</span>/etc/mysql/certs/server-cert.pem
+ssl-key<span class="o">=</span>/etc/mysql/certs/server-key.pem
+server-id<span class="o">=</span><span class="m">10</span>
+log-slave-updates<span class="o">=</span><span class="m">0</span>
 
-<p>log_bin=/data/mysql/binlog/mysql-bin.log
-log_bin_index=/data/mysql/binlog/mysql-bin.log.index
-expire_logs_days=7
-max_binlog_cache_size=128M
-binlog_format=row
-[/code]</p>
-
+<span class="nv">log_bin</span><span class="o">=</span>/data/mysql/binlog/mysql-bin.log
+<span class="nv">log_bin_index</span><span class="o">=</span>/data/mysql/binlog/mysql-bin.log.index
+<span class="nv">expire_logs_days</span><span class="o">=</span><span class="m">7</span>
+<span class="nv">max_binlog_cache_size</span><span class="o">=</span>128M
+<span class="nv">binlog_format</span><span class="o">=</span>row</code></pre></div>
 <p>On the slave server, your configuration should look something like this.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#Configure Slave</span>
+mkdir -p /data/mysql/relaylog/ <span class="o">&amp;&amp;</span> chown mysql:mysql /data/mysql/relaylog/
 
-<p>[code language=&ldquo;bash&rdquo;]
-#Configure Slave
-mkdir -p /data/mysql/relaylog/ &amp;&amp; chown mysql:mysql /data/mysql/relaylog/</p>
-
-<p>#Edit my.cnf
+<span class="c1">#Edit my.cnf</span>
 ssl
-ssl-ca=/etc/mysql/certs/ca-cert.pem
-server-id=20
-master-connect-retry=60
-log-slave-updates=1
-relay_log           = /data/mysql/relaylog/mysql-relay-bin
-relay_log_index     = /data/mysql/relaylog/mysql-relay-bin.index
-relay_log_space_limit = 1000M
-replicate-ignore-db=mysql,ndbinfo,information_schema,performance_schema
-[/code]</p>
-
+ssl-ca<span class="o">=</span>/etc/mysql/certs/ca-cert.pem
+server-id<span class="o">=</span><span class="m">20</span>
+master-connect-retry<span class="o">=</span><span class="m">60</span>
+log-slave-updates<span class="o">=</span><span class="m">1</span>
+<span class="nv">relay_log</span>           <span class="o">=</span> /data/mysql/relaylog/mysql-relay-bin
+<span class="nv">relay_log_index</span>     <span class="o">=</span> /data/mysql/relaylog/mysql-relay-bin.index
+<span class="nv">relay_log_space_limit</span> <span class="o">=</span> 1000M
+replicate-ignore-db<span class="o">=</span>mysql,ndbinfo,information_schema,performance_schema</code></pre></div>
 <h2 id="finalize-configuration-and-activate-replication">Finalize Configuration and Activate Replication</h2>
 
 <p>Now comes the fun part, actually making the replication happen.</p>
 
 <p>Start the master server, create the slave user, and execute a mysqldump if you haven&rsquo;t already.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#Create Slave User on Master server</span>
+GRANT REPLICATION SLAVE ON *.* TO <span class="s1">&#39;slave_user&#39;</span>@<span class="s1">&#39;%&#39;</span> IDENTIFIED BY <span class="s1">&#39;slave_password&#39;</span> REQUIRE SSL<span class="p">;</span>
+FLUSH PRIVILEGES<span class="p">;</span>
 
-<p>[code language=&ldquo;bash&rdquo;]
-#Create Slave User on Master server
-GRANT REPLICATION SLAVE ON <em>.</em> TO &lsquo;slave_user&rsquo;@&lsquo;%&rsquo; IDENTIFIED BY &lsquo;slave_password&rsquo; REQUIRE SSL;
-FLUSH PRIVILEGES;</p>
-
-<p>#do a MySQL Backup</p>
-
-<h1 id="1-flush-tables-with-read-lock">1. Flush Tables with Read Lock;</h1>
-
-<h1 id="2-in-a-new-ssh-session-execute-backup-with-mysqldump-xtrabackup-or-ndb-mgm-if-using-mysql-cluster">2. In a new SSH session, Execute Backup with mysqldump, xtrabackup, or ndb_mgm if using MySQL Cluster</h1>
-
-<h1 id="3-show-master-status-g">3. show master status \G</h1>
-
-<h1 id="4-unlock-tables">4. Unlock tables;</h1>
-
-<p>[/code]</p>
-
+<span class="c1">#do a MySQL Backup</span>
+<span class="c1"># 1. Flush Tables with Read Lock;</span>
+<span class="c1"># 2. In a new SSH session, Execute Backup with mysqldump, xtrabackup, or ndb_mgm if using MySQL Cluster</span>
+<span class="c1"># 3. show master status \G</span>
+<span class="c1"># 4. Unlock tables;</span></code></pre></div>
 <p>Start the slave, restore the backup and configure the Master settings.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#First, restore the backup of the master.  Then, execute a CHANGE MASTER command, paying special attention to the SSL settings.</span>
 
-<p>[code language=&ldquo;bash&rdquo;]
-#First, restore the backup of the master.  Then, execute a CHANGE MASTER command, paying special attention to the SSL settings.</p>
+CHANGE MASTER TO <span class="nv">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;10.0.1.234&#39;</span>, <span class="nv">MASTER_PORT</span><span class="o">=</span><span class="m">3306</span>, <span class="nv">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;slave_user&#39;</span>, <span class="nv">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;slave_password&#39;</span>, <span class="nv">MASTER_LOG_FILE</span><span class="o">=</span><span class="s1">&#39;mysql-bin.000001&#39;</span>, <span class="nv">MASTER_LOG_POS</span><span class="o">=</span><span class="m">123</span>, <span class="nv">MASTER_SSL</span><span class="o">=</span><span class="m">1</span>, <span class="nv">MASTER_SSL_CERT</span><span class="o">=</span><span class="s1">&#39;/etc/mysql/certs/client-cert.pem&#39;</span>, <span class="nv">MASTER_SSL_KEY</span><span class="o">=</span><span class="s1">&#39;/etc/mysql/certs/client-key.pem&#39;</span><span class="p">;</span>
 
-<p>CHANGE MASTER TO MASTER_HOST=&lsquo;10.0.1.234&rsquo;, MASTER_PORT=3306, MASTER_USER=&lsquo;slave_user&rsquo;, MASTER_PASSWORD=&lsquo;slave_password&rsquo;, MASTER_LOG_FILE=&lsquo;mysql-bin.000001&rsquo;, MASTER_LOG_POS=123, MASTER_SSL=1, MASTER_SSL_CERT=&lsquo;/etc/mysql/certs/client-cert.pem&rsquo;, MASTER_SSL_KEY=&lsquo;/etc/mysql/certs/client-key.pem&rsquo;;</p>
+<span class="c1">#Activate the slave</span>
+START SLAVE<span class="p">;</span>
 
-<p>#Activate the slave
-START SLAVE;</p>
-
-<p>#Check Slave Status
-SHOW SLAVE STATUS\G
-[/code]</p>
-
+<span class="c1">#Check Slave Status</span>
+SHOW SLAVE STATUS<span class="se">\G</span></code></pre></div>
 <p>At this point, you have configured MySQL replication with SSL. You should further protect your replication traffic with firewall settings limiting connections only from authorized source IP&rsquo;s.</p>
 
 <h2 id="setting-auto-increments">Setting Auto Increments</h2>

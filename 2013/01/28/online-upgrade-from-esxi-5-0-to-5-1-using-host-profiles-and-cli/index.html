@@ -124,29 +124,21 @@
 <p>On a standalone ESXi box or in a small environment not running vSphere Update Manager, the best way to update your hosts is via SSH CLI.  I recently discovered a way to use this patching method to perform a version upgrade for 5.0 to 5.1 using host profiles rather than using the interactive installer, aka the install CD.  VMware hosts their standard host profiles on the web, so these can be utilized to perform the 5.0 to 5.1 upgrade with minimal downtime; all that you&rsquo;ll have to do is apply the profile and reboot, just like a normal patch. Remember to migrate any important VM&rsquo;s off the host in question prior to running these operations.</p>
 
 <p><strong>1. Enable HTTP Client Firewall Exception</strong></p>
-
-<p>[code]esxcli network firewall ruleset set -e true -r httpClient [/code]</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">esxcli network firewall ruleset <span class="nb">set</span> -e <span class="nb">true</span> -r httpClient</code></pre></div>
 <p><strong>2. List Profiles</strong></p>
-
-<p>[code]esxcli software sources profile list -d <a href="https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml">https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml</a> [/code]</p>
-
-<!-- more -->
-
-<!-- more -->
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">esxcli software sources profile list -d https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml</code></pre></div>
 <p><strong>3. Choose and Apply a Profile</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">esxcli software profile install -d https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml -p ESXi-5.1.0-799733-standard</code></pre></div>
+<ul>
+<li>If changing profiles, you might need to add the arguement <strong><em>&ndash;ok-to-remove</em></strong></li>
+</ul>
 
-<p>[code]esxcli software profile install -d <a href="https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml">https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml</a> -p ESXi-5.1.0-799733-standard[/code]</p>
-<div class="highlight"><pre class="chroma">    * If changing profiles, you might need to add the arguement **_--ok-to-remove_**</pre></div>
 <h4 id="4-reboot-voila-you-re-running-5-1">4. Reboot. Voila, you&rsquo;re running 5.1!</h4>
 
 <h4 id="update-10-1-13"><strong>UPDATE 10/1/13:</strong></h4>
 
 <p>You can utilize this same methodology to upgrade from ESXi 5.1 to 5.5&hellip; Simply use the ESXi 5.5 profile for installation from the VMware depot.</p>
-
-<p>[code]esxcli software profile install -d <a href="https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml">https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml</a> -p ESXi-5.5.0-1331820-standard[/code]</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">esxcli software profile install -d https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml -p ESXi-5.5.0-1331820-standard</code></pre></div>
       </div>
 
       <footer>

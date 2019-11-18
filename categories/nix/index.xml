@@ -47,7 +47,7 @@ The EC2-specific node attributes I find most useful are:
       <pubDate>Tue, 04 Feb 2014 04:15:14 +0000</pubDate>
       
       <guid>https://bdwyertech.net/2014/02/03/chef-wrapper-cookbooks-and-execution-order/</guid>
-      <description>Recently, I&amp;rsquo;ve been experimenting with Chef for Configuration Management. One of the greatest thing&amp;rsquo;s about Chef is the concept of &amp;lsquo;Wrapper&amp;rsquo; or &amp;lsquo;Application&amp;rsquo; cookbooks, which basically make use of existing community cookbook code. These community cookbooks, wherever they are sourced, are referred to as &amp;lsquo;Library&amp;rsquo; cookbooks. Basically, rather than forking the cookbook and adjusting it yourself, you write a &amp;lsquo;Wrapper&amp;rsquo; for the Library cookbook in order to facilitate desired changes.</description>
+      <description>Recently, I&amp;rsquo;ve been experimenting with Chef for Configuration Management. One of the greatest thing&amp;rsquo;s about Chef is the concept of &amp;lsquo;Wrapper&amp;rsquo; or &amp;lsquo;Application&amp;rsquo; cookbooks, which basically make use of existing community cookbook code. These community cookbooks, wherever they are sourced, are referred to as &amp;lsquo;Library&amp;rsquo; cookbooks. Basically, rather than forking the cookbook and adjusting it yourself, you write a &amp;lsquo;Wrapper&amp;rsquo; for the Library cookbook in order to facilitate desired changes. These changes are typically just overriding attributes, but sometimes you might have to take it a step further.</description>
     </item>
     
     <item>

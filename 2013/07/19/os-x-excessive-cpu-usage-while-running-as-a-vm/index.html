@@ -122,13 +122,9 @@
 
       <div>
         <p>After installing OS X as a VM running the Server role, I have noticed excessive CPU usage while idling. I have narrowed this down to the default screensaver which runs on the login page. Even if you disable this screensaver as a user, it will not disable it for the login screen. I have found that the only way to resolve this is to actually delete the screensaver file itself! Here is how to do it.</p>
-
-<p>[code language=&ldquo;bash&rdquo;]
-sudo su
-cd &ldquo;/System/Library/Screen Savers/&rdquo;
-rm -r Flurry.saver/
-[/code]</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su
+<span class="nb">cd</span> <span class="s2">&#34;/System/Library/Screen Savers/&#34;</span>
+rm -r Flurry.saver/</code></pre></div>
       </div>
 
       <footer>

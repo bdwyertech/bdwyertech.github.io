@@ -11,10 +11,10 @@
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Chef - &#39;Wrapper&#39; Cookbooks and Execution Order"/>
-<meta name="twitter:description" content="Recently, I&rsquo;ve been experimenting with Chef for Configuration Management. One of the greatest thing&rsquo;s about Chef is the concept of &lsquo;Wrapper&rsquo; or &lsquo;Application&rsquo; cookbooks, which basically make use of existing community cookbook code. These community cookbooks, wherever they are sourced, are referred to as &lsquo;Library&rsquo; cookbooks. Basically, rather than forking the cookbook and adjusting it yourself, you write a &lsquo;Wrapper&rsquo; for the Library cookbook in order to facilitate desired changes."/>
+<meta name="twitter:description" content="Recently, I&rsquo;ve been experimenting with Chef for Configuration Management. One of the greatest thing&rsquo;s about Chef is the concept of &lsquo;Wrapper&rsquo; or &lsquo;Application&rsquo; cookbooks, which basically make use of existing community cookbook code. These community cookbooks, wherever they are sourced, are referred to as &lsquo;Library&rsquo; cookbooks. Basically, rather than forking the cookbook and adjusting it yourself, you write a &lsquo;Wrapper&rsquo; for the Library cookbook in order to facilitate desired changes. These changes are typically just overriding attributes, but sometimes you might have to take it a step further."/>
 
     <meta property="og:title" content="Chef - &#39;Wrapper&#39; Cookbooks and Execution Order" />
-<meta property="og:description" content="Recently, I&rsquo;ve been experimenting with Chef for Configuration Management. One of the greatest thing&rsquo;s about Chef is the concept of &lsquo;Wrapper&rsquo; or &lsquo;Application&rsquo; cookbooks, which basically make use of existing community cookbook code. These community cookbooks, wherever they are sourced, are referred to as &lsquo;Library&rsquo; cookbooks. Basically, rather than forking the cookbook and adjusting it yourself, you write a &lsquo;Wrapper&rsquo; for the Library cookbook in order to facilitate desired changes." />
+<meta property="og:description" content="Recently, I&rsquo;ve been experimenting with Chef for Configuration Management. One of the greatest thing&rsquo;s about Chef is the concept of &lsquo;Wrapper&rsquo; or &lsquo;Application&rsquo; cookbooks, which basically make use of existing community cookbook code. These community cookbooks, wherever they are sourced, are referred to as &lsquo;Library&rsquo; cookbooks. Basically, rather than forking the cookbook and adjusting it yourself, you write a &lsquo;Wrapper&rsquo; for the Library cookbook in order to facilitate desired changes. These changes are typically just overriding attributes, but sometimes you might have to take it a step further." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bdwyertech.net/2014/02/03/chef-wrapper-cookbooks-and-execution-order/" />
 <meta property="article:published_time" content="2014-02-04T04:15:14+00:00" />
@@ -119,46 +119,29 @@
       </header>
 
       <div>
-        
-
-<p>Recently, I&rsquo;ve been experimenting with Chef for Configuration Management.  One of the greatest thing&rsquo;s about Chef is the concept of &lsquo;Wrapper&rsquo; or &lsquo;Application&rsquo; cookbooks, which basically make use of existing community cookbook code.  These community cookbooks, wherever they are sourced, are referred to as &lsquo;Library&rsquo; cookbooks.  Basically, rather than forking the cookbook and adjusting it yourself, you write a &lsquo;Wrapper&rsquo; for the Library cookbook in order to facilitate desired changes.  These changes are typically just overriding attributes, but sometimes you might have to take it a step further.</p>
+        <p>Recently, I&rsquo;ve been experimenting with Chef for Configuration Management.  One of the greatest thing&rsquo;s about Chef is the concept of &lsquo;Wrapper&rsquo; or &lsquo;Application&rsquo; cookbooks, which basically make use of existing community cookbook code.  These community cookbooks, wherever they are sourced, are referred to as &lsquo;Library&rsquo; cookbooks.  Basically, rather than forking the cookbook and adjusting it yourself, you write a &lsquo;Wrapper&rsquo; for the Library cookbook in order to facilitate desired changes.  These changes are typically just overriding attributes, but sometimes you might have to take it a step further.</p>
 
 <p>For example, after creating a few &lsquo;Hello World&rsquo; cookbooks, I decided I was going to cook up a Wrapper for gitlab.org&rsquo;s gitlab cookbook.  I prefer to use the most up-to-date NginX RPM available, as well as utilize the Percona MySQL suite rather than the standard MySQL packages.  For the GitLab cookbook at least, this involved making sure both Repositories were present prior to the resource execution phase.  Additionally, since Gitlab requires mysql-libs and this package is a member of the packages array in the cookbooks default attributes, the &lsquo;packages&rsquo; array has to be overridden as well.  Here is an example of the override with a scope limited to the gitlab cookbook, and packages aren&rsquo;t listed for brevity.  This would be included in your wrapper cookbook&rsquo;s attributes.</p>
-
-<p>[code lang=ruby]
-override.gitlab[&ldquo;packages&rdquo;] = %w{packages, without, mysql-libs}
-[/code]</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="n">override</span><span class="o">.</span><span class="n">gitlab</span><span class="o">[</span><span class="s2">&#34;packages&#34;</span><span class="o">]</span> <span class="o">=</span> <span class="sx">%w{packages, without, mysql-libs}</span></code></pre></div>
 <p><strong>NOTE</strong>: I&rsquo;m putting on my flame-suit; I&rsquo;m sure there&rsquo;s something I&rsquo;m not doing &lsquo;correctly&rsquo; here or to proper standards, but this is my first go, and it does work.</p>
 
 <p>There&rsquo;s a certain amount of Voodoo to get your prerequisites to execute first, for example installing the NginX and Percona repositories.  For the life of me, I couldn&rsquo;t get the &lsquo;yum-percona&rsquo; cookbook to run first when called as an &lsquo;include_recipe&rsquo; inside my cookbook.  I know the proper method would be to place the &lsquo;yum_percona&rsquo; cookbook further ahead in the node&rsquo;s run list, but my objective here was to exploit the power of Chef.  What I ended up doing was creating two resources to pull down and install the repo installer RPM. Unfortunately, you can&rsquo;t just feed the yum_package resource the URL like you could in Bash.  Here&rsquo;s a little code snippet showing the Voodoo here:</p>
 
 <p><code>mycookbook-gitlab\default.rb</code></p>
-
-<p>[code lang=ruby]
-include_recipe &ldquo;mycookbook-gitlab::nginx_repo&rdquo;
-include_recipe &ldquo;gitlab&rdquo;
-[/code]</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="n">include_recipe</span> <span class="s2">&#34;mycookbook-gitlab::nginx_repo&#34;</span>
+<span class="n">include_recipe</span> <span class="s2">&#34;gitlab&#34;</span></code></pre></div>
 <p><code>mycookbook-gitlab\nginx_repo.rb</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="c1"># =&gt; Download NginX Yum Repo RPM</span>
+<span class="n">remote_file</span> <span class="s2">&#34;</span><span class="si">#{</span><span class="no">Chef</span><span class="o">::</span><span class="no">Config</span><span class="o">[</span><span class="ss">:file_cache_path</span><span class="o">]</span><span class="si">}</span><span class="s2">/nginx_repo_latest.rpm&#34;</span> <span class="k">do</span>
+<span class="n">source</span> <span class="s2">&#34;http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm&#34;</span>
+<span class="n">action</span> <span class="ss">:nothing</span>
+<span class="k">end</span><span class="o">.</span><span class="n">run_action</span><span class="p">(</span><span class="ss">:create</span><span class="p">)</span>
 
-<p>[code lang=ruby]</p>
-
-<h1 id="download-nginx-yum-repo-rpm">=&gt; Download NginX Yum Repo RPM</h1>
-
-<p>remote_file &ldquo;#{Chef::Config[:file_cache_path]}/nginx_repo_latest.rpm&rdquo; do
-source &ldquo;<a href="http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm&quot;">http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm&quot;</a>
-action :nothing
-end.run_action(:create)</p>
-
-<h1 id="install-nginx-yum-repo-from-rpm">=&gt; Install NginX Yum Repo from RPM</h1>
-
-<p>yum_package &ldquo;nginx_repo&rdquo; do
-source &ldquo;#{Chef::Config[:file_cache_path]}/nginx_repo_latest.rpm&rdquo;
-action :nothing
-end.run_action(:install)
-[/code]</p>
-
+<span class="c1"># =&gt; Install NginX Yum Repo from RPM</span>
+<span class="n">yum_package</span> <span class="s2">&#34;nginx_repo&#34;</span> <span class="k">do</span>
+<span class="n">source</span> <span class="s2">&#34;</span><span class="si">#{</span><span class="no">Chef</span><span class="o">::</span><span class="no">Config</span><span class="o">[</span><span class="ss">:file_cache_path</span><span class="o">]</span><span class="si">}</span><span class="s2">/nginx_repo_latest.rpm&#34;</span>
+<span class="n">action</span> <span class="ss">:nothing</span>
+<span class="k">end</span><span class="o">.</span><span class="n">run_action</span><span class="p">(</span><span class="ss">:install</span><span class="p">)</span></code></pre></div>
 <p>The key here is the action:nothing, and the end.run_action(:install).  Chef operates in two phases; compile and execution.  The compile phase involves gathering all the resource objects from the cookbook/recipe dependency hierarchy in the node&rsquo;s run list.  The execution phase is when all said resources are executed.  Obviously, you want the proper yum repositories in place prior to executing a yum install.  This snippet causes the Nginx Repo RPM to be downloaded and installed during the compilation phase. I have seen this in cookbooks before, but wasn&rsquo;t sure what its purpose was.  These can be used with any resource type, although it&rsquo;s probably more helpful with some than others.  If you find that the descending execution order of your run_list, cookbook, or specific recipe is not being honored, you might need to use this construct to fix it&hellip; Or, look for this construct to find the offending blip.  If it&rsquo;s in an upstream community cookbook, override it the way we did here.</p>
 
 <p>Finally, as an FYI, you can make use of the NginX community cookbook to handle the NginX repo installation.  By default, it looks to EPEL for the package.  You can set the attribute node[&lsquo;nginx&rsquo;][&lsquo;repo_source&rsquo;] = &lsquo;nginx&rsquo;, which defaults to epel.</p>

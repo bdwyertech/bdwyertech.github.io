@@ -132,19 +132,13 @@ Primarily, my interactions with the Apple Server have been for Profile Manager f
 <p>This knowledge is critical if you encounter an issue with the Profile Manager; there is not much info to go on if you have a problem.  In Lion, I had seen cases where the Profile Manager would for an unknown reason delete applications I was trying to push, causing managed devices to be unable to receive the application.</p>
 
 <p>In the case of Mountain Lion Server, I encountered the following issue with devices post-upgrade when trying to upload an updated version of an application.</p>
-
-<p>_ProfileManager[217] <Error>: Caught unhandled exception undefined method `get_all<em>devices&rsquo; for nil:NilClass at …’</em></p>
-
+<div class="highlight"><pre class="chroma">_ProfileManager[217] &lt;Error&gt;: Caught unhandled exception undefined method `get_all_devices&#39; for nil:NilClass at …’_</pre></div>
 <p>To me, this sounded like a nonexistent remnant of Lion was being referenced to.  To some people, this might sound like a good time to reset the Profile Manager with the wipeDB.sh script.  However, this would require you to rejoin all devices to the MDM.  In this case, there was only a single application which the MDM was being used to deploy, so I figured I would try clearing the Postgres tables containing the application information and see what happened.  After running the following commands, I was able to upload my application and push without the ‘<em>undefined method’</em> error as show above.</p>
-
-<p>[sourcecode language=&ldquo;bash&rdquo;]
-sudo psql –U _postgres –d device_management
-DELETE from public.ios_applications; SELECT setval(&lsquo;ios_applications_id_seq&rsquo;, 1); DELETE from ios_application_library_item_relations; SELECT setval(&lsquo;ios_application_library_item_relations_id_seq&rsquo;, 1);
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo psql –U _postgres –d device_management
+DELETE from public.ios_applications<span class="p">;</span> SELECT setval<span class="o">(</span><span class="s1">&#39;ios_applications_id_seq&#39;</span>, <span class="m">1</span><span class="o">)</span><span class="p">;</span> DELETE from ios_application_library_item_relations<span class="p">;</span> SELECT setval<span class="o">(</span><span class="s1">&#39;ios_application_library_item_relations_id_seq&#39;</span>, <span class="m">1</span><span class="o">)</span><span class="p">;</span>
 /q
 serveradmin stop devicemgr
-serveradmin start devicemgr
-[/sourcecode]</p>
-
+serveradmin start devicemgr</code></pre></div>
       </div>
 
       <footer>
