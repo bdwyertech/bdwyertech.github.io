@@ -85,7 +85,7 @@ VLAN Access Control Lists (VACLs) can be used to implement Access Control at bot
       <pubDate>Thu, 06 Nov 2014 17:00:13 +0000</pubDate>
       
       <guid>https://bdwyertech.net/2014/11/06/chefdk-on-windows-environmental-variables/</guid>
-      <description>The recent release of the Chef Development Kit for Windows has been great for my work flow. If you do not have your own Ruby installed on the system, you probably want to use the Ruby bundled with ChefDK. For beginners, you can operate inside this environment by prepending &amp;lsquo;chef exec&amp;rsquo; to any Ruby commands you may want to run. Eventually, you might want to install your own Ruby Gems.</description>
+      <description>The recent release of the Chef Development Kit for Windows has been great for my work flow. If you do not have your own Ruby installed on the system, you probably want to use the Ruby bundled with ChefDK. For beginners, you can operate inside this environment by prepending &amp;lsquo;chef exec&amp;rsquo; to any Ruby commands you may want to run. Eventually, you might want to install your own Ruby Gems. This can be a problem, if you do not have certain environmental variables set.</description>
     </item>
     
     <item>
