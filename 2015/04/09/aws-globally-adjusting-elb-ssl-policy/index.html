@@ -47,6 +47,8 @@
     
 
     
+      <link rel="stylesheet" href="https://bdwyertech.github.io/css/syntax.css" />
+    
 
     
     
@@ -123,9 +125,7 @@
       </header>
 
       <div>
-        
-
-<p>A while back, I had to adjust the policy of all Elastic Load Balancers in my organization to disable SSLv3 due to the POODLE exploit. This can be an error-prone task if done by hand, especially if your architecture spans multiple regions and/or more than a handful of ELBs. The nice thing about cloud architecture, is that nearly everything can be  automated and/or scripted.  For that reason, I went ahead and wrote a PowerShell script to handle this.</p>
+        <p>A while back, I had to adjust the policy of all Elastic Load Balancers in my organization to disable SSLv3 due to the POODLE exploit. This can be an error-prone task if done by hand, especially if your architecture spans multiple regions and/or more than a handful of ELBs. The nice thing about cloud architecture, is that nearly everything can be  automated and/or scripted.  For that reason, I went ahead and wrote a PowerShell script to handle this.</p>
 
 <p>Most other write-ups I have seen do not take into account Stickiness policies, which are also applied to listeners.  If you run the <em><strong>Set-ELBLoadBalancerPolicyOfListener</strong></em> cmdlet with only an SSL policy applied, <em>it will remove any other existing listener policies</em>.  It is important to check the ELB for other policies, and make sure they are reapplied.  There is logic in this script that handles that.</p>
 
@@ -134,93 +134,90 @@
 <p>As of 4/9/15, you cannot simply set the ELB policy to a newer reference policy, although AWS documentation states otherwise.  For this reason, a new policy must be created which references the AWS Reference-Security-Policy of choice.  You can retrieve a list of available reference policies with the <em><strong>Get-ELBLoadBalancerPolicy</strong></em> cmdlet.</p>
 
 <p>Code also available on my <a href="https://gist.github.com/bdwyertech/7c4f1fc60210a44e8567">GitHub</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="c"># AWS Global ELB SSL Policy</span>
+<span class="c"># Brian Dwyer - Intelligent Digital Services - 4/5/15</span>
 
-<p>[sourcecode language=&ldquo;powershell&rdquo;]</p>
+<span class="c"># Variables</span>
+<span class="nv">$PolicyName</span><span class="p">=</span><span class="s2">&#34;SSL-POLICY--</span><span class="p">$(</span><span class="nb">Get-Date</span> <span class="n">-Format</span> <span class="n">yy-MM-ddTHHmmss</span><span class="p">)</span><span class="s2">&#34;</span>
+<span class="nv">$ELBReferencePolicy</span><span class="p">=</span><span class="s1">&#39;ELBSecurityPolicy-2015-03&#39;</span>
 
-<h1 id="aws-global-elb-ssl-policy">AWS Global ELB SSL Policy</h1>
+<span class="c"># Dependencies</span>
+<span class="nb">Import-Module</span> <span class="n">AWSPowerShell</span>
 
-<h1 id="brian-dwyer-intelligent-digital-services-4-5-15">Brian Dwyer - Intelligent Digital Services - 4/5/15</h1>
 
-<h1 id="variables">Variables</h1>
 
-<p>$PolicyName=&quot;SSL-POLICY&ndash;$(Get-Date -Format yy-MM-ddTHHmmss)&quot;
-$ELBReferencePolicy=&lsquo;ELBSecurityPolicy-2015-03&rsquo;</p>
+<span class="nb">Write-Host</span> <span class="s1">&#39;Finding AWS Regions containing ELBs...&#39;</span>
 
-<h1 id="dependencies">Dependencies</h1>
+<span class="nv">$RegionsWithELBs</span> <span class="p">=</span> <span class="p">@{}</span>
 
-<p>Import-Module AWSPowerShell</p>
+<span class="k">ForEach</span> <span class="p">(</span> <span class="nv">$region</span> <span class="k">in</span> <span class="p">(</span><span class="nb">Get-EC2Region</span><span class="p">).</span><span class="n">RegionName</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$ELB_Count</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancer</span> <span class="n">-Region</span> <span class="nv">$region</span><span class="p">).</span><span class="n">count</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="nv">$ELB_Count</span> <span class="o">-ge</span> <span class="n">1</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$RegionsWithELBs</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="nv">$region</span><span class="p">,</span> <span class="nv">$ELB_Count</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-<p>Write-Host &lsquo;Finding AWS Regions containing ELBs&hellip;&rsquo;</p>
+<span class="c"># Display ELB Regions &amp;amp; Count</span>
+<span class="nv">$tformat</span> <span class="p">=</span> <span class="p">@{</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Name</span><span class="p">};</span><span class="n">Label</span><span class="p">=</span><span class="s2">&#34;Region&#34;</span><span class="p">},</span> <span class="p">@{</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Value</span><span class="p">};</span><span class="n">Label</span><span class="p">=</span><span class="s2">&#34;ELB Count&#34;</span><span class="p">}</span>
+<span class="nv">$RegionsWithELBs</span><span class="p">.</span><span class="n">GetEnumerator</span><span class="p">()</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">Value</span> <span class="n">-Descending</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="nv">$tformat</span> <span class="n">-AutoSize</span>
 
-<p>$RegionsWithELBs = @{}</p>
 
-<p>ForEach ( $region in (Get-EC2Region).RegionName )
-{
-    $ELB_Count = (Get-ELBLoadBalancer -Region $region).count
-    if ( $ELB_Count -ge 1 )
-    {
-        $RegionsWithELBs.Add($region, $ELB_Count)
-    }
-}</p>
 
-<h1 id="display-elb-regions-amp-count">Display ELB Regions &amp; Count</h1>
 
-<p>$tformat = @{Expression={$<em>.Name};Label=&quot;Region&quot;}, @{Expression={$</em>.Value};Label=&quot;ELB Count&quot;}
-$RegionsWithELBs.GetEnumerator() | Sort-Object Value -Descending | Format-Table $tformat -AutoSize</p>
+<span class="k">ForEach</span> <span class="p">(</span> <span class="nv">$region</span> <span class="k">in</span> <span class="nv">$RegionsWithELBs</span><span class="p">.</span><span class="n">Keys</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c"># Verify reference policy existence in region</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancerPolicy</span> <span class="n">-Region</span> <span class="nv">$region</span><span class="p">).</span><span class="n">PolicyName</span> <span class="o">-contains</span> <span class="nv">$ELBReferencePolicy</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&#34;Modifying ELBs in region: &#39;$region&#39;&#34;</span>
 
-<p>ForEach ( $region in $RegionsWithELBs.Keys )
-{
-    # Verify reference policy existence in region
-    if ( (Get-ELBLoadBalancerPolicy -Region $region).PolicyName -contains $ELBReferencePolicy )
-    {
-        Write-Host &quot;<code>nModifying ELBs in region: '$region'</code>n&quot;</p>
-<div class="highlight"><pre class="chroma">    # Loop through the ELBs
-    ForEach ( $lb in (Get-ELBLoadBalancer -Region $region ).LoadBalancerName )
-    {
-        # Verify ELB serves HTTPS
-        if ( (Get-ELBLoadBalancer -Region $region -LoadBalancerName $lb).ListenerDescriptions.Listener.Protocol -contains &#39;HTTPS&#39; )
-        {
+        <span class="c"># Loop through the ELBs</span>
+        <span class="k">ForEach</span> <span class="p">(</span> <span class="nv">$lb</span> <span class="k">in</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancer</span> <span class="n">-Region</span> <span class="nv">$region</span> <span class="p">).</span><span class="n">LoadBalancerName</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c"># Verify ELB serves HTTPS</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancer</span> <span class="n">-Region</span> <span class="nv">$region</span> <span class="n">-LoadBalancerName</span> <span class="nv">$lb</span><span class="p">).</span><span class="n">ListenerDescriptions</span><span class="p">.</span><span class="n">Listener</span><span class="p">.</span><span class="n">Protocol</span> <span class="o">-contains</span> <span class="s1">&#39;HTTPS&#39;</span> <span class="p">)</span>
+            <span class="p">{</span>
 
-            # Find Existing Policies (App/Cookie Stickiness, etc.)
+                <span class="c"># Find Existing Policies (App/Cookie Stickiness, etc.)</span>
 
-            $PoliciesToApply = @($PolicyName)
+                <span class="nv">$PoliciesToApply</span> <span class="p">=</span> <span class="p">@(</span><span class="nv">$PolicyName</span><span class="p">)</span>
 
-            ForEach ( $currentpolicy in ((Get-ELBLoadBalancer -Region $region -LoadBalancerName $lb).ListenerDescriptions | Where-Object { $_.Listener.Protocol -contains &#39;HTTPS&#39;}).PolicyNames )
-            {
-                if ( (Get-ELBLoadBalancerPolicy -Region $region -LoadBalancerName $lb -PolicyName $currentpolicy).PolicyTypeName -ne &#39;SSLNegotiationPolicyType&#39; )
-                {
-                    $PoliciesToApply += @($currentpolicy)
-                }
-            }
+                <span class="k">ForEach</span> <span class="p">(</span> <span class="nv">$currentpolicy</span> <span class="k">in</span> <span class="p">((</span><span class="nb">Get-ELBLoadBalancer</span> <span class="n">-Region</span> <span class="nv">$region</span> <span class="n">-LoadBalancerName</span> <span class="nv">$lb</span><span class="p">).</span><span class="n">ListenerDescriptions</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Listener</span><span class="p">.</span><span class="n">Protocol</span> <span class="o">-contains</span> <span class="s1">&#39;HTTPS&#39;</span><span class="p">}).</span><span class="n">PolicyNames</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancerPolicy</span> <span class="n">-Region</span> <span class="nv">$region</span> <span class="n">-LoadBalancerName</span> <span class="nv">$lb</span> <span class="n">-PolicyName</span> <span class="nv">$currentpolicy</span><span class="p">).</span><span class="n">PolicyTypeName</span> <span class="o">-ne</span> <span class="s1">&#39;SSLNegotiationPolicyType&#39;</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="nv">$PoliciesToApply</span> <span class="p">+=</span> <span class="p">@(</span><span class="nv">$currentpolicy</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
 
-            # Configure SSL Policy
-            Write-Host &amp;quot;`nCreating &#39;$PolicyName&#39; from &#39;$ELBReferencePolicy&#39; for $lb&amp;quot;
-            New-ELBLoadBalancerPolicy -Region $region -LoadBalancerName $lb -PolicyName $PolicyName `
-              -PolicyTypeName SSLNegotiationPolicyType `
-              -PolicyAttribute @{ AttributeName=&amp;quot;Reference-Security-Policy&amp;quot;;AttributeValue=&amp;quot;$ELBReferencePolicy&amp;quot;} `
-              -Force
-            Write-Host &amp;quot;Activating policy &#39;$PolicyName&#39; for ELB: $lb&amp;quot;
-            Set-ELBLoadBalancerPolicyOfListener -Region &amp;quot;$region&amp;quot; -LoadBalancerName &amp;quot;$lb&amp;quot; -LoadBalancerPort 443 -PolicyName $PoliciesToApply
+                <span class="c"># Configure SSL Policy</span>
+                <span class="nb">Write-Host</span> <span class="s2">&#34;Creating &#39;$PolicyName&#39; from &#39;$ELBReferencePolicy&#39; for $lb&#34;</span>
+                <span class="nb">New-ELBLoadBalancerPolicy</span> <span class="n">-Region</span> <span class="nv">$region</span> <span class="n">-LoadBalancerName</span> <span class="nv">$lb</span> <span class="n">-PolicyName</span> <span class="nv">$PolicyName</span> <span class="p">`</span>
+                  <span class="n">-PolicyTypeName</span> <span class="n">SSLNegotiationPolicyType</span> <span class="p">`</span>
+                  <span class="n">-PolicyAttribute</span> <span class="p">@{</span> <span class="n">AttributeName</span><span class="p">=</span><span class="s2">&#34;Reference-Security-Policy&#34;</span><span class="p">;</span><span class="n">AttributeValue</span><span class="p">=</span><span class="s2">&#34;$ELBReferencePolicy&#34;</span><span class="p">}</span> <span class="p">`</span>
+                  <span class="n">-Force</span>
+                <span class="nb">Write-Host</span> <span class="s2">&#34;Activating policy &#39;$PolicyName&#39; for ELB: $lb&#34;</span>
+                <span class="nb">Set-ELBLoadBalancerPolicyOfListener</span> <span class="n">-Region</span> <span class="s2">&#34;$region&#34;</span> <span class="n">-LoadBalancerName</span> <span class="s2">&#34;$lb&#34;</span> <span class="n">-LoadBalancerPort</span> <span class="n">443</span> <span class="n">-PolicyName</span> <span class="nv">$PoliciesToApply</span>
 
-            # Cleanup Old Policies
-            ForEach ($policy in (Get-ELBLoadBalancerPolicy -Region &amp;quot;$region&amp;quot; -LoadBalancerName &amp;quot;$lb&amp;quot; | Where-Object {$_.PolicyTypeName -eq &#39;SSLNegotiationPolicyType&#39;}).PolicyName)
-            {
-                if ( $policy -ne $PolicyName -and $policy -ne $ELBReferencePolicy )
-                {
-                    Write-Host &amp;quot;Removing old policy &#39;$policy&#39; from ELB: $lb&amp;quot;
-                    Remove-ELBLoadBalancerPolicy -Region &amp;quot;$region&amp;quot; -LoadBalancerName &amp;quot;$lb&amp;quot; -PolicyName $policy -Force
-                }
-            }
-        }
-    }
-}
-Else
-{
-    Write-Host &amp;quot;Region $region does not contain policy $ELBReferencePolicy&amp;quot;
-}</pre></div>
-<p>}
-[/sourcecode]</p>
-
+                <span class="c"># Cleanup Old Policies</span>
+                <span class="k">ForEach</span> <span class="p">(</span><span class="nv">$policy</span> <span class="k">in</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancerPolicy</span> <span class="n">-Region</span> <span class="s2">&#34;$region&#34;</span> <span class="n">-LoadBalancerName</span> <span class="s2">&#34;$lb&#34;</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">PolicyTypeName</span> <span class="o">-eq</span> <span class="s1">&#39;SSLNegotiationPolicyType&#39;</span><span class="p">}).</span><span class="n">PolicyName</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="nv">$policy</span> <span class="o">-ne</span> <span class="nv">$PolicyName</span> <span class="o">-and</span> <span class="nv">$policy</span> <span class="o">-ne</span> <span class="nv">$ELBReferencePolicy</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="nb">Write-Host</span> <span class="s2">&#34;Removing old policy &#39;$policy&#39; from ELB: $lb&#34;</span>
+                        <span class="nb">Remove-ELBLoadBalancerPolicy</span> <span class="n">-Region</span> <span class="s2">&#34;$region&#34;</span> <span class="n">-LoadBalancerName</span> <span class="s2">&#34;$lb&#34;</span> <span class="n">-PolicyName</span> <span class="nv">$policy</span> <span class="n">-Force</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">Else</span>
+    <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&#34;Region $region does not contain policy $ELBReferencePolicy&#34;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
       </div>
 
       <footer>
