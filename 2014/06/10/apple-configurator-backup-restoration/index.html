@@ -55,7 +55,7 @@
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -120,7 +120,6 @@
 
       <div>
         <p>I work a bit with Apple Configurator to provision, supervise and join various Apple devices to mobile device management (MDM) servers.  One thing not integrated into Apple Configurator is the ability to backup and restore data easily.  The need for this might arise if you have a remote operator who may need to remotely provision devices, or if you&rsquo;d like to hand off a set configuration to a client.  Hopefully, the below bash script makes life a little easier in this regard.</p>
-
 <p>If the directories change, adjust accordingly.  This is current as of Apple Configurator 1.5.  On a second note, if you&rsquo;d like to supervise devices which <em>have already been supervised</em>, you will also need to copy the Apple Configurator certificate and key from your keychain.  Meraki has created a utility which extracts this <a href="http://dl.meraki.net/sm/IdentityExporter.dmg">here</a>.  I have not tested this, but in theory, you should be able to delete the Configurator certificate &amp; key from the remote user&rsquo;s keychain and have them import yours.</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
 </span><span class="cp"></span><span class="c1"># Apple Configurator Backup &amp; Restoration Script</span>
@@ -139,14 +138,14 @@
   <span class="c1"># Backup the Restore Files &amp; Stuff</span>
   <span class="k">if</span> <span class="o">[</span> -d <span class="s2">&#34;</span><span class="nv">$config_dir</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">echo</span> <span class="s1">&#39;Backing up the Configurator Files...&#39;</span>
-    nohup tar zpcvf <span class="nv">$ConfigName</span>.tar.gz -C <span class="s2">&#34;</span><span class="nv">$config_dir</span><span class="s2">&#34;</span> . &gt;/dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+    nohup tar zpcvf <span class="nv">$ConfigName</span>.tar.gz -C <span class="s2">&#34;</span><span class="nv">$config_dir</span><span class="s2">&#34;</span> . &gt;/dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span>
     <span class="nb">echo</span> <span class="s1">&#39;Done&#39;</span>
   <span class="k">fi</span>
 
   <span class="c1"># Backup the Database</span>
   <span class="k">if</span> <span class="o">[</span> -d <span class="s2">&#34;</span><span class="nv">$db_dir</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">echo</span> <span class="s1">&#39;Backing up the Configurator Database...&#39;</span>
-    nohup tar zpcvf <span class="nv">$ConfigDBName</span>.tar.gz -C <span class="s2">&#34;</span><span class="nv">$db_dir</span><span class="s2">&#34;</span> . &gt;/dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+    nohup tar zpcvf <span class="nv">$ConfigDBName</span>.tar.gz -C <span class="s2">&#34;</span><span class="nv">$db_dir</span><span class="s2">&#34;</span> . &gt;/dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span>
     <span class="nb">echo</span> <span class="s1">&#39;Done&#39;</span>
   <span class="k">fi</span>
 <span class="o">}</span>
@@ -182,7 +181,8 @@
        <span class="nb">echo</span> <span class="s2">&#34;Backup: Backs up Configurator data to the current directory&#34;</span>
        <span class="nb">echo</span> <span class="s2">&#34;Restore: Restores backups in the current directory&#34;</span>
        <span class="nv">RETVAL</span><span class="o">=</span><span class="m">2</span>
-<span class="k">esac</span></code></pre></div>
+<span class="k">esac</span>
+</code></pre></div>
       </div>
 
       <footer>
@@ -224,7 +224,7 @@
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

@@ -57,7 +57,7 @@ Primarily, my interactions with the Apple Server have been for Profile Manager f
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -124,21 +124,18 @@ Primarily, my interactions with the Apple Server have been for Profile Manager f
 
       <div>
         <p>Recently I had the pleasure of migrating an OSX Lion server to Mountain Lion.  It’s primary function was an MDM server for Apple devices.  Basically, the upgrade process involves upgrading to Mountain Lion followed by installing the updated Lion Server app.</p>
-
 <p>Primarily, my interactions with the Apple Server have been for Profile Manager functionality.  In Lion, the Profile Manager utilized a PostgreSQL backend with a datastore located in /usr/share/devicemgr/backend/.  iOS applications and other push to device material were located in the ‘/backend/file_store/’ directory named as their MD5 checksum equivalent.  Logs for the devicemgr service were located in the ‘/backend/logs/’ directory.</p>
-
 <p>In Mountain Lion Server, what used to be located in /usr/share/ is now packed into the Server Application itself.  For example, the same ‘/devicemgr/backend/’ is now located at ‘/Applications/Server.app/Contents/ServerRoot/backend/file_store/’.  The iOS applications and other push material are now located at ‘/var/devicemgr/ServiceData/Data/FileStore/’.</p>
-
 <p>This knowledge is critical if you encounter an issue with the Profile Manager; there is not much info to go on if you have a problem.  In Lion, I had seen cases where the Profile Manager would for an unknown reason delete applications I was trying to push, causing managed devices to be unable to receive the application.</p>
-
 <p>In the case of Mountain Lion Server, I encountered the following issue with devices post-upgrade when trying to upload an updated version of an application.</p>
-<div class="highlight"><pre class="chroma">_ProfileManager[217] &lt;Error&gt;: Caught unhandled exception undefined method `get_all_devices&#39; for nil:NilClass at …’_</pre></div>
-<p>To me, this sounded like a nonexistent remnant of Lion was being referenced to.  To some people, this might sound like a good time to reset the Profile Manager with the wipeDB.sh script.  However, this would require you to rejoin all devices to the MDM.  In this case, there was only a single application which the MDM was being used to deploy, so I figured I would try clearing the Postgres tables containing the application information and see what happened.  After running the following commands, I was able to upload my application and push without the ‘<em>undefined method’</em> error as show above.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">_ProfileManager[217] &lt;Error&gt;: Caught unhandled exception undefined method `get_all_devices&#39; for nil:NilClass at …’_
+</code></pre></div><p>To me, this sounded like a nonexistent remnant of Lion was being referenced to.  To some people, this might sound like a good time to reset the Profile Manager with the wipeDB.sh script.  However, this would require you to rejoin all devices to the MDM.  In this case, there was only a single application which the MDM was being used to deploy, so I figured I would try clearing the Postgres tables containing the application information and see what happened.  After running the following commands, I was able to upload my application and push without the ‘<em>undefined method’</em> error as show above.</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo psql –U _postgres –d device_management
-DELETE from public.ios_applications<span class="p">;</span> SELECT setval<span class="o">(</span><span class="s1">&#39;ios_applications_id_seq&#39;</span>, <span class="m">1</span><span class="o">)</span><span class="p">;</span> DELETE from ios_application_library_item_relations<span class="p">;</span> SELECT setval<span class="o">(</span><span class="s1">&#39;ios_application_library_item_relations_id_seq&#39;</span>, <span class="m">1</span><span class="o">)</span><span class="p">;</span>
+DELETE from public.ios_applications<span class="p">;</span> SELECT setval<span class="o">(</span><span class="s1">&#39;ios_applications_id_seq&#39;</span>, 1<span class="o">)</span><span class="p">;</span> DELETE from ios_application_library_item_relations<span class="p">;</span> SELECT setval<span class="o">(</span><span class="s1">&#39;ios_application_library_item_relations_id_seq&#39;</span>, 1<span class="o">)</span><span class="p">;</span>
 /q
 serveradmin stop devicemgr
-serveradmin start devicemgr</code></pre></div>
+serveradmin start devicemgr
+</code></pre></div>
       </div>
 
       <footer>
@@ -180,7 +177,7 @@ serveradmin start devicemgr</code></pre></div>
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

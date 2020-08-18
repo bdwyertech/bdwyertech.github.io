@@ -55,7 +55,7 @@
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -125,21 +125,15 @@
       </header>
 
       <div>
-        <p><a href="https://bdwyertech.net/2011/09/psod1.jpg"><img src="https://bdwyertech.net/2011/09/psod1.jpg?w=150" alt="" />
+        <p><a href="https://bdwyertech.net/2011/09/psod1.jpg"><img src="https://bdwyertech.net/2011/09/psod1.jpg?w=150" alt="">
 </a>I recently encountered an issue when running an ESXi 4.1 environment where I was getting a Purple Screen of Death at right about the 24 hour uptime mark.  Like most technologists, I first hit Google with the error code and had no luck.  I found a similar error code which suggested that it had something to do with a storage I/O issue.  The issue did not seem driver related, so I began to look into firmware and BIOS updates for the server.</p>
-
 <p>After some investigation, I realized that there were four BIOS/firmware&rsquo;s in my SR1550 which needed updating.  After trying to do them all manually, I found a nifty utility called the <a href="http://www.intel.com/Products/Server/Software/ida/ida-overview.htm">Intel Deployment Assistant</a>.  The Intel DA utility is a bootable CD that allows you to configure many different features, including the ability connect to the Internet to check and download the latest BIOS/firmware updates and install them automatically.  This worked great and I found out that the system had two year old BIOS and firmwares and the current build numbers were much newer.  So, I let the utility do its thing, but one update kept failing.  I tried it on all three of the SR1550&rsquo;s and had the same issue on all of them; the HSC/backplane firmware would not update.</p>
-
 <p>At this point, I started looking for older revisions of the Hot Swap Controller firmware figuring that the jump from revision 1.41 to 2.15 was too great.  There were many revisions between 1.41 and 2.15, but they were not available on Intel&rsquo;s website.  Finally, after a lot of searching, I found an Intel document that confirmed my suspicion that I need to upgrade to a different older update prior to jumping to 2.15.  Alas, I decided I had to get into contact with Intel about this issue.</p>
-
 <p>At this point, I&rsquo;m sitting in the server room and its already after six and my stomach is growling.  I had no phone reception in the server room so I tried a button to chat with an Intel support representative.  Much to my surprise, after about 10 minutes, the guy I was in contact had a solution.  Although he could not locate the firmware revision I needed, he located an internal document that stated if I disconnected the RMM2 and then proceeded with the upgrade to 2.15, it should work.  So I popped open the server, disconnected the RMM2 module, booted up, manually launched the update from a DR-DOS boot-disk and much to my surprise, it worked!</p>
-
 <p>For those of you who do not know what the Intel RMM is, it is a Remote Management Module that allows you to have out-of-band control of the server.  As a matter of fact, it offers an IP-based KVM over SSL through a Java applet, and it even allows you to remotely mount and boot the server to ISO images&hellip; How awesome is that!   After that little bugger gave me all that headache, I decided to give it a try and it is great.  You use a little utility called <a href="http://downloadcenter.intel.com/Detail_Desc.aspx?agr=Y&amp;DwnldID=14689&amp;lang=engGpIc8qXqt1ssARbRQ&amp;sig2=AT_xo58rnplZICKWxqm5eA">psetup</a> to configure IP and login settings, and then your good to go!</p>
-
 <p>Anyway, yes, after updating all of those firmwares, I now have over 180 days uptime on the ESXi boxes.  I hope this helps any other SR15xx, SR25xx users out there that may be encountering stability issues with ESXi.</p>
-
-<p><a href="https://bdwyertech.net/2011/09/rmm2.jpg"><img src="https://bdwyertech.net/2011/09/rmm2.jpg?w=150" alt="" />
-</a><a href="https://bdwyertech.net/2011/09/hsc.jpg">  </a><a href="https://bdwyertech.net/2011/09/hsc.jpg"><img src="https://bdwyertech.net/2011/09/hsc.jpg?w=150" alt="" />
+<p><a href="https://bdwyertech.net/2011/09/rmm2.jpg"><img src="https://bdwyertech.net/2011/09/rmm2.jpg?w=150" alt="">
+</a><a href="https://bdwyertech.net/2011/09/hsc.jpg">  </a><a href="https://bdwyertech.net/2011/09/hsc.jpg"><img src="https://bdwyertech.net/2011/09/hsc.jpg?w=150" alt="">
 </a>  <a href="https://bdwyertech.net/2011/09/hsc.jpg">
 </a></p>
 
@@ -184,7 +178,7 @@
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

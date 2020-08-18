@@ -55,7 +55,7 @@
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -123,19 +123,14 @@
       </header>
 
       <div>
-        <p><a href="https://bdwyertech.files.wordpress.com/2014/06/arch_nat_active.jpg"><img src="https://bdwyertech.files.wordpress.com/2014/06/arch_nat_active.jpg" alt="arch_nat_active" />
+        <p><a href="https://bdwyertech.files.wordpress.com/2014/06/arch_nat_active.jpg"><img src="https://bdwyertech.files.wordpress.com/2014/06/arch_nat_active.jpg" alt="arch_nat_active">
 </a></p>
-
 <p>Like most sysadmins, one of my primary responsibilities is ensuring high-availability in our environments. Recently, I&rsquo;ve been working a lot more with Amazon AWS. Amazon recently began forcing new accounts to make use of VPC. When you create a VPC, an Internet Gateway must be provisioned to route traffic to the Internet. VPC&rsquo;s utilize subnet constructs for virtual networking. Subnets are assigned a routing table, and in the case of a Public subnet, the default route of this table is pointed at the Internet Gateway. Instances in this public subnet are assigned public, non-RFC1918 Elastic IP addresses. At the moment, only 5 Elastic IP addresses may be requested per account. You can request more via support, but obviously they are trying to ween people away from using them for everything. Consequently, NAT &amp; supporting instances must be in place to facilitate external communication for non-public subnets.</p>
-
 <p>In the case of these subnets, the default-route should be pointed at a NAT instance residing in the Public subnet. This brings about a single point of failure. Should the NAT instance go down, nothing in that subnet can speak to the outside world; the default-route becomes a black-hole. In order to combat this, multiple NAT instances can be provisioned in different availability zones, and with a little magic, configured to take over each others traffic-routing responsibilities on-demand.</p>
-
 <p>Amazon has furnished <a href="http://aws.amazon.com/articles/2781451301784570">a document</a> with a workaround for this situation. Essentially, a script running on each NAT instance performs a health check on the other NAT instance, and should the other instance go down, the healthy instance will take over. It does so by adjusting the routing tables via AWS API calls. The script will also attempt to bring the failed instance back online.</p>
-
 <p><strong>UPDATE:</strong> The NAT Monitor script outlined by Amazon has a flaw. The ec2-describe-instances call to determine the state of the other NAT instance does not function properly. The documentation references using $5 instead of $4 to set the NAT_STATE variable, however I have found $6 to work best, but test this because your EC2-API-tools version might yield different results. I also highly suggest the &ndash;show-empty-fields argument because if the number of fields changes, the awk statement could potentially grab the incorrect field.</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">NAT_STATE</span><span class="o">=</span><span class="sb">`</span>/opt/aws/bin/ec2-describe-instances <span class="nv">$NAT_ID</span> -U <span class="nv">$EC2_URL</span> --show-empty-fields <span class="p">|</span> grep INSTANCE <span class="p">|</span> awk <span class="s1">&#39;{print $6;}&#39;</span><span class="sb">`</span></code></pre></div>
-<p>There is one issue with the configuration outlined by the Amazon document; the IAM roles permissions are too loose. Using the policy defined in the document, the NAT instance is granted permissions to restart every instance belonging to the account. Additionally, the NAT instance could modify any and all routing tables, such as those in other regions, VPC&rsquo;s, etc. You probably don&rsquo;t want your NAT instances in US-West-2 making any modifications whatsoever to US-East-1. The below policy is an attempt to restrict permissions as best as permitted by supported IAM policy conditions. Just substitute/replace the region and VPC information with your own. Also, tag the NAT instances with a &lsquo;Type&rsquo; and &lsquo;VPC&rsquo; field, setting &lsquo;Type&rsquo; to &lsquo;NAT&rsquo; and &lsquo;VPC&rsquo; with the VPC&rsquo;s ID.</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">NAT_STATE</span><span class="o">=</span><span class="sb">`</span>/opt/aws/bin/ec2-describe-instances <span class="nv">$NAT_ID</span> -U <span class="nv">$EC2_URL</span> --show-empty-fields <span class="p">|</span> grep INSTANCE <span class="p">|</span> awk <span class="s1">&#39;{print $6;}&#39;</span><span class="sb">`</span>
+</code></pre></div><p>There is one issue with the configuration outlined by the Amazon document; the IAM roles permissions are too loose. Using the policy defined in the document, the NAT instance is granted permissions to restart every instance belonging to the account. Additionally, the NAT instance could modify any and all routing tables, such as those in other regions, VPC&rsquo;s, etc. You probably don&rsquo;t want your NAT instances in US-West-2 making any modifications whatsoever to US-East-1. The below policy is an attempt to restrict permissions as best as permitted by supported IAM policy conditions. Just substitute/replace the region and VPC information with your own. Also, tag the NAT instances with a &lsquo;Type&rsquo; and &lsquo;VPC&rsquo; field, setting &lsquo;Type&rsquo; to &lsquo;NAT&rsquo; and &lsquo;VPC&rsquo; with the VPC&rsquo;s ID.</p>
 <p>Restricted IAM Policy</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
    <span class="nt">&#34;Statement&#34;</span><span class="p">:[</span>
@@ -183,7 +178,8 @@
          <span class="p">}</span>
       <span class="p">}</span>
    <span class="p">]</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span>
+</code></pre></div>
       </div>
 
       <footer>
@@ -225,7 +221,7 @@
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

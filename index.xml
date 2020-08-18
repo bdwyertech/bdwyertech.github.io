@@ -48,7 +48,7 @@ According to DigitalOcean documentation, if Private Networking is enabled, the I
       <guid>https://bdwyertech.net/2015/04/24/chef-ohai-in-aws-ec2-vpc/</guid>
       <description>This is a quick tip to those of you who are using Chef inside an AWS VPC. The EC2 Ohai plugin does not run by default, which prevents some meaningful node attributes from being collected.
 The EC2-specific node attributes I find most useful are:
-[code language=&amp;ldquo;ruby&amp;rdquo;] node[&amp;lsquo;ec2&amp;rsquo;][&amp;lsquo;instance_id&amp;rsquo;] # =&amp;gt; Instance&amp;rsquo;s ID node[&amp;lsquo;ec2&amp;rsquo;][&amp;lsquo;local_ipv4&amp;rsquo;] # =&amp;gt; Instance&amp;rsquo;s IPv4 Address node[&amp;lsquo;ec2&amp;rsquo;][&amp;lsquo;placement_availability_zone&amp;rsquo;] # =&amp;gt; Instance&amp;rsquo;s Region &amp;amp; Availability Zone node[&amp;lsquo;ec2&amp;rsquo;][&amp;lsquo;ami_id&amp;rsquo;] # =&amp;gt; Instance&amp;rsquo;s Baseline AMI [/code]</description>
+node[&amp;#39;ec2&amp;#39;][&amp;#39;instance_id&amp;#39;] # =&amp;gt; Instance&amp;#39;s ID node[&amp;#39;ec2&amp;#39;][&amp;#39;local_ipv4&amp;#39;] # =&amp;gt; Instance&amp;#39;s IPv4 Address node[&amp;#39;ec2&amp;#39;][&amp;#39;placement_availability_zone&amp;#39;] # =&amp;gt; Instance&amp;#39;s Region &amp;amp; Availability Zone node[&amp;#39;ec2&amp;#39;][&amp;#39;ami_id&amp;#39;] # =&amp;gt; Instance&amp;#39;s Baseline AMI To get your instances inside a VPC to pick up meaningful node attributes related to EC2, you have to create an Ohai hint file for the EC2 plugin.</description>
     </item>
     
     <item>
@@ -187,7 +187,8 @@ Primarily, my interactions with the Apple Server have been for Profile Manager f
       <pubDate>Mon, 30 Apr 2012 20:30:15 +0000</pubDate>
       
       <guid>https://bdwyertech.net/2012/04/30/nagios-nagvis-mysql-troubleshooting-ndomod-ndo2db/</guid>
-      <description>UPDATE Check out OMD for an RPM based, easy to install and update variant of Nagios which includes other utilities as well. This will save a tremendous amount of time to deployment. www.omdistro.org Recently I setup a Nagios box to monitor an organization&amp;rsquo;s network and network services. Nagios is extremely flexible and can poll pretty much any network connected device by configuring service checks. The service checks are like plugins and can poll devices via SNMP, Ping, HTTP, etc.</description>
+      <description>UPDATE Check out OMD for an RPM based, easy to install and update variant of Nagios which includes other utilities as well. This will save a tremendous amount of time to deployment. www.omdistro.org
+Recently I setup a Nagios box to monitor an organization&amp;rsquo;s network and network services. Nagios is extremely flexible and can poll pretty much any network connected device by configuring service checks. The service checks are like plugins and can poll devices via SNMP, Ping, HTTP, etc.</description>
     </item>
     
     <item>
@@ -281,7 +282,7 @@ While working with server gear in the field, I have found Intel&amp;rsquo;s RMM 
       <pubDate>Thu, 01 Sep 2011 12:15:55 +0000</pubDate>
       
       <guid>https://bdwyertech.net/2011/09/01/virtualization/</guid>
-      <description>At the moment, a major trend in the IT industry is the push towards virtualization. In addition to being a large, quickly growing social movement, the push to &amp;ldquo;go green&amp;rdquo; is a major focus of many industries &amp;amp; organizations looking to maintain or improve their public image by reducing their carbon footprint. Virtualization is one way the IT industry is &amp;rdquo;going green&amp;rdquo;.
+      <description>At the moment, a major trend in the IT industry is the push towards virtualization. In addition to being a large, quickly growing social movement, the push to &amp;ldquo;go green&amp;rdquo; is a major focus of many industries &amp;amp; organizations looking to maintain or improve their public image by reducing their carbon footprint. Virtualization is one way the IT industry is &amp;ldquo;going green&amp;rdquo;.
 At first, you might ask yourself why virtualize? From a system administrator&amp;rsquo;s standpoint, the modularity of virtual machines is impeccable.</description>
     </item>
     
@@ -291,7 +292,7 @@ At first, you might ask yourself why virtualize? From a system administrator&am
       <pubDate>Thu, 01 Sep 2011 01:56:43 +0000</pubDate>
       
       <guid>https://bdwyertech.net/portfolio/</guid>
-      <description> GitHub Repositories Chef Cookbooks NXLog - Log Parser &amp;amp; Shipper WildFly - Java Application Server Ruby Gems supermarket_sync chef-rundeck2 github-rundeck deploy-info Publications Technical Reviewer - WildFly Cookbook (2015)  College Stuff Bandwidth Upgrade Proposal OSPF Background &amp;amp; Configuration HSRP Background &amp;amp; Configuration AAA &amp;amp; TACACS+Paper AAA &amp;amp; TACACS+ PowerPoint Presentation </description>
+      <description>GitHub Repositories  Chef Cookbooks NXLog - Log Parser &amp;amp; Shipper WildFly - Java Application Server  Ruby Gems supermarket_sync chef-rundeck2 github-rundeck deploy-info  Publications Technical Reviewer - WildFly Cookbook (2015)   College Stuff Bandwidth Upgrade Proposal OSPF Background &amp;amp; Configuration HSRP Background &amp;amp; Configuration AAA &amp;amp; TACACS+Paper AAA &amp;amp; TACACS+ PowerPoint Presentation </description>
     </item>
     
     <item>

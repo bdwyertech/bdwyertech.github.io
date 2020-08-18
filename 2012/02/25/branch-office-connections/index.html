@@ -55,7 +55,7 @@
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -123,164 +123,88 @@
       </header>
 
       <div>
-        
-
-<p>While studying for the CCNP Route exam, I noticed that GRE Tunneling and IPSec were mentioned as topics, however configuration of the two was never really covered in the certification guide.  In addition, I did not see any labs involving this type of scenario, so I decided to create my own.  Hopefully this provides some insight to others about how to configure GRE Tunnels over IPsec.  Don&rsquo;t feel bad if this takes you a while, setting up this scenario and writing this up took a whole Saturday afternoon.  <em>The configuration files are at the bottom of the post</em>.</p>
-
+        <p>While studying for the CCNP Route exam, I noticed that GRE Tunneling and IPSec were mentioned as topics, however configuration of the two was never really covered in the certification guide.  In addition, I did not see any labs involving this type of scenario, so I decided to create my own.  Hopefully this provides some insight to others about how to configure GRE Tunnels over IPsec.  Don&rsquo;t feel bad if this takes you a while, setting up this scenario and writing this up took a whole Saturday afternoon.  <em>The configuration files are at the bottom of the post</em>.</p>
 <p>IPSec can secure data in transit and provides authentication that it came from a trusted source.</p>
-
 <p>To route from the branch office to the enterprise core, you can use either static routes or a routing protocol. To secure traffic over the internet, IPSec can be used.  To utilize a routing protocol to connect securely to the core with IPsec, it must be combined with a GRE tunnel which supports the broadcasts/multicasts necessary for proper IGP operation.</p>
-
 <h2 id="gre-tunnels">GRE Tunnels</h2>
-<div class="highlight"><pre class="chroma">  * Act link a point-to-point link from a Layer 3 perspective.
+<pre><code>  * Act link a point-to-point link from a Layer 3 perspective.
   * Supports many passenger protocols, including IPv4.
-  * Encapsulates/forwards broadcasts and multicasts, therefore supporting IPv4 IGP&#39;s.
-  * GRE tunnels can run through IPsec tunnels.</pre></div>
+  * Encapsulates/forwards broadcasts and multicasts, therefore supporting IPv4 IGP's.
+  * GRE tunnels can run through IPsec tunnels.
+</code></pre>
 <h1 id="implementing-branch-office-gre-over-ipsec-vpn">Implementing Branch Office GRE over IPSec VPN</h1>
-
-<h2 id="branch-office-gre-ipsec-vpn-r2-r4-private-serial-r3-r4">Branch Office GRE/IPSec VPN (R2-R4) &amp; Private Serial (R3-R4)</h2>
-
+<h2 id="branch-office-greipsec-vpn-r2-r4--private-serial-r3-r4">Branch Office GRE/IPSec VPN (R2-R4) &amp; Private Serial (R3-R4)</h2>
 <p>Here, we will utilize split-tunnel at the Branch Office to ensure that only traffic destined for the Core will be encrypted over the GRE IPSec tunnel. A default route is configured on R2 and R4 to ISP1. Additionally, ISP1 has been configured with a loopback to test split-tunnel functionality.</p>
-
 <p>All routers (except ISP1 obviously) will participate in EIGRP AS 1. Each participating router shall be configured with the <strong>network 10.0.0.0</strong> and **no auto-summary **commands.</p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic1.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic1.png" alt=""></p>
 <h2 id="configure-the-gre-tunnels-on-r2-and-r4">Configure the GRE Tunnels on R2 and R4</h2>
-
 <p>The tunnel source is the internet-facing interface, in this case fa0/0 with the IP of 15.1.1.2 on R2 and fa0/1 with the IP of 15.1.2.2 on R4.
 <strong>When associating a tunnel source with an interface, if the associated interface goes down, so does the tunnel.  If you have redundant connections, use a loopback as a source instead.</strong></p>
-
-<h3 id="r2-r4-gre-tunnel-configuration">R2 - R4 GRE Tunnel Configuration</h3>
-
+<h3 id="r2---r4-gre-tunnel-configuration">R2 - R4 GRE Tunnel Configuration</h3>
 <p>First, configure the GRE tunnel. After doing this, you should see your EIGRP neighbors go up.</p>
-
 <p><em>In a real world situation, you&rsquo;d probably also want to configure the tunnel with Path MTU Detection.  This will mitigate fragmentation issues that could cause your routers to drop CEF and use process switching.  Enable PMTUD at each tunnel endpoint with <strong>tunnel path-mtu-discovery.</strong></em></p>
-
 <h4 id="r2">R2</h4>
-
-<h4 id="2012-02-022512-2257-branchoffic2-png"><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic2.png" alt="" /></h4>
-
+<h4 id="201202022512_2257_branchoffic2png"><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic2.png" alt=""></h4>
 <h4 id="r4">R4</h4>
-
-<h4 id="2012-02-022512-2257-branchoffic3-png"><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic3.png" alt="" /></h4>
-
+<h4 id="201202022512_2257_branchoffic3png"><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic3.png" alt=""></h4>
 <h4 id="r2-gre-route-map">R2 GRE Route-Map</h4>
-
 <p>Here, we will configure a route-map to prevent a default route from ever being advertised over the GRE tunnel. The only way for R4 to ever learn R2&rsquo;s default route should be via the serial connection to R3, and it should only be utilized if R4&rsquo;s fa0/0 interface goes down. We could also utilize this to block other networks from being advertised over the GRE tunnel by modifying the ACL.</p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic4.png" alt="" /></p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic5.png" alt="" /></p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic6.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic4.png" alt=""></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic5.png" alt=""></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic6.png" alt=""></p>
 <p>Now, you can see that R4 only learns a backup Default-Route through R3. Previously, it learned it through the tunnel as well, which would be silly to utilize and might break split-tunnel if the static default-route was lost for some reason.</p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic7.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic7.png" alt=""></p>
 <h2 id="encrypt-gre-tunnel-traffic-using-ipsec">Encrypt GRE Tunnel traffic using IPSec</h2>
-
 <p>We will now encrypt traffic traversing the GRE tunnel using IPsec. We must first define an ACL to catch the traffic we wish to encrypt, which will be GRE traffic from our GRE source-interface destined for the GRE tunnel destination.</p>
-
 <h3 id="r2-ipsec-policy-creation">R2 IPsec Policy Creation</h3>
-
 <h4 id="acl-catch-gre-to-r4">ACL (Catch GRE to R4)</h4>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic8.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic8.png" alt=""></p>
 <h4 id="isakmp-policy">ISAKMP Policy</h4>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic9.png" alt="" /></p>
-
-<h4 id="isakmp-key-ipsec-transform-set-transport-mode">ISAKMP Key &amp; IPSec Transform Set (Transport Mode)</h4>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic10.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic9.png" alt=""></p>
+<h4 id="isakmp-key--ipsec-transform-set-transport-mode">ISAKMP Key &amp; IPSec Transform Set (Transport Mode)</h4>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic10.png" alt=""></p>
 <p>_Keep in mind that transport mode is used only because we are not traversing NAT, we are going from R2 to R4&rsquo;s public IP for both IPSec and GRE Tunnels.   _Tunnel mode is required if the GRE destination is different from the IPSec destination.  <em>If the endpoints were each behind a NAT router, the situation requires a combination of NAT-T and Tunnel Mode.  Tunnel mode adds an extra 20 bytes to the overall packet size. NAT-T also adds an extra 20 bytes per packet and encapsulates the IPSec traffic into UDP packets over port 4500.</em></p>
-
 <h4 id="crypto-map-configuration">Crypto Map Configuration</h4>
-
 <p>Here, we configure the Crypto Map to R4. We will use the previously created GRE catching ACL.</p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic11.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic11.png" alt=""></p>
 <h4 id="apply-crypto-map-to-gre-tunnel">Apply Crypto Map to GRE Tunnel</h4>
-
 <p>The Crypto Map should be applied to the physical exit interface. Cisco recommends applying it to the logical tunnel interface as well.</p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic12.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic12.png" alt=""></p>
 <h3 id="r4-ipsec-policy-creation">R4 IPsec Policy Creation</h3>
-
 <p>We will follow the same procedure utilized on R2 and reverse the IP addresses.</p>
-
 <h4 id="acl-catch-gre-to-r2">ACL (Catch GRE to R2)</h4>
-
-<h4 id="2012-02-022512-2257-branchoffic13-png"><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic13.png" alt="" /></h4>
-
+<h4 id="201202022512_2257_branchoffic13png"><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic13.png" alt=""></h4>
 <h4 id="isakmp-policy-1">ISAKMP Policy</h4>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic14.png" alt="" /></p>
-
-<h4 id="isakmp-key-ipsec-transform-set-transport-mode-1">ISAKMP Key &amp; IPSec Transform Set (Transport Mode)</h4>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic15.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic14.png" alt=""></p>
+<h4 id="isakmp-key--ipsec-transform-set-transport-mode-1">ISAKMP Key &amp; IPSec Transform Set (Transport Mode)</h4>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic15.png" alt=""></p>
 <h4 id="crypto-map-configuration-1">Crypto Map Configuration</h4>
-
 <p>Here, we configure the Crypto Map to R4. We will use the previously created GRE catching ACL.</p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic16.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic16.png" alt=""></p>
 <h4 id="apply-crypto-map-to-gre-tunnel-1">Apply Crypto Map to GRE Tunnel</h4>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic17.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic17.png" alt=""></p>
 <h2 id="verify-ipsec-and-split-tunnel-functionality">Verify IPsec and Split-Tunnel Functionality</h2>
-
 <p>You can utilize Wireshark to verify only ESP traffic traverses between the GRE endpoints. I found that the Crypto Map did not need to be applied to the logical Tunnel 0 interface to function, but only the physical exit interface. I am not sure why Cisco recommends applying it to both.</p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic18.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic18.png" alt=""></p>
 <p>You can see that the Crypto traffic for Tunnel 0 and FastEthernet 0/0 is identical. I am not sure if running the crypto map VPN on both the Tunnel 0 and FastEthernet 0/0 is causing excess encryption overhead, or if it only encrypts the traffic once.</p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic19.png" alt="" /></p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic20.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic19.png" alt=""></p>
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic20.png" alt=""></p>
 <p>After disabling Crypto Map VPN on the Tunnel 0 interface, I confirmed via Wireshark that the GRE traffic continued to be encrypted. A show crypto ipsec sa detail shows that the traffic continues to be encrypted as well.</p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic21.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic21.png" alt=""></p>
 <h2 id="verify-split-tunnel">Verify Split-Tunnel</h2>
-
 <p>To test this, I will simply ping a simulated public internet address of 1.2.3.4 from the inside interface of R4.</p>
-
-<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic22.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/022512_2257_branchoffic22.png" alt=""></p>
 <h1 id="conclusion">Conclusion</h1>
-
 <p>We have implemented remote branch office with redundant connectivity to the core; a leased line and a secured backup utilizing GRE over IPsec via the public Internet. Our branch office is now able to participate in the EIGRP routing process over either link.  If you wanted to use the IPsec VPN as your primary connection to HQ, modify the bandwidth value of the Tunnel 0 interfaces to make the EIGRP metric more preferable than the serial route.  By default, tunnel interfaces seem to be given a bandwidth value of only 9kbps.  The default delay value of tunnel interfaces is high as well.  Tweak the bandwidth and delay values to achieve desired results.</p>
-
 <p><strong>Normal Conditions</strong></p>
-
-<p><img src="https://bdwyertech.net/2012/02/sh-ip-route.png" alt="" /></p>
-
+<p><img src="https://bdwyertech.net/2012/02/sh-ip-route.png" alt=""></p>
 <p><strong>Downed Serial Link to HQ</strong></p>
-
-<p><img src="https://bdwyertech.net/2012/02/sh-ip-route1.png" alt="" /></p>
-
-<h2 id="configuration-files"><em>Configuration Files</em></h2>
-
+<p><img src="https://bdwyertech.net/2012/02/sh-ip-route1.png" alt=""></p>
+<h2 id="_configuration-files_"><em>Configuration Files</em></h2>
 <p><a href="https://bdwyertech.net/2012/02/isp1.docx">ISP1 Configuration</a></p>
-
 <p><a href="https://bdwyertech.net/2012/02/r1.docx">R1 Configuration</a></p>
-
 <p><a href="https://bdwyertech.net/2012/02/r2.docx">R2 Configuration</a></p>
-
 <p><a href="https://bdwyertech.net/2012/02/r3.docx">R3 Configuration</a></p>
-
 <p><a href="https://bdwyertech.net/2012/02/r4.docx">R4 Configuration</a></p>
 
       </div>
@@ -324,7 +248,7 @@
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

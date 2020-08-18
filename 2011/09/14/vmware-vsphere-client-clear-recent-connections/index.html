@@ -55,7 +55,7 @@
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -121,15 +121,15 @@
       </header>
 
       <div>
-        <p><a href="https://bdwyertech.net/2011/09/cluttered_vi_client.png"><img src="https://bdwyertech.net/2011/09/cluttered_vi_client.png?w=150" alt="" />
+        <p><a href="https://bdwyertech.net/2011/09/cluttered_vi_client.png"><img src="https://bdwyertech.net/2011/09/cluttered_vi_client.png?w=150" alt="">
 </a>Today I figured out how to empty the recent connections for the VMware vSphere Client.  After a while, these begin to add up and I do not like having useless IP addresses and DNS names from experimental ESXi boxes appearing in my client when I attempt to log in.  I searched the registry for some no longer functional servers and I found some keys in HKCU which contained the recently connected hosts.  Below I have listed the two values inside PowerShell commands which can be used to delete them.</p>
 <div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">Remove-ItemProperty</span> <span class="n">-Path</span> <span class="err">‘</span><span class="n">HKCU</span><span class="err">:</span><span class="p">\</span><span class="n">Software</span><span class="p">\</span><span class="n">VMware</span><span class="p">\</span><span class="n">Virtual</span> <span class="n">Infrastructure</span> <span class="n">Client</span><span class="p">\</span><span class="n">Preferences</span><span class="p">\</span><span class="n">UI</span><span class="p">\</span><span class="n">ClientsXml</span><span class="err">’</span> <span class="n">-Name</span> <span class="p">*</span>
-<span class="nb">Remove-ItemProperty</span> <span class="n">-Path</span> <span class="err">‘</span><span class="n">HKCU</span><span class="err">:</span><span class="p">\</span><span class="n">Software</span><span class="p">\</span><span class="n">VMware</span><span class="p">\</span><span class="n">VMware</span> <span class="n">Infrastructure</span> <span class="n">Client</span><span class="p">\</span><span class="n">Preferences</span><span class="err">’</span> <span class="n">-Name</span> <span class="n">RecentConnections</span></code></pre></div>
-<p><strong>Update - Remote Desktop Connections</strong></p>
-
+<span class="nb">Remove-ItemProperty</span> <span class="n">-Path</span> <span class="err">‘</span><span class="n">HKCU</span><span class="err">:</span><span class="p">\</span><span class="n">Software</span><span class="p">\</span><span class="n">VMware</span><span class="p">\</span><span class="n">VMware</span> <span class="n">Infrastructure</span> <span class="n">Client</span><span class="p">\</span><span class="n">Preferences</span><span class="err">’</span> <span class="n">-Name</span> <span class="n">RecentConnections</span>
+</code></pre></div><p><strong>Update - Remote Desktop Connections</strong></p>
 <p>I figure many people interested in clearing the vSphere Client may also be interested in clearing their Remote Desktop connections list.  To accomplish this, you would remove the file &ldquo;Default.rdp&rdquo; from the users Documents directory.  To accomplish this, utilize one of the following PowerShell or shell commands.</p>
 <div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">Remove-Item</span> <span class="nv">$Env:UserProfile</span><span class="p">\</span><span class="n">Documents</span><span class="p">\</span><span class="k">Default</span><span class="p">.</span><span class="n">rdp</span> <span class="n">-Force</span>
-<span class="n">del</span> <span class="k">%</span><span class="n">userprofile</span><span class="p">%\</span><span class="n">Documents</span><span class="p">\</span><span class="k">Default</span><span class="p">.</span><span class="n">rdp</span> <span class="p">/</span><span class="n">A</span> <span class="n">H</span></code></pre></div>
+<span class="nb">del </span><span class="k">%</span><span class="n">userprofile</span><span class="p">%\</span><span class="n">Documents</span><span class="p">\</span><span class="k">Default</span><span class="p">.</span><span class="n">rdp</span> <span class="p">/</span><span class="n">A</span> <span class="nb">H
+</span></code></pre></div>
       </div>
 
       <footer>
@@ -171,7 +171,7 @@
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

@@ -55,7 +55,7 @@
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -117,7 +117,6 @@
 
       <div>
         <p>The recent release of the Chef Development Kit for Windows has been great for my work flow. If you do not have your own Ruby installed on the system, you probably want to use the Ruby bundled with ChefDK. For beginners, you can operate inside this environment by prepending &lsquo;chef exec&rsquo; to any Ruby commands you may want to run. Eventually, you might want to install your own Ruby Gems. This can be a problem, if you do not have certain environmental variables set.</p>
-
 <p>Here, I include a PowerShell script which sets or removes the environmental variables required to use ChefDK&rsquo;s Ruby as your local environment&rsquo;s Ruby. I make use of the local user&rsquo;s %PATH% variable, which will always be appended to the system&rsquo;s %PATH%. We also create a User environmental variable called CHEFDK_RUBY, which will be appended to the local user&rsquo;s %PATH%. A few other Ruby-related variables are set based on recommendations set forth in the <a href="https://www.getchef.com/blog/2014/11/04/the-chefdk-on-windows-survival-guide/">ChefDK on Windows Survival Guide</a>.</p>
 <div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="c"># Filename: Set-ChefDK_Enviro_Vars.ps1</span>
 <span class="c"># Brian Dwyer - Intelligent Digital Services - 11/5/14</span>
@@ -141,9 +140,9 @@
 <span class="c"># Check if ChefDK is installed</span>
 <span class="k">If</span> <span class="p">(!</span><span class="nv">$env:Path</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="s1">&#39;chefdk\bin&#39;</span><span class="p">))</span>
   <span class="p">{</span>
-    <span class="n">echo</span> <span class="s2">&#34;&#34;</span>
-    <span class="n">echo</span> <span class="s2">&#34;/======| Error: ChefDK does not seem to be installed. |=====\&#34;</span>
-    <span class="n">echo</span> <span class="s2">&#34;&#34;</span>
+    <span class="nb">echo </span><span class="s2">&#34;&#34;</span>
+    <span class="nb">echo </span><span class="s2">&#34;/======| Error: ChefDK does not seem to be installed. |=====\&#34;</span>
+    <span class="nb">echo </span><span class="s2">&#34;&#34;</span>
     <span class="n">pause</span>
     <span class="n">exit</span>
   <span class="p">}</span>
@@ -157,7 +156,7 @@
 <span class="c"># Setup</span>
 <span class="k">If</span> <span class="p">(</span> <span class="nv">$args</span><span class="p">[</span><span class="n">0</span><span class="p">]</span> <span class="o">-eq</span> <span class="s1">&#39;set&#39;</span> <span class="p">)</span>
   <span class="p">{</span>
-  <span class="n">echo</span> <span class="s2">&#34;/======| Setting up Registry Keys... |=====\&#34;</span>
+  <span class="nb">echo </span><span class="s2">&#34;/======| Setting up Registry Keys... |=====\&#34;</span>
   <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;CHEFDK_RUBY&#39;</span> <span class="n">-Value</span> <span class="s2">&#34;$env:USERPROFILE\.chefdk\gem\ruby\$ChefDK_RubyVer\bin;$ChefDK_DIR\embedded\bin&#34;</span>
   <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;GEM_ROOT&#39;</span> <span class="n">-Value</span> <span class="s2">&#34;$ChefDK_DIR\embedded\lib\ruby\gems\$ChefDK_RubyVer&#34;</span>
   <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;GEM_HOME&#39;</span> <span class="n">-Value</span> <span class="s2">&#34;$env:USERPROFILE\.chefdk\gem\ruby\$ChefDK_RubyVer&#34;</span>
@@ -179,7 +178,7 @@
   <span class="p">}</span>
 <span class="k">Elseif</span> <span class="p">(</span> <span class="nv">$args</span><span class="p">[</span><span class="n">0</span><span class="p">]</span> <span class="o">-eq</span> <span class="s1">&#39;unset&#39;</span> <span class="p">)</span>
   <span class="p">{</span>
-  <span class="n">echo</span> <span class="s2">&#34;/======| Removing Registry Keys... |=====\&#34;</span>
+  <span class="nb">echo </span><span class="s2">&#34;/======| Removing Registry Keys... |=====\&#34;</span>
   <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;PATH&#39;</span> <span class="n">-Value</span> <span class="p">(</span><span class="nb">Get-Item</span> <span class="nv">$User_Vars</span><span class="p">).</span><span class="n">GetValue</span><span class="p">(</span><span class="s1">&#39;PATH&#39;</span><span class="p">,</span><span class="s1">&#39;Default&#39;</span><span class="p">,</span><span class="nv">$DoNotExpand</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;;%CHEFDK_RUBY%&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
   <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;PATH&#39;</span> <span class="n">-Value</span> <span class="p">(</span><span class="nb">Get-Item</span> <span class="nv">$User_Vars</span><span class="p">).</span><span class="n">GetValue</span><span class="p">(</span><span class="s1">&#39;PATH&#39;</span><span class="p">,</span><span class="s1">&#39;Default&#39;</span><span class="p">,</span><span class="nv">$DoNotExpand</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%CHEFDK_RUBY%&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
   <span class="nb">Remove-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;CHEFDK_RUBY&#39;</span>
@@ -191,14 +190,16 @@
   <span class="p">}</span>
  <span class="k">Else</span>
   <span class="p">{</span>
-  <span class="n">echo</span> <span class="s1">&#39;------------------------------------------------&#39;</span>
-  <span class="n">echo</span> <span class="s2">&#34;|*|  - Set ChefDK Environmental Variables -  |*|&#34;</span>
-  <span class="n">echo</span> <span class="s1">&#39;------------------------------------------------&#39;</span>
-  <span class="n">echo</span> <span class="s2">&#34;|   Use &#39;set&#39; or &#39;unset&#39; to control script     |&#34;</span>
-  <span class="n">echo</span> <span class="s1">&#39;------------------------------------------------&#39;</span>
+  <span class="nb">echo </span><span class="s1">&#39;------------------------------------------------&#39;</span>
+  <span class="nb">echo </span><span class="s2">&#34;|*|  - Set ChefDK Environmental Variables -  |*|&#34;</span>
+  <span class="nb">echo </span><span class="s1">&#39;------------------------------------------------&#39;</span>
+  <span class="nb">echo </span><span class="s2">&#34;|   Use &#39;set&#39; or &#39;unset&#39; to control script     |&#34;</span>
+  <span class="nb">echo </span><span class="s1">&#39;------------------------------------------------&#39;</span>
   <span class="n">pause</span>
   <span class="n">exit</span>
-  <span class="p">}</span></code></pre></div>
+  <span class="p">}</span>
+
+</code></pre></div>
       </div>
 
       <footer>
@@ -240,7 +241,7 @@
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

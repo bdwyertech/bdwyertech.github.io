@@ -57,7 +57,7 @@ Faraday::SSLError: SSL_connect returned=1 errno=0 state=SSLv3 read server certif
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -126,11 +126,9 @@ Faraday::SSLError: SSL_connect returned=1 errno=0 state=SSLv3 read server certif
 
       <div>
         <p>When using Windows, Chef, Vagrant and Berkshelf, you may encounter an issue with certificate validation. The error you may encounter is as follows:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Faraday::SSLError: SSL_connect <span class="nv">returned</span><span class="o">=</span><span class="m">1</span> <span class="nv">errno</span><span class="o">=</span><span class="m">0</span> <span class="nv">state</span><span class="o">=</span>SSLv3 <span class="nb">read</span> server certificate B: certificate verify failed</code></pre></div>
-<p>The problem is Ruby is expecting the SSL_CERT_FILE environmental variable to be set. This should point to a CA bundle to use for SSL certificate validation. If this is not set, certificate validation will fail. You can adjust the Berkshelf configuration to not verify SSL certificates, but I have found this setting to be problematic and sporadically not work. The better option, is to actually set the environmental variable.</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Faraday::SSLError: SSL_connect <span class="nv">returned</span><span class="o">=</span><span class="m">1</span> <span class="nv">errno</span><span class="o">=</span><span class="m">0</span> <span class="nv">state</span><span class="o">=</span>SSLv3 <span class="nb">read</span> server certificate B: certificate verify failed
+</code></pre></div><p>The problem is Ruby is expecting the SSL_CERT_FILE environmental variable to be set. This should point to a CA bundle to use for SSL certificate validation. If this is not set, certificate validation will fail. You can adjust the Berkshelf configuration to not verify SSL certificates, but I have found this setting to be problematic and sporadically not work. The better option, is to actually set the environmental variable.</p>
 <p>Luckily, Vagrant comes with a CA bundle. We can leverage Vagrant&rsquo;s installation information in the registry to determine the installation location of Vagrant and use this to set the SSL_CERT_FILE variable appropriately. The following PowerShell script can be used to do this. It has a set and unset function. By default, running <strong>./Set-SSLCert_Chef_Vagrant.ps1 set</strong> will set SSL_CERT_FILE as a user-specific environmental variable.</p>
-
 <p><strong>After running this script, close and re-open any open command prompts for the new variable to take effect. Vagrant is required for this script to work correctly.</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="c"># Filename: Set-SSLCert_Chef_Vagrant.ps1</span>
 <span class="c"># Brian Dwyer - 5/22/14</span>
@@ -151,9 +149,9 @@ Faraday::SSLError: SSL_connect returned=1 errno=0 state=SSLv3 read server certif
 <span class="c"># Check if Vagrant is installed</span>
 <span class="k">If</span> <span class="p">(!</span><span class="nv">$env:Path</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="s1">&#39;Vagrant&#39;</span><span class="p">))</span>
   <span class="p">{</span>
-    <span class="n">echo</span> <span class="s2">&#34;&#34;</span>
-    <span class="n">echo</span> <span class="s2">&#34;/======| Error: Vagrant does not seem to be installed. |=====\&#34;</span>
-    <span class="n">echo</span> <span class="s2">&#34;&#34;</span>
+    <span class="nb">echo </span><span class="s2">&#34;&#34;</span>
+    <span class="nb">echo </span><span class="s2">&#34;/======| Error: Vagrant does not seem to be installed. |=====\&#34;</span>
+    <span class="nb">echo </span><span class="s2">&#34;&#34;</span>
     <span class="n">pause</span>
     <span class="n">exit</span>
     <span class="p">}</span>
@@ -168,28 +166,29 @@ Faraday::SSLError: SSL_connect returned=1 errno=0 state=SSLv3 read server certif
 <span class="c"># Setup</span>
 <span class="k">If</span> <span class="p">(</span> <span class="nv">$args</span><span class="p">[</span><span class="n">0</span><span class="p">]</span> <span class="o">-eq</span> <span class="s1">&#39;set&#39;</span> <span class="p">)</span>
   <span class="p">{</span>
-  <span class="n">echo</span> <span class="s2">&#34;/======| Setting up Registry Key... |=====\&#34;</span>
+  <span class="nb">echo </span><span class="s2">&#34;/======| Setting up Registry Key... |=====\&#34;</span>
   <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="nv">$Reg_Key</span> <span class="n">-Value</span> <span class="nv">$Reg_Value</span>
   <span class="n">pause</span>
   <span class="n">exit</span>
   <span class="p">}</span>
 <span class="k">Elseif</span> <span class="p">(</span> <span class="nv">$args</span><span class="p">[</span><span class="n">0</span><span class="p">]</span> <span class="o">-eq</span> <span class="s1">&#39;unset&#39;</span> <span class="p">)</span>
   <span class="p">{</span>
-  <span class="n">echo</span> <span class="s2">&#34;/======| Removing Registry Key... |=====\&#34;</span>
+  <span class="nb">echo </span><span class="s2">&#34;/======| Removing Registry Key... |=====\&#34;</span>
   <span class="nb">Remove-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="nv">$Reg_Key</span>
   <span class="n">pause</span>
   <span class="n">exit</span>
   <span class="p">}</span>
  <span class="k">Else</span>
   <span class="p">{</span>
-  <span class="n">echo</span> <span class="s1">&#39;------------------------------------------------&#39;</span>
-  <span class="n">echo</span> <span class="s2">&#34;|*|-Set SSL_CERT_FILE Environmental Variable-|*|&#34;</span>
-  <span class="n">echo</span> <span class="s1">&#39;------------------------------------------------&#39;</span>
-  <span class="n">echo</span> <span class="s2">&#34;|   Use &#39;set&#39; or &#39;unset&#39; to control script     |&#34;</span>
-  <span class="n">echo</span> <span class="s1">&#39;------------------------------------------------&#39;</span>
+  <span class="nb">echo </span><span class="s1">&#39;------------------------------------------------&#39;</span>
+  <span class="nb">echo </span><span class="s2">&#34;|*|-Set SSL_CERT_FILE Environmental Variable-|*|&#34;</span>
+  <span class="nb">echo </span><span class="s1">&#39;------------------------------------------------&#39;</span>
+  <span class="nb">echo </span><span class="s2">&#34;|   Use &#39;set&#39; or &#39;unset&#39; to control script     |&#34;</span>
+  <span class="nb">echo </span><span class="s1">&#39;------------------------------------------------&#39;</span>
   <span class="n">pause</span>
   <span class="n">exit</span>
-  <span class="p">}</span></code></pre></div>
+  <span class="p">}</span>
+</code></pre></div>
       </div>
 
       <footer>
@@ -231,7 +230,7 @@ Faraday::SSLError: SSL_connect returned=1 errno=0 state=SSLv3 read server certif
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

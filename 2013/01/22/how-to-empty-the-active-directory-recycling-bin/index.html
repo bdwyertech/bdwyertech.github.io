@@ -55,7 +55,7 @@
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -124,8 +124,8 @@
 
       <div>
         <p>One of the coolest new features in Server 2008 R2 and 2012 is the ability to recover deleted Active Directory objects. Your forest functional level must be at least 2008 R2 in order to activate this feature. Server 2008 R2 introduced the AD Administrative Center which provides a nice GUI to restore deleted objects after activated.  However, eventually one might want to permanently empty the contents of this recycling bin. There is no way to do this via the GUI. The following PowerShell line will do just that.</p>
-<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">Get-ADObject</span> <span class="n">-Filter</span> <span class="s1">&#39;isDeleted -eq $true -and Name -like &#34;*DEL:*&#34;&#39;</span> <span class="n">-IncludeDeletedObjects</span> <span class="p">|</span> <span class="nb">Remove-ADObject</span> <span class="n">-Confirm</span><span class="err">:</span><span class="nv">$false</span></code></pre></div>
-<p><em>If you want to see what it is going to remove, only use the <strong>Get-ADObject</strong> section of the command prior to the pipe. Remove <strong>-Confirm:$false</strong> if you want to see and confirm each deletion individually. Only run this command in the form seen here if you are absolutely sure you want to empty the trash!</em></p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">Get-ADObject</span> <span class="n">-Filter</span> <span class="s1">&#39;isDeleted -eq $true -and Name -like &#34;*DEL:*&#34;&#39;</span> <span class="n">-IncludeDeletedObjects</span> <span class="p">|</span> <span class="nb">Remove-ADObject</span> <span class="n">-Confirm</span><span class="err">:</span><span class="nv">$false</span>
+</code></pre></div><p><em>If you want to see what it is going to remove, only use the <strong>Get-ADObject</strong> section of the command prior to the pipe. Remove <strong>-Confirm:$false</strong> if you want to see and confirm each deletion individually. Only run this command in the form seen here if you are absolutely sure you want to empty the trash!</em></p>
 
       </div>
 
@@ -168,7 +168,7 @@
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

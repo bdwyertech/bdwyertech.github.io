@@ -11,11 +11,11 @@
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Virtualization"/>
-<meta name="twitter:description" content="At the moment, a major trend in the IT industry is the push towards virtualization. In addition to being a large, quickly growing social movement, the push to &ldquo;go green&rdquo; is a major focus of many industries &amp; organizations looking to maintain or improve their public image by reducing their carbon footprint. Virtualization is one way the IT industry is &rdquo;going green&rdquo;.
+<meta name="twitter:description" content="At the moment, a major trend in the IT industry is the push towards virtualization. In addition to being a large, quickly growing social movement, the push to &ldquo;go green&rdquo; is a major focus of many industries &amp; organizations looking to maintain or improve their public image by reducing their carbon footprint. Virtualization is one way the IT industry is &ldquo;going green&rdquo;.
 At first, you might ask yourself why virtualize? From a system administrator&rsquo;s standpoint, the modularity of virtual machines is impeccable."/>
 
     <meta property="og:title" content="Virtualization" />
-<meta property="og:description" content="At the moment, a major trend in the IT industry is the push towards virtualization. In addition to being a large, quickly growing social movement, the push to &ldquo;go green&rdquo; is a major focus of many industries &amp; organizations looking to maintain or improve their public image by reducing their carbon footprint. Virtualization is one way the IT industry is &rdquo;going green&rdquo;.
+<meta property="og:description" content="At the moment, a major trend in the IT industry is the push towards virtualization. In addition to being a large, quickly growing social movement, the push to &ldquo;go green&rdquo; is a major focus of many industries &amp; organizations looking to maintain or improve their public image by reducing their carbon footprint. Virtualization is one way the IT industry is &ldquo;going green&rdquo;.
 At first, you might ask yourself why virtualize? From a system administrator&rsquo;s standpoint, the modularity of virtual machines is impeccable." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bdwyertech.net/2011/09/01/virtualization/" />
@@ -57,7 +57,7 @@ At first, you might ask yourself why virtualize? From a system administrator&rs
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -121,18 +121,12 @@ At first, you might ask yourself why virtualize? From a system administrator&rs
       </header>
 
       <div>
-        <p>At the moment, a major trend in the IT industry is the push towards virtualization.  In addition to being a  large, quickly growing social movement, the push to &ldquo;go green&rdquo; is a major focus of many industries &amp; organizations looking to maintain or improve their public image by reducing their carbon footprint.  Virtualization is one way the IT industry is &rdquo;going green&rdquo;.</p>
-
+        <p>At the moment, a major trend in the IT industry is the push towards virtualization.  In addition to being a  large, quickly growing social movement, the push to &ldquo;go green&rdquo; is a major focus of many industries &amp; organizations looking to maintain or improve their public image by reducing their carbon footprint.  Virtualization is one way the IT industry is &ldquo;going green&rdquo;.</p>
 <p>At first, you might ask yourself why virtualize?  From a system administrator&rsquo;s standpoint, the modularity of virtual machines is impeccable.  You can easily migrate services from one hypervisor to another, not having to worry about drivers or any major compatibility issues.  Everything remains intact after a proper transition from one host to another; no reconfiguration necessary.  This modularity takes a huge burden off a system administrator who would usually be concerned with these things when migrating a service to a new server.  For example, if a company increases in size and needs higher performance hardware to run a certain service, normally this would mean migrating the service to a fresh OS install on a new server.  You could not simply place the old hard drive into the new server and expect it to work.  The differences in hardware would require a fresh OS installation and even the possible danger of incompatibility with the older software.</p>
-
 <p>Now, let’s say that machine was virtualized and its host&rsquo;s specifications were inadequate.  A new, more powerful server would require only a hypervisor to be installed to be ready to run the VM.  The actual virtual machine could then be migrated from the old machine with a few keystrokes.  After adjusting the privileged domain&rsquo;s configuration to match that of the original host, the service in question could then be returned to its original state.  In practice, the time it takes to migrate virtual machines is considerably less than migrating physical hosts.  In addition, this ease of migration allows for virtual machines to be moved around amongst hosts in an attempt to achieve the most efficient use of resources possible.  If you have a few services that don&rsquo;t see much usage, you can host them all on a single machine.  If one of those services suddenly becomes more in demand, it can be migrated to another host with more free resources available.</p>
-
 <p>This modularity is enticing and also entails ease of incorporating high-availability.  When type-one hypervisors are clustered, they can add redundancy to a virtual machine.  For example, if you had two Hyper-V&rsquo;s clustered and attached to commonly available storage such as a SAN, if one of the cluster members was to crash, the virtual machines running on it would automatically continue running on the second member.  How this works is similar to how Cisco incorporates HSRP.  Each host has an IP address, but the two share a virtual IP address.  This virtual IP address is the only IP a client sees when accessing a service hosted on the cluster.  When managed, they appear as a single VM host.  Virtual machines are migrated to the cluster the same way you migrate a VM from one host to another.  You can choose which machine will primarily host the VM, but when failover occurs it will be automatically migrated to another available cluster member.  Even though you can pick which machine will host your VM, it is accessed through the cluster&rsquo;s virtual IP, regardless.  The best thing about Hyper-V is that this functionality is included in its purchase price - free!</p>
-
 <p>VMware HA is similar but requires licensing.  VMware vMotion and Storage vMotion drive vCenter&rsquo;s HA and also offer the ability to quickly migrate VM&rsquo;s with not only their live state information, but also their associated virtual disks.  VMware&rsquo;s vCenter can also be used to dynamically move VM&rsquo;s from host to host and actually power up and power down hosts as VM demand for resources increases and decreases.</p>
-
 <p>In addition to all of these benefits, virtualization is also more economical.  Because you can host multiple virtual machines on a single host, what used to require a dozen or more servers may now only require two or three powerful servers.  In doing this, you have less hardware to maintain, more free space and best of all, less power usage.  In today’s economy where every dollar counts, this is important.  Money can be saved by virtualizing.  You can go so far as to virtualize your desktop environment as well, but more about that another day.</p>
-
 <p>In today&rsquo;s world, it&rsquo;s pretty easy to see why virtualization has gotten so much attention so quickly.  It offers many real benefits on many fronts.  It is administrator friendly, accountant friendly and even environmentalist friendly.  It&rsquo;s not too often you see something new that provides gratification to all three of these types simultaneously!</p>
 
       </div>
@@ -176,7 +170,7 @@ At first, you might ask yourself why virtualize? From a system administrator&rs
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

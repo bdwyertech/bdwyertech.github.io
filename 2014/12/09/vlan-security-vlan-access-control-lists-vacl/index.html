@@ -57,7 +57,7 @@ VLAN Access Control Lists (VACLs) can be used to implement Access Control at bot
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -125,73 +125,44 @@ VLAN Access Control Lists (VACLs) can be used to implement Access Control at bot
       </header>
 
       <div>
-        
-
-<p>I&rsquo;ve been studying to renew my CCNP as of recently, and I decided to create a refresher blog post about the implementation of VACLs.</p>
-
+        <p>I&rsquo;ve been studying to renew my CCNP as of recently, and I decided to create a refresher blog post about the implementation of VACLs.</p>
 <p>VLAN Access Control Lists (VACLs) can be used to implement Access Control at both Layer 2 and Layer 3. Typically, access lists are applied to ingress or egress traffic on a routed, L3 interface. VACL&rsquo;s allow you to apply the filtering to all packets, regardless of direction.</p>
-
 <p>VACL&rsquo;s are created and applied in a similar manner to route-maps and policy-based routing, in the sense that you create a VLAN access-map, and then apply the VLAN access-maps to VLAN&rsquo;s with a filter statement. Lets see an example.</p>
-
-<p>I have pre-created VLAN 123 with an L3 interface address of 10.123.123.<sup>1</sup>&frasl;<sub>24</sub>. I have joined a port to this VLAN, and connected a PC with an IP address of 10.123.123.<sup>124</sup>&frasl;<sub>24</sub>.</p>
-
+<p>I have pre-created VLAN 123 with an L3 interface address of 10.123.123.1/24. I have joined a port to this VLAN, and connected a PC with an IP address of 10.123.123.124/24.</p>
 <h1 id="ip-based-vacl">IP-based VACL</h1>
-
 <p>For a Layer 3, IP-based VACL, we must first create a regular ACL. This ACL will either contain IP&rsquo;s to permit, or IP&rsquo;s to block. Remember that by default, an implicit &lsquo;deny all&rsquo; is in place, so unless you explicitly allow, the packets will be denied.  The implicit &lsquo;deny all&rsquo; can be counteracted with an explicit &lsquo;allow all&rsquo; at the tail end of the ACL. In this case, only specifically denied traffic will be denied.</p>
-
 <p><strong>Create the Access List</strong>
-<strong><img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_1.png" alt="vacl_1" />
- </strong></p>
-
+**<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_1.png" alt="vacl_1">
+ **</p>
 <p><strong>Create the VLAN Access Map</strong>
-<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_2.png" alt="vacl_2" /></p>
-
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_2.png" alt="vacl_2"></p>
 <p><strong>Confirm the VLAN Access Map Configuration</strong>
-<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_4.png" alt="vacl_4" /></p>
-
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_4.png" alt="vacl_4"></p>
 <p><strong>Apply the the VLAN Access Map to specified VLAN(s)</strong>
-<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_3.png" alt="" /></p>
-
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_3.png" alt=""></p>
 <p><strong>Confirm the Application of the VLAN Access Map</strong>
-<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_5.png" alt="vacl_5" /></p>
-
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_5.png" alt="vacl_5"></p>
 <p>Lets test the configuration.  We have specifically allowed only 10.123.123.123 to be able to communicate on the VLAN.</p>
-
-<p>With the IP address set to 10.123.123.<sup>123</sup>&frasl;<sub>24</sub>, we can successfully ping the L3 interface of the VLAN.
-<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_6.png" alt="vacl_6" /></p>
-
-<p>With the IP address set to 10.123.123.<sup>124</sup>&frasl;<sub>24</sub>, we cannot.
-<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_7.png" alt="vacl_7" /></p>
-
+<p>With the IP address set to 10.123.123.123/24, we can successfully ping the L3 interface of the VLAN.
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_6.png" alt="vacl_6"></p>
+<p>With the IP address set to 10.123.123.124/24, we cannot.
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_7.png" alt="vacl_7"></p>
 <p>We now have a functional implementation of a Layer 3 VLAN Access Control List!  Now, lets delve into how similar functionality can be achieved at Layer 2.</p>
-
 <h1 id="mac-based-vacl">MAC-based VACL</h1>
-
 <p>Layer 2 filtering simply involves substituting MAC Access Control Lists for IP Access Control Lists.  MAC ACL&rsquo;s are very similar to IP ACL&rsquo;s, and extended MAC ACL&rsquo;s can even make use of wildcard masks.  Wildcard masks might be used if you wanted to restrict traffic to a certain vendor&rsquo;s MAC OUI. Under typical circumstances, the first 24 bits of a MAC address are known as an Organizationally Unique Identifier, and are assigned to vendors by the IEEE under ISO/IEC 8802 standards.  Anyway, on to the example.</p>
-
 <p>First, clear out the existing VLAN access map with a no vlan access-map FILTER_NAME.</p>
-
 <p>We need to make a MAC ACL.  In this case, I am specifically denying my laptop&rsquo;s MAC address.  I have blurted out part of the MAC for security purposes.  I didn&rsquo;t, but you&rsquo;d probably want to add an allow any any statement if you only want to block specific MAC addresses.</p>
-
 <p><strong>Create the MAC Access Control List</strong>
-<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_8.png" alt="vacl_8" /></p>
-
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_8.png" alt="vacl_8"></p>
 <p><strong>Confirm the MAC ACL Creation</strong></p>
-
-<p><img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_91.png" alt="vacl_9" /></p>
-
+<p><img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_91.png" alt="vacl_9"></p>
 <p><strong>Create the VLAN Access Map</strong>
-<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_10.png" alt="vacl_10" /></p>
-
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_10.png" alt="vacl_10"></p>
 <p><strong>Confirm Application of VLAN Access-Map</strong>
-<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_12.png" alt="vacl_12" /></p>
-
-<p><img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_13.png" alt="vacl_13" /></p>
-
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_12.png" alt="vacl_12"></p>
+<p><img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_13.png" alt="vacl_13"></p>
 <p><strong>Confirm Functionality of MAC-based VLAN Access-Map</strong></p>
-
-<p><img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_7.png" alt="vacl_7" /></p>
-
+<p><img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_7.png" alt="vacl_7"></p>
 <p>There we have it!  We have successfully implemented both IP-based and MAC-based VACL&rsquo;s.</p>
 
       </div>
@@ -235,7 +206,7 @@ VLAN Access Control Lists (VACLs) can be used to implement Access Control at bot
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

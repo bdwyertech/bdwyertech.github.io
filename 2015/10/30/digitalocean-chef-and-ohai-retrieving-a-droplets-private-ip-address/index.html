@@ -57,7 +57,7 @@ According to DigitalOcean documentation, if Private Networking is enabled, the I
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -130,9 +130,7 @@ According to DigitalOcean documentation, if Private Networking is enabled, the I
 
       <div>
         <p>Recently, I attempted to use the Ohai value for <code>node['cloud_v2']['local_ipv4']</code> and <code>node['cloud']['local_ipv4']['ip_address']</code> to determine the Private IP address of my Cloud-based nodes in a Chef cookbook.  Unfortunately, it does not work accurately for DigitalOcean instances any longer.</p>
-
 <p>According to DigitalOcean documentation, if Private Networking is enabled, the IP will be assigned to <code>eth1</code>.  Recently, I noticed that a second Private IP address has begun to be assigned to the <code>eth0</code> interface.  This is/was causing Ohai to assign the <code>eth0</code> secondary (private) IP address to <code>node['cloud_v2']['local_ipv4']</code> and <code>node['cloud']['local_ipv4']['ip_address']</code></p>
-
 <p>As you can see below, there is a second, private IP address assigned to eth0. I believe this has something to do with the recent release of <a href="https://www.digitalocean.com/company/blog/floating-ips-start-architecting-your-applications-for-high-availability/">Floating IP Addresses</a>.</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">bdwyertech@dummy-droplet:~$ cat /etc/network/interfaces
 <span class="c1"># This file describes the network interfaces available on your</span>
@@ -146,16 +144,15 @@ iface lo inet loopback
 <span class="c1"># The primary network interface</span>
 auto eth1 eth0
       iface eth0 inet static
-      address <span class="m">123</span>.234.123.234
-      netmask <span class="m">255</span>.255.255.0
-      gateway <span class="m">123</span>.234.123.1
-      up ip addr add <span class="m">10</span>.13.0.123/16 dev eth0
-      dns-nameservers <span class="m">8</span>.8.8.8 <span class="m">8</span>.8.4.4
+      address 123.234.123.234
+      netmask 255.255.255.0
+      gateway 123.234.123.1
+      up ip addr add 10.13.0.123/16 dev eth0
+      dns-nameservers 8.8.8.8 8.8.4.4
 iface eth1 inet static
-      address <span class="m">10</span>.128.123.123
-      netmask <span class="m">255</span>.255.0.0</code></pre></div>
-<p>Initially, I just wrote a simple function to detect the IP address on <code>eth1</code> via the node hash if DigitalOcean is detected by Ohai as the cloud provider. However, querying DigitalOcean metadata seems to be the more robust solution.</p>
-
+      address 10.128.123.123
+      netmask 255.255.0.0
+</code></pre></div><p>Initially, I just wrote a simple function to detect the IP address on <code>eth1</code> via the node hash if DigitalOcean is detected by Ohai as the cloud provider. However, querying DigitalOcean metadata seems to be the more robust solution.</p>
 <p>DigitalOcean has released a metadata service, similar to AWS, where you can query <code>http://169.254.169.254/metadata/{API_VERSION}</code> for droplet information.  DigitalOcean conveniently allows you to query the droplet&rsquo;s metadata in its entirety and return it in JSON format.  I&rsquo;ve went ahead and written a simple library to query this data and bring it into Ruby as a hash.</p>
 <div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="c1"># DigitalOcean Metadata Chef Library</span>
 <span class="c1"># rubocop:disable LineLength</span>
@@ -196,15 +193,15 @@ iface eth1 inet static
     <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">retrieved_metadata</span><span class="p">)</span> <span class="k">if</span> <span class="n">retrieved_metadata</span>
   <span class="k">end</span>
   <span class="kp">module_function</span> <span class="ss">:parse_json_metadata</span>
-<span class="k">end</span></code></pre></div>
-<p>Code also available on my <a href="https://gist.github.com/bdwyertech/df3d5ef2bdb4ef642642">Github</a>.</p>
-
+<span class="k">end</span>
+</code></pre></div><p>Code also available on my <a href="https://gist.github.com/bdwyertech/df3d5ef2bdb4ef642642">Github</a>.</p>
 <p>This conveniently allows you to query the resulting Ruby hash, and use it in your code.</p>
 <div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="c1"># =&gt; Get the Droplet&#39;s Metadata</span>
 <span class="n">metadata</span> <span class="o">=</span> <span class="no">DoMetadata</span><span class="o">.</span><span class="n">parse_json_metadata</span>
 
 <span class="n">metadata</span><span class="o">[</span><span class="s1">&#39;interfaces&#39;</span><span class="o">][</span><span class="s1">&#39;private&#39;</span><span class="o">][</span><span class="mi">0</span><span class="o">][</span><span class="s1">&#39;ipv4&#39;</span><span class="o">][</span><span class="s1">&#39;ip_address&#39;</span><span class="o">]</span> <span class="c1"># =&gt; Droplet&#39;s Private IP Address</span>
-<span class="n">metadata</span><span class="o">[</span><span class="s1">&#39;interfaces&#39;</span><span class="o">][</span><span class="s1">&#39;private&#39;</span><span class="o">][</span><span class="mi">0</span><span class="o">][</span><span class="s1">&#39;ipv4&#39;</span><span class="o">][</span><span class="s1">&#39;netmask&#39;</span><span class="o">]</span> <span class="c1"># =&gt; Droplet&#39;s Private Subnet Mask</span></code></pre></div>
+<span class="n">metadata</span><span class="o">[</span><span class="s1">&#39;interfaces&#39;</span><span class="o">][</span><span class="s1">&#39;private&#39;</span><span class="o">][</span><span class="mi">0</span><span class="o">][</span><span class="s1">&#39;ipv4&#39;</span><span class="o">][</span><span class="s1">&#39;netmask&#39;</span><span class="o">]</span> <span class="c1"># =&gt; Droplet&#39;s Private Subnet Mask</span>
+</code></pre></div>
       </div>
 
       <footer>
@@ -246,7 +243,7 @@ iface eth1 inet static
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

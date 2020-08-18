@@ -11,10 +11,12 @@
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Nagios &amp; NagVis MySQL Troubleshooting (ndomod &amp; ndo2db)"/>
-<meta name="twitter:description" content="UPDATE Check out OMD for an RPM based, easy to install and update variant of Nagios which includes other utilities as well. This will save a tremendous amount of time to deployment. www.omdistro.org Recently I setup a Nagios box to monitor an organization&rsquo;s network and network services. Nagios is extremely flexible and can poll pretty much any network connected device by configuring service checks. The service checks are like plugins and can poll devices via SNMP, Ping, HTTP, etc."/>
+<meta name="twitter:description" content="UPDATE Check out OMD for an RPM based, easy to install and update variant of Nagios which includes other utilities as well. This will save a tremendous amount of time to deployment. www.omdistro.org
+Recently I setup a Nagios box to monitor an organization&rsquo;s network and network services. Nagios is extremely flexible and can poll pretty much any network connected device by configuring service checks. The service checks are like plugins and can poll devices via SNMP, Ping, HTTP, etc."/>
 
     <meta property="og:title" content="Nagios &amp; NagVis MySQL Troubleshooting (ndomod &amp; ndo2db)" />
-<meta property="og:description" content="UPDATE Check out OMD for an RPM based, easy to install and update variant of Nagios which includes other utilities as well. This will save a tremendous amount of time to deployment. www.omdistro.org Recently I setup a Nagios box to monitor an organization&rsquo;s network and network services. Nagios is extremely flexible and can poll pretty much any network connected device by configuring service checks. The service checks are like plugins and can poll devices via SNMP, Ping, HTTP, etc." />
+<meta property="og:description" content="UPDATE Check out OMD for an RPM based, easy to install and update variant of Nagios which includes other utilities as well. This will save a tremendous amount of time to deployment. www.omdistro.org
+Recently I setup a Nagios box to monitor an organization&rsquo;s network and network services. Nagios is extremely flexible and can poll pretty much any network connected device by configuring service checks. The service checks are like plugins and can poll devices via SNMP, Ping, HTTP, etc." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bdwyertech.net/2012/04/30/nagios-nagvis-mysql-troubleshooting-ndomod-ndo2db/" />
 <meta property="article:published_time" content="2012-04-30T20:30:15+00:00" />
@@ -55,7 +57,7 @@
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -119,20 +121,17 @@
       </header>
 
       <div>
-        <p><strong>UPDATE</strong> Check out OMD for an RPM based, easy to install and update variant of Nagios which includes other utilities as well. This will save a tremendous amount of time to deployment. <a href="http://www.omdistro.org/">www.omdistro.org</a>
-<!-- more --></p>
-
+        <p><strong>UPDATE</strong> Check out OMD for an RPM based, easy to install and update variant of Nagios which includes other utilities as well. This will save a tremendous amount of time to deployment. <a href="http://www.omdistro.org/">www.omdistro.org</a></p>
+<!-- raw HTML omitted -->
 <p>Recently I setup a Nagios box to monitor an organization&rsquo;s network and network services.  Nagios is extremely flexible and can poll pretty much any network connected device by configuring service checks.  The service checks are like plugins and can poll devices via SNMP, Ping, HTTP, etc.  You can even write your own service check plugins using Perl scripts.</p>
-
 <p>NagVis mates with Nagios to provide an enhanced graphical map of the network, services and their current status.  NDOMOD writes Nagios data to a Unix or TCP socket (data sink), and  NDO2DB catches this data and writes it into a MySQL database.  NagVis can then be configured to use MySQL as a backend.</p>
-
-<p>When implementing the NDOMOD and NDO2DB plugins, I received the error <strong>&ldquo;NDOMOD: Could not open data sink!&rdquo;</strong>.  First I verified the plugin configuration files.  Then I began checking permissions which narrowed the error down to ownership and permissions of the plugin configuration files <em>ndo2db</em> and <em>ndomod</em> located at <em>/usr/local/nagios/etc/</em></p>
-
+<p>When implementing the NDOMOD and NDO2DB plugins, I received the error <strong>&ldquo;NDOMOD: Could not open data sink!&quot;</strong>.  First I verified the plugin configuration files.  Then I began checking permissions which narrowed the error down to ownership and permissions of the plugin configuration files <em>ndo2db</em> and <em>ndomod</em> located at <em>/usr/local/nagios/etc/</em></p>
 <p>The resolution was to to give ownership and proper permissions to the nagios user and group as follows:</p>
-<div class="highlight"><pre class="chroma">  * **cd /usr/local/nagios/etc/**
+<pre><code>  * **cd /usr/local/nagios/etc/**
   * **chown nagios:nagios ndo2db.cfg ndomod.cfg**
-  * **chmod 664 ndo2db.cfg ndomod.cfg**</pre></div>
-<p>While searching for this error, I found many topics where people reinstalled and it worked fine.  Permissions are a common misconfiguration which result in errors on *nix systems.  Remember to check permissions using <strong>ls -lah </strong>during any installation/configuration/troubleshooting process.   Hopefully this will be of help to others.</p>
+  * **chmod 664 ndo2db.cfg ndomod.cfg**
+</code></pre>
+<p>While searching for this error, I found many topics where people reinstalled and it worked fine.  Permissions are a common misconfiguration which result in errors on *nix systems.  Remember to check permissions using **ls -lah **during any installation/configuration/troubleshooting process.   Hopefully this will be of help to others.</p>
 
       </div>
 
@@ -175,7 +174,7 @@
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

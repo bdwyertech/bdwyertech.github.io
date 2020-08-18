@@ -57,7 +57,7 @@ Currently, I&rsquo;ve got my OS X &amp; *nix infrastructure under the control of
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -126,11 +126,8 @@ Currently, I&rsquo;ve got my OS X &amp; *nix infrastructure under the control of
 
       <div>
         <p>As an MCITP I&rsquo;m well-versed in Group Policy and what not, but building a clean Windows base image with all updates applied and some prerequisite software has always always been a relatively manual, inconsistent, and annoying process. I recently did a major overhaul of our Operations Network/Server Infrastructure and figured there&rsquo;s no better time to give my trusty Chef, Packer &amp; Vagrant tool set a shot with our workstations.</p>
-
 <p>Currently, I&rsquo;ve got my OS X &amp; *nix infrastructure under the control of Chef, and I&rsquo;ve got e2e OS build &amp; deployment processes in place (Packer -&gt; Vagrant -&gt; Chef ). As a well-versed, cross-platform expert, I figured it was about time to bring some of that over to the Windows side of our operation. Leveraging a DevOps skill set can cut back on the need for IT support personnel by automating trivial IT processes. In my opinion, anything that can be automated, should be automated&hellip; It is more efficient no matter which way you look at it.</p>
-
 <p>I noticed that Windows 7 SP1 in particular seems to consume a TON of resources when looking for updates; this issue can literally cost you hours&hellip; It seems Microsoft has addressed this with KB3102810.</p>
-
 <p>Here is a PowerShell function which you can throw in your provisioning script to tackle this issue.</p>
 <div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="k">Function</span> <span class="n">Fix-WinUpdate</span> <span class="p">{</span>
   <span class="c"># Retrieve Operating System Information</span>
@@ -177,7 +174,8 @@ Currently, I&rsquo;ve got my OS X &amp; *nix infrastructure under the control of
       <span class="p">}</span>
     <span class="p">}</span>
   <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span>
+</code></pre></div>
       </div>
 
       <footer>
@@ -219,7 +217,7 @@ Currently, I&rsquo;ve got my OS X &amp; *nix infrastructure under the control of
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

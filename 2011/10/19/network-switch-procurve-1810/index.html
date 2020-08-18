@@ -57,7 +57,7 @@ At the moment, quality managed gigabit switches are expensive. 10/100 managed sw
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -123,24 +123,16 @@ At the moment, quality managed gigabit switches are expensive. 10/100 managed sw
       </header>
 
       <div>
-        
-
-<p><a href="https://bdwyertech.net/2011/10/1810g.jpeg"><img src="https://bdwyertech.net/2011/10/1810g.jpeg?w=150" alt="HP ProCurve 1810G" />
+        <p><a href="https://bdwyertech.net/2011/10/1810g.jpeg"><img src="https://bdwyertech.net/2011/10/1810g.jpeg?w=150" alt="HP ProCurve 1810G">
 </a>Recently, I decided I would like to acquire a quality, managed switch for my home environment.  I wanted something which supported Gigabit Ethernet, Flow Control and Jumbo Frames.  These features would complement my Dell PE 2950 ESXi box by providing high performance and future expandability.</p>
-
 <p>At the moment, quality managed gigabit switches are expensive.  10/100 managed switches can easily be acquired on eBay for a decent price, however gigabit models are often seen for upwards of $500 used.  Initially I wanted to go the Cisco route, but even 2960G&rsquo;s were way out of my price range.  I have worked with HP ProCurve 2510G&rsquo;s and 2900&rsquo;s in a vSphere environment and was impressed, therefore I began to look towards HP.  I soon discovered that although the ProCurves were more reasonably priced, they were still out of my price range.  During this search, I discovered the web-managed ProCurve 1800 and 1810 models.  They had all of the features I was looking for at a price point that cannot be beat.  In addition, they are covered by the lifetime HP ProCurve warranty.</p>
-
 <p>I ended up purchasing a 24-port 1810G for around $200.  Immediately after unboxing, I flashed it with the latest firmware which irons out some bugs present in initial releases.  I then set up a few VLAN&rsquo;s and a trunk port to my ESXi box.  As a CCNA, I find HP terminology interesting as they call VLAN trunk ports &ldquo;tagged&rdquo; ports, and what they call Trunking is actually referred to as link aggregation in Cisco terms.  In addition, the equivalent of a Cisco native VLAN is referred to as the untagged VLAN on HP gear.  If you are familiar with Cisco gear, this is an important differentiation to make note of if working with HP gear for the first time.</p>
-
 <p>The web interface of the 1810 is smooth and facilitates easy access to management functions.  However, I really wish HP provided a console port.  There is a fellow <a href="http://www.happyhacking.org/Happy_Hacking/Blog/Entries/2010/3/20_HP_ProCurve_1810G_Take_2.html">here</a> who disassembled his 1810G-8 and found that the internal board has headers for a console port and that this switch is based off of a Broadcom chipset.  Being that the hardware support is there, I wish it included console access.</p>
-
 <p>Overall, the 1810 is a great switch for high-performance home labs, small businesses, and maybe as access switches in an enterprise.  It is feature rich, affordable and has a lifetime warranty.</p>
-
+<h3 id="heading"></h3>
 <h1 id="update-xbox-users-read-this"><strong>UPDATE</strong>!!!  Xbox users, read this!</h1>
-
 <p>For those of you using one of these switches with an Xbox 360, you must Disable the AutoDoS functionality in order to connect to Xbox Live!  I was going nuts making adjustments on my pfSense box trying to get this thing connected, then decided for the hell of it to try another switch.  Magically, the Xbox worked, therefore I knew it was the switch.  I disabled the security functions of the switch one at a time and narrowed it down to AutoDoS.  This feature enables detection and blocking of a plethora of attack signatures, however they cannot be turned on or off individually.  For this reason, this feature must be disabled in its entirety.</p>
-
-<p><a href="https://bdwyertech.net/2011/10/auto-dos.jpg"><img src="https://bdwyertech.net/2011/10/auto-dos.jpg" alt="" />
+<p><a href="https://bdwyertech.net/2011/10/auto-dos.jpg"><img src="https://bdwyertech.net/2011/10/auto-dos.jpg" alt="">
 </a></p>
 
       </div>
@@ -184,7 +176,7 @@ At the moment, quality managed gigabit switches are expensive. 10/100 managed sw
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

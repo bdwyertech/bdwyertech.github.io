@@ -13,12 +13,12 @@
 <meta name="twitter:title" content="Chef - Ohai in AWS EC2 VPC"/>
 <meta name="twitter:description" content="This is a quick tip to those of you who are using Chef inside an AWS VPC. The EC2 Ohai plugin does not run by default, which prevents some meaningful node attributes from being collected.
 The EC2-specific node attributes I find most useful are:
-[code language=&ldquo;ruby&rdquo;] node[&lsquo;ec2&rsquo;][&lsquo;instance_id&rsquo;] # =&gt; Instance&rsquo;s ID node[&lsquo;ec2&rsquo;][&lsquo;local_ipv4&rsquo;] # =&gt; Instance&rsquo;s IPv4 Address node[&lsquo;ec2&rsquo;][&lsquo;placement_availability_zone&rsquo;] # =&gt; Instance&rsquo;s Region &amp; Availability Zone node[&lsquo;ec2&rsquo;][&lsquo;ami_id&rsquo;] # =&gt; Instance&rsquo;s Baseline AMI [/code]"/>
+node[&#39;ec2&#39;][&#39;instance_id&#39;] # =&gt; Instance&#39;s ID node[&#39;ec2&#39;][&#39;local_ipv4&#39;] # =&gt; Instance&#39;s IPv4 Address node[&#39;ec2&#39;][&#39;placement_availability_zone&#39;] # =&gt; Instance&#39;s Region &amp; Availability Zone node[&#39;ec2&#39;][&#39;ami_id&#39;] # =&gt; Instance&#39;s Baseline AMI To get your instances inside a VPC to pick up meaningful node attributes related to EC2, you have to create an Ohai hint file for the EC2 plugin."/>
 
     <meta property="og:title" content="Chef - Ohai in AWS EC2 VPC" />
 <meta property="og:description" content="This is a quick tip to those of you who are using Chef inside an AWS VPC. The EC2 Ohai plugin does not run by default, which prevents some meaningful node attributes from being collected.
 The EC2-specific node attributes I find most useful are:
-[code language=&ldquo;ruby&rdquo;] node[&lsquo;ec2&rsquo;][&lsquo;instance_id&rsquo;] # =&gt; Instance&rsquo;s ID node[&lsquo;ec2&rsquo;][&lsquo;local_ipv4&rsquo;] # =&gt; Instance&rsquo;s IPv4 Address node[&lsquo;ec2&rsquo;][&lsquo;placement_availability_zone&rsquo;] # =&gt; Instance&rsquo;s Region &amp; Availability Zone node[&lsquo;ec2&rsquo;][&lsquo;ami_id&rsquo;] # =&gt; Instance&rsquo;s Baseline AMI [/code]" />
+node[&#39;ec2&#39;][&#39;instance_id&#39;] # =&gt; Instance&#39;s ID node[&#39;ec2&#39;][&#39;local_ipv4&#39;] # =&gt; Instance&#39;s IPv4 Address node[&#39;ec2&#39;][&#39;placement_availability_zone&#39;] # =&gt; Instance&#39;s Region &amp; Availability Zone node[&#39;ec2&#39;][&#39;ami_id&#39;] # =&gt; Instance&#39;s Baseline AMI To get your instances inside a VPC to pick up meaningful node attributes related to EC2, you have to create an Ohai hint file for the EC2 plugin." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bdwyertech.net/2015/04/24/chef-ohai-in-aws-ec2-vpc/" />
 <meta property="article:published_time" content="2015-04-24T20:18:15+00:00" />
@@ -59,7 +59,7 @@ The EC2-specific node attributes I find most useful are:
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -130,30 +130,18 @@ The EC2-specific node attributes I find most useful are:
 
       <div>
         <p>This is a quick tip to those of you who are using Chef inside an AWS VPC. The EC2 Ohai plugin does not run by default, which prevents some meaningful node attributes from being collected.</p>
-
 <p>The EC2-specific node attributes I find most useful are:</p>
-
-<p>[code language=&ldquo;ruby&rdquo;]
-node[&lsquo;ec2&rsquo;][&lsquo;instance_id&rsquo;] # =&gt; Instance&rsquo;s ID
-node[&lsquo;ec2&rsquo;][&lsquo;local_ipv4&rsquo;] # =&gt; Instance&rsquo;s IPv4 Address
-node[&lsquo;ec2&rsquo;][&lsquo;placement_availability_zone&rsquo;] # =&gt; Instance&rsquo;s Region &amp; Availability Zone
-node[&lsquo;ec2&rsquo;][&lsquo;ami_id&rsquo;] # =&gt; Instance&rsquo;s Baseline AMI
-[/code]</p>
-
-<p>To get your instances inside a VPC to pick up meaningful node attributes related to EC2, you have to create an Ohai hint file for the EC2 plugin. To do so, simply throw this into your initial bootstrap.</p>
-
-<p>[code language=&ldquo;bash&rdquo;]
-mkdir -p /etc/chef/ohai/hints &amp;&amp; touch ${_}/ec2.json
-[/code]</p>
-
-<p>Make sure you don&rsquo;t do that blindly on non-EC2 instances, as it will significantly increase the execution time of Ohai.  You might want to wrap this in an if statement, and use something like the example below.</p>
-
-<p>[code language=&ldquo;bash&rdquo;]
-if [[ $(dmidecode | grep -i amazon) ]] ; then
- mkdir -p /etc/chef/ohai/hints &amp;&amp; touch ${_}/ec2.json
-fi
-[/code]</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="n">node</span><span class="o">[</span><span class="s1">&#39;ec2&#39;</span><span class="o">][</span><span class="s1">&#39;instance_id&#39;</span><span class="o">]</span> <span class="c1"># =&gt; Instance&#39;s ID</span>
+<span class="n">node</span><span class="o">[</span><span class="s1">&#39;ec2&#39;</span><span class="o">][</span><span class="s1">&#39;local_ipv4&#39;</span><span class="o">]</span> <span class="c1"># =&gt; Instance&#39;s IPv4 Address</span>
+<span class="n">node</span><span class="o">[</span><span class="s1">&#39;ec2&#39;</span><span class="o">][</span><span class="s1">&#39;placement_availability_zone&#39;</span><span class="o">]</span> <span class="c1"># =&gt; Instance&#39;s Region &amp; Availability Zone</span>
+<span class="n">node</span><span class="o">[</span><span class="s1">&#39;ec2&#39;</span><span class="o">][</span><span class="s1">&#39;ami_id&#39;</span><span class="o">]</span> <span class="c1"># =&gt; Instance&#39;s Baseline AMI</span>
+</code></pre></div><p>To get your instances inside a VPC to pick up meaningful node attributes related to EC2, you have to create an Ohai hint file for the EC2 plugin. To do so, simply throw this into your initial bootstrap.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p /etc/chef/ohai/hints <span class="o">&amp;&amp;</span> touch <span class="si">${</span><span class="nv">_</span><span class="si">}</span>/ec2.json
+</code></pre></div><p>Make sure you don&rsquo;t do that blindly on non-EC2 instances, as it will significantly increase the execution time of Ohai.  You might want to wrap this in an if statement, and use something like the example below.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="k">if</span> <span class="o">[[</span> <span class="k">$(</span>dmidecode <span class="p">|</span> grep -i amazon<span class="k">)</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+  mkdir -p /etc/chef/ohai/hints <span class="o">&amp;&amp;</span> touch <span class="si">${</span><span class="nv">_</span><span class="si">}</span>/ec2.json
+<span class="k">fi</span>
+</code></pre></div>
       </div>
 
       <footer>
@@ -195,7 +183,7 @@ fi
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>

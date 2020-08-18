@@ -55,7 +55,7 @@
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
     <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.59.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
   </head>
 
   <body class=" ">
@@ -123,50 +123,32 @@
       </header>
 
       <div>
-        <p><a href="https://bdwyertech.files.wordpress.com/2012/02/022512_2257_branchoffic1.png"><img src="https://bdwyertech.files.wordpress.com/2012/02/022512_2257_branchoffic1.png" alt="022512_2257_BranchOffic1.png" />
+        <p><a href="https://bdwyertech.files.wordpress.com/2012/02/022512_2257_branchoffic1.png"><img src="https://bdwyertech.files.wordpress.com/2012/02/022512_2257_branchoffic1.png" alt="022512_2257_BranchOffic1.png">
 </a></p>
-
 <p>It has been almost 3 years since I wrote <a href="http://bdwyertech.wordpress.com/2012/02/25/branch-office-connections/"><em>Branch Office Connections – GRE over IPSec VPN</em></a>!  For those of you who are familiar with Cisco certification, that means time to renew!  Anyway, I&rsquo;m coming back now and looking at this lab, I noticed that we are preferring the serial link for traffic!  In this day and age, the serial link would likely be the fallback, and a faster, cheaper GRE/IPSEC VPN would likely be the preferable route!  Anyway, to accomplish this, we need to look at EIGRP and its determination of the best route.  EIGRP uses bandwidth, delay, reliability, load, and MTU. Essentially, bandwidth and delay are what we are going to play with here; hopefully your ISP is reliable, and not over-provisioned.  Manipulation of bandwidth and delay will affect the feasible route&rsquo;s metric, and in turn affect which route EIGRP will prefer.  Manipulation of these values will not affect the actual throughput or latency on the link, they are purely for manipulating routing decisions, as we are doing here.</p>
-
-<p><a href="https://bdwyertech.files.wordpress.com/2014/11/tun0_bw.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/tun0_bw.png" alt="tun0_bw" />
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/tun0_bw.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/tun0_bw.png" alt="tun0_bw">
 </a></p>
-
 <p>When I fired this lab back up, I found that the default bandwidth on the Tunnel interface was 9kbps! Actually, I used <em>bandwidth inherit</em> incorrectly; this configuration does not cause Tunnel0 to inherit the bandwidth of the FastEthernet interface.  <em><strong>Bandwidth inherit</strong></em> would be used on sub-interfaces, to inherit the bandwidth of the primary interface. A tunnel <em>is not</em> a sub-interface of the transmitting/receiving PHY&rsquo;s. Anyway, we should make sure we declare a higher bandwidth and lower delay than the Serial backup on these Tunnel interfaces.</p>
-
 <p>Cisco uses tens of microseconds as unit of measure for delay. <em>**1 millisecond = 1000 **<strong>microseconds</strong></em>, so <em><strong>1 millisecond = 100 tens of microseconds</strong></em>.  So lets say you have a 50 millisecond ping between your branch office and HQ, you would use a delay value of 5000.  FastEthernet&rsquo;s default bandwidth is 100,000kbps, so we&rsquo;ll use that for our tunnel bandwidth.</p>
-
 <p><strong>On R4:</strong></p>
-
-<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r4_bw_delay.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r4_bw_delay.png" alt="R4_bw_delay" />
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r4_bw_delay.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r4_bw_delay.png" alt="R4_bw_delay">
 </a></p>
-
 <p><strong>R4&rsquo;s Routing Table - Before &amp; After</strong></p>
-
 <p><strong><em>Before</em></strong></p>
-
-<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r4_before.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r4_before.png" alt="R4_before" />
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r4_before.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r4_before.png" alt="R4_before">
 </a></p>
-
 <p><em><strong>After</strong></em></p>
-
-<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r4_after.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r4_after.png" alt="R4_after" />
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r4_after.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r4_after.png" alt="R4_after">
 </a></p>
-
 <p>At this point, our Branch Office is routing egress traffic destined for the Enterprise Core over the GRE/IPSEC tunnel.  Lets go ahead and see what the routing table looks like on the other side, on R2.</p>
-
-<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r2_before.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r2_before.png" alt="R2_before" />
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r2_before.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r2_before.png" alt="R2_before">
 </a></p>
-
 <p>Aha!  The Enterprise Core is still routing traffic destined for the Branch Office over the Serial link.  Why is this? Well, R2 still doesn&rsquo;t realize that the Tunnel interface has a higher bandwidth and lower latency.  Let&rsquo;s go ahead and fix that.</p>
-
-<p>_<strong><a href="https://bdwyertech.files.wordpress.com/2014/11/r2_bw_delay.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r2_bw_delay.png" alt="R2_bw_delay" />
-</a></strong>_</p>
-
+<p>_**<a href="https://bdwyertech.files.wordpress.com/2014/11/r2_bw_delay.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r2_bw_delay.png" alt="R2_bw_delay">
+</a>**_</p>
 <p><em><strong>After</strong></em></p>
-
-<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r2_after.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r2_after.png" alt="R2_after" />
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r2_after.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r2_after.png" alt="R2_after">
 </a></p>
-
 <p>Bingo.  We&rsquo;ve fixed it all up.  It is critical that any interface metric manipulations are performed on both sides of the link, otherwise the result is a non-symmetrical traffic pattern, which may result in confusion and difficult troubleshooting weeks, months, or years down the road.</p>
 
       </div>
@@ -210,7 +192,7 @@
     
       <p>My place to record ideas and encounters with technology</p>
     
-     © 2019
+     © 2020
     
     
   </section>
