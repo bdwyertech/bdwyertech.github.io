@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="Recently, I attempted to use the Ohai value for node[&#39;cloud_v2&#39;][&#39;local_ipv4&#39;] and node[&#39;cloud&#39;][&#39;local_ipv4&#39;][&#39;ip_address&#39;] to determine the Private IP address of my Cloud-based nodes in a Chef cookbook. Unfortunately, it does not work accurately for DigitalOcean instances any longer.
+According to DigitalOcean documentation, if Private Networking is enabled, the IP will be assigned to eth1. Recently, I noticed that a second Private IP address has begun to be assigned to the eth0 interface.">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="DigitalOcean, Chef and Ohai - Retrieving a Droplet&#39;s Private IP Address"/>
+<meta name="twitter:description" content="Recently, I attempted to use the Ohai value for node[&#39;cloud_v2&#39;][&#39;local_ipv4&#39;] and node[&#39;cloud&#39;][&#39;local_ipv4&#39;][&#39;ip_address&#39;] to determine the Private IP address of my Cloud-based nodes in a Chef cookbook. Unfortunately, it does not work accurately for DigitalOcean instances any longer.
+According to DigitalOcean documentation, if Private Networking is enabled, the IP will be assigned to eth1. Recently, I noticed that a second Private IP address has begun to be assigned to the eth0 interface."/>
+
+    <meta property="og:title" content="DigitalOcean, Chef and Ohai - Retrieving a Droplet&#39;s Private IP Address" />
+<meta property="og:description" content="Recently, I attempted to use the Ohai value for node[&#39;cloud_v2&#39;][&#39;local_ipv4&#39;] and node[&#39;cloud&#39;][&#39;local_ipv4&#39;][&#39;ip_address&#39;] to determine the Private IP address of my Cloud-based nodes in a Chef cookbook. Unfortunately, it does not work accurately for DigitalOcean instances any longer.
+According to DigitalOcean documentation, if Private Networking is enabled, the IP will be assigned to eth1. Recently, I noticed that a second Private IP address has begun to be assigned to the eth0 interface." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2015-10-30T21:49:28&#43;00:00" />
+<meta property="article:modified_time" content="2015-10-30T21:49:28&#43;00:00" />
+
+
+
+    <title>
+  DigitalOcean, Chef and Ohai - Retrieving a Droplet&#39;s Private IP Address · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/">
+              DigitalOcean, Chef and Ohai - Retrieving a Droplet&#39;s Private IP Address
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2015-10-30T21:49:28Z'>
+                October 30, 2015
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              3-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="https://bdwyertech.net/categories/nix/">*nix</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/chef/">Chef</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/cloud/">Cloud</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/digitalocean/">DigitalOcean</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/networking/">Networking</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p>Recently, I attempted to use the Ohai value for <code>node['cloud_v2']['local_ipv4']</code> and <code>node['cloud']['local_ipv4']['ip_address']</code> to determine the Private IP address of my Cloud-based nodes in a Chef cookbook.  Unfortunately, it does not work accurately for DigitalOcean instances any longer.</p>
+<p>According to DigitalOcean documentation, if Private Networking is enabled, the IP will be assigned to <code>eth1</code>.  Recently, I noticed that a second Private IP address has begun to be assigned to the <code>eth0</code> interface.  This is/was causing Ohai to assign the <code>eth0</code> secondary (private) IP address to <code>node['cloud_v2']['local_ipv4']</code> and <code>node['cloud']['local_ipv4']['ip_address']</code></p>
+<p>As you can see below, there is a second, private IP address assigned to eth0. I believe this has something to do with the recent release of <a href="https://www.digitalocean.com/company/blog/floating-ips-start-architecting-your-applications-for-high-availability/">Floating IP Addresses</a>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">bdwyertech@dummy-droplet:~$ cat /etc/network/interfaces
+<span class="c1"># This file describes the network interfaces available on your</span>
+<span class="c1"># system and how to activate them. For more information, see</span>
+<span class="c1"># interfaces(5).</span>
+
+<span class="c1"># The loopback network interface</span>
+auto lo
+iface lo inet loopback
+
+<span class="c1"># The primary network interface</span>
+auto eth1 eth0
+      iface eth0 inet static
+      address 123.234.123.234
+      netmask 255.255.255.0
+      gateway 123.234.123.1
+      up ip addr add 10.13.0.123/16 dev eth0
+      dns-nameservers 8.8.8.8 8.8.4.4
+iface eth1 inet static
+      address 10.128.123.123
+      netmask 255.255.0.0
+</code></pre></div><p>Initially, I just wrote a simple function to detect the IP address on <code>eth1</code> via the node hash if DigitalOcean is detected by Ohai as the cloud provider. However, querying DigitalOcean metadata seems to be the more robust solution.</p>
+<p>DigitalOcean has released a metadata service, similar to AWS, where you can query <code>http://169.254.169.254/metadata/{API_VERSION}</code> for droplet information.  DigitalOcean conveniently allows you to query the droplet&rsquo;s metadata in its entirety and return it in JSON format.  I&rsquo;ve went ahead and written a simple library to query this data and bring it into Ruby as a hash.</p>
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="c1"># DigitalOcean Metadata Chef Library</span>
+<span class="c1"># rubocop:disable LineLength</span>
+
+<span class="nb">require</span> <span class="s1">&#39;net/http&#39;</span>
+
+<span class="c1"># Public: This defines a module to retrieve Metadata from DigitalOcean</span>
+<span class="k">module</span> <span class="nn">DoMetadata</span>
+  <span class="no">DO_METADATA_ADDR</span> <span class="o">=</span> <span class="s1">&#39;169.254.169.254&#39;</span> <span class="k">unless</span> <span class="n">defined?</span><span class="p">(</span><span class="no">DO_METADATA_ADDR</span><span class="p">)</span>
+  <span class="no">DO_SUPPORTED_VERSIONS</span> <span class="o">=</span> <span class="sx">%w( v1 )</span>
+  <span class="no">DO_DEFAULT_API_VERSION</span> <span class="o">=</span> <span class="s1">&#39;v1&#39;</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">http_client</span>
+    <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="no">DO_METADATA_ADDR</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="o">|</span> <span class="n">h</span><span class="o">.</span><span class="n">read_timeout</span> <span class="o">=</span> <span class="mi">600</span> <span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Get metadata for a given path and API version</span>
+  <span class="k">def</span> <span class="nf">metadata_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">api_version</span> <span class="o">=</span> <span class="no">DO_DEFAULT_API_VERSION</span><span class="p">,</span> <span class="n">json</span> <span class="o">=</span> <span class="kp">false</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s2">&#34;/metadata/</span><span class="si">#{</span><span class="n">api_version</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&#34;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s2">&#34;/metadata/</span><span class="si">#{</span><span class="n">api_version</span><span class="si">}</span><span class="s2">.json&#34;</span> <span class="k">if</span> <span class="n">json</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">case</span> <span class="n">response</span><span class="o">.</span><span class="n">code</span>
+    <span class="k">when</span> <span class="s1">&#39;200&#39;</span>
+      <span class="n">response</span><span class="o">.</span><span class="n">body</span>
+    <span class="k">when</span> <span class="s1">&#39;404&#39;</span>
+      <span class="no">Chef</span><span class="o">::</span><span class="no">Log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Encountered 404 response retreiving DO metadata path: </span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="s2"> ; continuing.&#34;</span><span class="p">)</span>
+      <span class="kp">nil</span>
+    <span class="k">else</span>
+      <span class="nb">fail</span> <span class="s2">&#34;Encountered error retrieving DO metadata (</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="s2"> returned </span><span class="si">#{</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> response)&#34;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+  <span class="kp">module_function</span> <span class="ss">:metadata_get</span>
+
+  <span class="c1"># Retrieve the JSON metadata, and return it as a Ruby hash</span>
+  <span class="k">def</span> <span class="nf">parse_json_metadata</span><span class="p">(</span><span class="n">api_version</span> <span class="o">=</span> <span class="no">DO_DEFAULT_API_VERSION</span><span class="p">)</span>
+    <span class="n">retrieved_metadata</span> <span class="o">=</span> <span class="n">metadata_get</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="n">api_version</span><span class="p">,</span> <span class="kp">true</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">unless</span> <span class="n">retrieved_metadata</span>
+    <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">retrieved_metadata</span><span class="p">)</span> <span class="k">if</span> <span class="n">retrieved_metadata</span>
+  <span class="k">end</span>
+  <span class="kp">module_function</span> <span class="ss">:parse_json_metadata</span>
+<span class="k">end</span>
+</code></pre></div><p>Code also available on my <a href="https://gist.github.com/bdwyertech/df3d5ef2bdb4ef642642">Github</a>.</p>
+<p>This conveniently allows you to query the resulting Ruby hash, and use it in your code.</p>
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="c1"># =&gt; Get the Droplet&#39;s Metadata</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="no">DoMetadata</span><span class="o">.</span><span class="n">parse_json_metadata</span>
+
+<span class="n">metadata</span><span class="o">[</span><span class="s1">&#39;interfaces&#39;</span><span class="o">][</span><span class="s1">&#39;private&#39;</span><span class="o">][</span><span class="mi">0</span><span class="o">][</span><span class="s1">&#39;ipv4&#39;</span><span class="o">][</span><span class="s1">&#39;ip_address&#39;</span><span class="o">]</span> <span class="c1"># =&gt; Droplet&#39;s Private IP Address</span>
+<span class="n">metadata</span><span class="o">[</span><span class="s1">&#39;interfaces&#39;</span><span class="o">][</span><span class="s1">&#39;private&#39;</span><span class="o">][</span><span class="mi">0</span><span class="o">][</span><span class="s1">&#39;ipv4&#39;</span><span class="o">][</span><span class="s1">&#39;netmask&#39;</span><span class="o">]</span> <span class="c1"># =&gt; Droplet&#39;s Private Subnet Mask</span>
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

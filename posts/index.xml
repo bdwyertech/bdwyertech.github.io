@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on bdwyertech.net</title>
+    <link>https://bdwyertech.net/posts/</link>
+    <description>Recent content in Posts on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 Mar 2016 16:00:49 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Switch Security - DHCP Snooping, IP Source Guard and Dynamic ARP Inspection</title>
+      <link>https://bdwyertech.net/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/</link>
+      <pubDate>Wed, 02 Mar 2016 16:00:49 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/</guid>
+      <description>A few years back, I was designing an Enterprise MDM strategy for iPhone deployments. At some point, I was browsing the Apple Enterprise iOS forum and saw a post about an iOS bug where devices sometimes retain a previously assigned IP (from another network) when joining a new network. In this case, someone was joining a network with a retained IP which coincided with the organization&amp;rsquo;s e-mail server. When this occurred, it apparently disabled e-mail service throughout the organization.</description>
+    </item>
+    
+    <item>
+      <title>Windows 7 SP1 - Slow Windows Updates</title>
+      <link>https://bdwyertech.net/2016/02/24/windows-7-sp1-slow-windows-updates/</link>
+      <pubDate>Wed, 24 Feb 2016 08:30:43 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2016/02/24/windows-7-sp1-slow-windows-updates/</guid>
+      <description>As an MCITP I&amp;rsquo;m well-versed in Group Policy and what not, but building a clean Windows base image with all updates applied and some prerequisite software has always always been a relatively manual, inconsistent, and annoying process. I recently did a major overhaul of our Operations Network/Server Infrastructure and figured there&amp;rsquo;s no better time to give my trusty Chef, Packer &amp;amp; Vagrant tool set a shot with our workstations.
+Currently, I&amp;rsquo;ve got my OS X &amp;amp; *nix infrastructure under the control of Chef, and I&amp;rsquo;ve got e2e OS build &amp;amp; deployment processes in place (Packer -&amp;gt; Vagrant -&amp;gt; Chef ).</description>
+    </item>
+    
+    <item>
+      <title>DigitalOcean, Chef and Ohai - Retrieving a Droplet&#39;s Private IP Address</title>
+      <link>https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/</link>
+      <pubDate>Fri, 30 Oct 2015 21:49:28 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/</guid>
+      <description>Recently, I attempted to use the Ohai value for node[&#39;cloud_v2&#39;][&#39;local_ipv4&#39;] and node[&#39;cloud&#39;][&#39;local_ipv4&#39;][&#39;ip_address&#39;] to determine the Private IP address of my Cloud-based nodes in a Chef cookbook. Unfortunately, it does not work accurately for DigitalOcean instances any longer.
+According to DigitalOcean documentation, if Private Networking is enabled, the IP will be assigned to eth1. Recently, I noticed that a second Private IP address has begun to be assigned to the eth0 interface.</description>
+    </item>
+    
+    <item>
+      <title>Chef - Ohai in AWS EC2 VPC</title>
+      <link>https://bdwyertech.net/2015/04/24/chef-ohai-in-aws-ec2-vpc/</link>
+      <pubDate>Fri, 24 Apr 2015 20:18:15 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2015/04/24/chef-ohai-in-aws-ec2-vpc/</guid>
+      <description>This is a quick tip to those of you who are using Chef inside an AWS VPC. The EC2 Ohai plugin does not run by default, which prevents some meaningful node attributes from being collected.
+The EC2-specific node attributes I find most useful are:
+node[&amp;#39;ec2&amp;#39;][&amp;#39;instance_id&amp;#39;] # =&amp;gt; Instance&amp;#39;s ID node[&amp;#39;ec2&amp;#39;][&amp;#39;local_ipv4&amp;#39;] # =&amp;gt; Instance&amp;#39;s IPv4 Address node[&amp;#39;ec2&amp;#39;][&amp;#39;placement_availability_zone&amp;#39;] # =&amp;gt; Instance&amp;#39;s Region &amp;amp; Availability Zone node[&amp;#39;ec2&amp;#39;][&amp;#39;ami_id&amp;#39;] # =&amp;gt; Instance&amp;#39;s Baseline AMI To get your instances inside a VPC to pick up meaningful node attributes related to EC2, you have to create an Ohai hint file for the EC2 plugin.</description>
+    </item>
+    
+    <item>
+      <title>AWS - Globally Adjusting ELB SSL Policy</title>
+      <link>https://bdwyertech.net/2015/04/09/aws-globally-adjusting-elb-ssl-policy/</link>
+      <pubDate>Thu, 09 Apr 2015 22:17:54 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2015/04/09/aws-globally-adjusting-elb-ssl-policy/</guid>
+      <description>A while back, I had to adjust the policy of all Elastic Load Balancers in my organization to disable SSLv3 due to the POODLE exploit. This can be an error-prone task if done by hand, especially if your architecture spans multiple regions and/or more than a handful of ELBs. The nice thing about cloud architecture, is that nearly everything can be automated and/or scripted. For that reason, I went ahead and wrote a PowerShell script to handle this.</description>
+    </item>
+    
+    <item>
+      <title>VLAN Security - VLAN Access Control List&#39;s (VACL)</title>
+      <link>https://bdwyertech.net/2014/12/09/vlan-security-vlan-access-control-lists-vacl/</link>
+      <pubDate>Wed, 10 Dec 2014 02:21:11 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/12/09/vlan-security-vlan-access-control-lists-vacl/</guid>
+      <description>I&amp;rsquo;ve been studying to renew my CCNP as of recently, and I decided to create a refresher blog post about the implementation of VACLs.
+VLAN Access Control Lists (VACLs) can be used to implement Access Control at both Layer 2 and Layer 3. Typically, access lists are applied to ingress or egress traffic on a routed, L3 interface. VACL&amp;rsquo;s allow you to apply the filtering to all packets, regardless of direction.</description>
+    </item>
+    
+    <item>
+      <title>UPDATE: Branch Office Connections – GRE over IPSec VPN</title>
+      <link>https://bdwyertech.net/2014/11/07/update-branch-office-connections-gre-over-ipsec-vpn/</link>
+      <pubDate>Fri, 07 Nov 2014 19:19:22 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/11/07/update-branch-office-connections-gre-over-ipsec-vpn/</guid>
+      <description>It has been almost 3 years since I wrote Branch Office Connections – GRE over IPSec VPN! For those of you who are familiar with Cisco certification, that means time to renew! Anyway, I&amp;rsquo;m coming back now and looking at this lab, I noticed that we are preferring the serial link for traffic! In this day and age, the serial link would likely be the fallback, and a faster, cheaper GRE/IPSEC VPN would likely be the preferable route!</description>
+    </item>
+    
+    <item>
+      <title>ChefDK on Windows - Environmental Variables</title>
+      <link>https://bdwyertech.net/2014/11/06/chefdk-on-windows-environmental-variables/</link>
+      <pubDate>Thu, 06 Nov 2014 17:00:13 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/11/06/chefdk-on-windows-environmental-variables/</guid>
+      <description>The recent release of the Chef Development Kit for Windows has been great for my work flow. If you do not have your own Ruby installed on the system, you probably want to use the Ruby bundled with ChefDK. For beginners, you can operate inside this environment by prepending &amp;lsquo;chef exec&amp;rsquo; to any Ruby commands you may want to run. Eventually, you might want to install your own Ruby Gems. This can be a problem, if you do not have certain environmental variables set.</description>
+    </item>
+    
+    <item>
+      <title>Wildfly Java Application Server - Chef Cookbook</title>
+      <link>https://bdwyertech.net/2014/10/07/wildfly-java-application-server-chef-cookbook/</link>
+      <pubDate>Tue, 07 Oct 2014 21:12:24 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/10/07/wildfly-java-application-server-chef-cookbook/</guid>
+      <description>A while back, I wrote a cookbook to deploy the Wildfly Java Application Server. Wildfly is the successor of JBoss AS. This Chef cookbook handles the entire deployment process, and also contains LWRP&amp;rsquo;s to set system attributes, datasources, and deploy code. If you are looking to automate the installation and configuration of Wildfly, I am confident that this Chef cookbook will be a big help. Check it out on my GitHub.</description>
+    </item>
+    
+    <item>
+      <title>Chef &amp; Berkshelf - SSL Certificate Validation Error on Windows</title>
+      <link>https://bdwyertech.net/2014/09/12/chef-berkshelf-ssl-certificate-validation-error-on-windows/</link>
+      <pubDate>Fri, 12 Sep 2014 21:14:15 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/09/12/chef-berkshelf-ssl-certificate-validation-error-on-windows/</guid>
+      <description>When using Windows, Chef, Vagrant and Berkshelf, you may encounter an issue with certificate validation. The error you may encounter is as follows:
+Faraday::SSLError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed The problem is Ruby is expecting the SSL_CERT_FILE environmental variable to be set. This should point to a CA bundle to use for SSL certificate validation. If this is not set, certificate validation will fail. You can adjust the Berkshelf configuration to not verify SSL certificates, but I have found this setting to be problematic and sporadically not work.</description>
+    </item>
+    
+    <item>
+      <title>AWS - Highly-Available NAT in VPC</title>
+      <link>https://bdwyertech.net/2014/06/16/aws-highly-available-nat-in-vpc/</link>
+      <pubDate>Mon, 16 Jun 2014 16:52:45 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/06/16/aws-highly-available-nat-in-vpc/</guid>
+      <description>Like most sysadmins, one of my primary responsibilities is ensuring high-availability in our environments. Recently, I&amp;rsquo;ve been working a lot more with Amazon AWS. Amazon recently began forcing new accounts to make use of VPC. When you create a VPC, an Internet Gateway must be provisioned to route traffic to the Internet. VPC&amp;rsquo;s utilize subnet constructs for virtual networking. Subnets are assigned a routing table, and in the case of a Public subnet, the default route of this table is pointed at the Internet Gateway.</description>
+    </item>
+    
+    <item>
+      <title>Apple Configurator - Backup &amp; Restoration</title>
+      <link>https://bdwyertech.net/2014/06/10/apple-configurator-backup-restoration/</link>
+      <pubDate>Tue, 10 Jun 2014 22:15:01 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/06/10/apple-configurator-backup-restoration/</guid>
+      <description>I work a bit with Apple Configurator to provision, supervise and join various Apple devices to mobile device management (MDM) servers. One thing not integrated into Apple Configurator is the ability to backup and restore data easily. The need for this might arise if you have a remote operator who may need to remotely provision devices, or if you&amp;rsquo;d like to hand off a set configuration to a client. Hopefully, the below bash script makes life a little easier in this regard.</description>
+    </item>
+    
+    <item>
+      <title>Chef - &#39;Wrapper&#39; Cookbooks and Execution Order</title>
+      <link>https://bdwyertech.net/2014/02/03/chef-wrapper-cookbooks-and-execution-order/</link>
+      <pubDate>Tue, 04 Feb 2014 04:15:14 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/02/03/chef-wrapper-cookbooks-and-execution-order/</guid>
+      <description>Recently, I&amp;rsquo;ve been experimenting with Chef for Configuration Management. One of the greatest thing&amp;rsquo;s about Chef is the concept of &amp;lsquo;Wrapper&amp;rsquo; or &amp;lsquo;Application&amp;rsquo; cookbooks, which basically make use of existing community cookbook code. These community cookbooks, wherever they are sourced, are referred to as &amp;lsquo;Library&amp;rsquo; cookbooks. Basically, rather than forking the cookbook and adjusting it yourself, you write a &amp;lsquo;Wrapper&amp;rsquo; for the Library cookbook in order to facilitate desired changes. These changes are typically just overriding attributes, but sometimes you might have to take it a step further.</description>
+    </item>
+    
+    <item>
+      <title>OS X - Excessive CPU Usage while running as a VM</title>
+      <link>https://bdwyertech.net/2013/07/19/os-x-excessive-cpu-usage-while-running-as-a-vm/</link>
+      <pubDate>Fri, 19 Jul 2013 19:46:22 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2013/07/19/os-x-excessive-cpu-usage-while-running-as-a-vm/</guid>
+      <description>After installing OS X as a VM running the Server role, I have noticed excessive CPU usage while idling. I have narrowed this down to the default screensaver which runs on the login page. Even if you disable this screensaver as a user, it will not disable it for the login screen. I have found that the only way to resolve this is to actually delete the screensaver file itself! Here is how to do it.</description>
+    </item>
+    
+    <item>
+      <title>Securing MySQL Replication Traffic</title>
+      <link>https://bdwyertech.net/2013/05/10/securing-mysql-replication-traffic/</link>
+      <pubDate>Fri, 10 May 2013 22:06:54 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2013/05/10/securing-mysql-replication-traffic/</guid>
+      <description>If you ever find the need to replicate MySQL traffic up to a service such as Amazon AWS or want to replicate from site-to-site without establishing a VPN tunnel, you can secure the traffic using SSL. I have found this to be especially helpful in the case of configuring AWS instances for replication.
+The current MySQL server RPM packages available from Percona and others have SSL support built in, you simply need to configure it.</description>
+    </item>
+    
+    <item>
+      <title>Online Upgrade from ESXi 5.0 to 5.1 Using Host Profiles and CLI</title>
+      <link>https://bdwyertech.net/2013/01/28/online-upgrade-from-esxi-5-0-to-5-1-using-host-profiles-and-cli/</link>
+      <pubDate>Mon, 28 Jan 2013 22:26:49 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2013/01/28/online-upgrade-from-esxi-5-0-to-5-1-using-host-profiles-and-cli/</guid>
+      <description>On a standalone ESXi box or in a small environment not running vSphere Update Manager, the best way to update your hosts is via SSH CLI. I recently discovered a way to use this patching method to perform a version upgrade for 5.0 to 5.1 using host profiles rather than using the interactive installer, aka the install CD. VMware hosts their standard host profiles on the web, so these can be utilized to perform the 5.</description>
+    </item>
+    
+    <item>
+      <title>How to Empty the Active Directory Recycling Bin</title>
+      <link>https://bdwyertech.net/2013/01/22/how-to-empty-the-active-directory-recycling-bin/</link>
+      <pubDate>Tue, 22 Jan 2013 16:38:28 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2013/01/22/how-to-empty-the-active-directory-recycling-bin/</guid>
+      <description>One of the coolest new features in Server 2008 R2 and 2012 is the ability to recover deleted Active Directory objects. Your forest functional level must be at least 2008 R2 in order to activate this feature. Server 2008 R2 introduced the AD Administrative Center which provides a nice GUI to restore deleted objects after activated. However, eventually one might want to permanently empty the contents of this recycling bin. There is no way to do this via the GUI.</description>
+    </item>
+    
+    <item>
+      <title>Apple Profile Manager – Mountain Lion Migration</title>
+      <link>https://bdwyertech.net/2012/08/15/apple-profile-manager-mountain-lion-migration/</link>
+      <pubDate>Wed, 15 Aug 2012 21:45:06 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/08/15/apple-profile-manager-mountain-lion-migration/</guid>
+      <description>Recently I had the pleasure of migrating an OSX Lion server to Mountain Lion. It’s primary function was an MDM server for Apple devices. Basically, the upgrade process involves upgrading to Mountain Lion followed by installing the updated Lion Server app.
+Primarily, my interactions with the Apple Server have been for Profile Manager functionality. In Lion, the Profile Manager utilized a PostgreSQL backend with a datastore located in /usr/share/devicemgr/backend/. iOS applications and other push to device material were located in the ‘/backend/file_store/’ directory named as their MD5 checksum equivalent.</description>
+    </item>
+    
+    <item>
+      <title>Nagios &amp; NagVis MySQL Troubleshooting (ndomod &amp; ndo2db)</title>
+      <link>https://bdwyertech.net/2012/04/30/nagios-nagvis-mysql-troubleshooting-ndomod-ndo2db/</link>
+      <pubDate>Mon, 30 Apr 2012 20:30:15 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/04/30/nagios-nagvis-mysql-troubleshooting-ndomod-ndo2db/</guid>
+      <description>UPDATE Check out OMD for an RPM based, easy to install and update variant of Nagios which includes other utilities as well. This will save a tremendous amount of time to deployment. www.omdistro.org
+Recently I setup a Nagios box to monitor an organization&amp;rsquo;s network and network services. Nagios is extremely flexible and can poll pretty much any network connected device by configuring service checks. The service checks are like plugins and can poll devices via SNMP, Ping, HTTP, etc.</description>
+    </item>
+    
+    <item>
+      <title>Branch Office Connections - GRE over IPSec VPN</title>
+      <link>https://bdwyertech.net/2012/02/25/branch-office-connections/</link>
+      <pubDate>Sat, 25 Feb 2012 22:58:33 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/02/25/branch-office-connections/</guid>
+      <description>While studying for the CCNP Route exam, I noticed that GRE Tunneling and IPSec were mentioned as topics, however configuration of the two was never really covered in the certification guide. In addition, I did not see any labs involving this type of scenario, so I decided to create my own. Hopefully this provides some insight to others about how to configure GRE Tunnels over IPsec. Don&amp;rsquo;t feel bad if this takes you a while, setting up this scenario and writing this up took a whole Saturday afternoon.</description>
+    </item>
+    
+    <item>
+      <title>Cisco IP SLA</title>
+      <link>https://bdwyertech.net/2012/02/20/cisco-ip-sla/</link>
+      <pubDate>Mon, 20 Feb 2012 23:18:45 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/02/20/cisco-ip-sla/</guid>
+      <description>So while studying for CCNP Route, I came across the concept of IP SLA and utilizing probes to check availability of next-hop addresses prior to instating them inside a route-map. An objective was to have two ISP&amp;rsquo;s listed in a route-map statement, and set all traffic originating from the local router with a next-hop IP of ISP1 as long as it was deemed reachable by the IP SLA tracker probe status.</description>
+    </item>
+    
+    <item>
+      <title>Passed 70-647 MCITP Server 2008 Enterprise Administrator</title>
+      <link>https://bdwyertech.net/2012/01/28/passed-70-647-mcitp-server-2008-enterprise-administrator/</link>
+      <pubDate>Sun, 29 Jan 2012 04:30:22 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/01/28/passed-70-647-mcitp-server-2008-enterprise-administrator/</guid>
+      <description>I passed the MCITP Server 2008 Enterprise Administrator exam earlier today. As the second generation of Microsoft certification, I am hoping that it correlates well with the retired and well-respected MCSE. It was an interesting process and I feel I learned a good bit about Microsoft enterprise solutions, especially the new technologies that earlier iterations of their products did not have.
+I used Microsoft training materials for the all exams as well as the Sybex Windows Server 2008 R2 Complete.</description>
+    </item>
+    
+    <item>
+      <title>Update - Been Busy</title>
+      <link>https://bdwyertech.net/2012/01/22/update-been-busy/</link>
+      <pubDate>Sun, 22 Jan 2012 20:31:41 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/01/22/update-been-busy/</guid>
+      <description>It&amp;rsquo;s been a while since I last posted to this blog, so I figured I would post an update. I have been very busy lately working to complete my internship requirements to graduate from college while also studying for the MCITP Enterprise Administrator exam. I should have the latter done in a week or two and will begin studying for the CCNP Route exam.
+I have added some new equipment to the lab, including a Dell 4220 42u server rack, Cisco 2821, and another 16gb RAM to my server bringing it to 32gb.</description>
+    </item>
+    
+    <item>
+      <title>Cisco IOS - show run linenum</title>
+      <link>https://bdwyertech.net/2011/11/10/cisco-ios-show-run-linenum/</link>
+      <pubDate>Fri, 11 Nov 2011 04:01:16 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/11/10/cisco-ios-show-run-linenum/</guid>
+      <description>So I discovered a nifty little trick recently for Cisco IOS. You can get line numbers to appear alongside your configuration when doing a show run! I found this to be awesome, although I do not think it is available on all IOS since my 3550&amp;rsquo;s running 12.2(44) do not have this feature. My 1841 running the latest 15.1(4) is the device I used to discover it. Rather than doing a simple show run, give show run linenum a shot.</description>
+    </item>
+    
+    <item>
+      <title>Network Switch - ProCurve 1810</title>
+      <link>https://bdwyertech.net/2011/10/19/network-switch-procurve-1810/</link>
+      <pubDate>Wed, 19 Oct 2011 17:42:53 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/10/19/network-switch-procurve-1810/</guid>
+      <description>Recently, I decided I would like to acquire a quality, managed switch for my home environment. I wanted something which supported Gigabit Ethernet, Flow Control and Jumbo Frames. These features would complement my Dell PE 2950 ESXi box by providing high performance and future expandability.
+At the moment, quality managed gigabit switches are expensive. 10/100 managed switches can easily be acquired on eBay for a decent price, however gigabit models are often seen for upwards of $500 used.</description>
+    </item>
+    
+    <item>
+      <title>VMware vSphere Client - Clear Recent Connections (RDP Also)</title>
+      <link>https://bdwyertech.net/2011/09/14/vmware-vsphere-client-clear-recent-connections/</link>
+      <pubDate>Wed, 14 Sep 2011 21:47:50 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/14/vmware-vsphere-client-clear-recent-connections/</guid>
+      <description>Today I figured out how to empty the recent connections for the VMware vSphere Client. After a while, these begin to add up and I do not like having useless IP addresses and DNS names from experimental ESXi boxes appearing in my client when I attempt to log in. I searched the registry for some no longer functional servers and I found some keys in HKCU which contained the recently connected hosts.</description>
+    </item>
+    
+    <item>
+      <title>Dell PowerEdge 2950</title>
+      <link>https://bdwyertech.net/2011/09/10/dell-poweredge-2950/</link>
+      <pubDate>Sat, 10 Sep 2011 20:07:41 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/10/dell-poweredge-2950/</guid>
+      <description>So recently I decided I wanted a server of my own which I could run VMware ESXi on at home. Previously, my personal &amp;ldquo;server&amp;rdquo; was just an old tower system composed of whatever extra components I had laying around the house. It had a few old hard drives, 4Gb DDR, an Athlon 4000+, and one fan&amp;hellip; Obviously, it has become antiquated, so its time for an upgrade!
+While working with server gear in the field, I have found Intel&amp;rsquo;s RMM and HP&amp;rsquo;s iLO Out-of-Band management solutions to be extremely helpful and a technology that I just had to have in my next personal sandbox.</description>
+    </item>
+    
+    <item>
+      <title>VMware ESXi &amp; Intel SR1550AL Servers</title>
+      <link>https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/</link>
+      <pubDate>Fri, 02 Sep 2011 12:00:51 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/</guid>
+      <description>I recently encountered an issue when running an ESXi 4.1 environment where I was getting a Purple Screen of Death at right about the 24 hour uptime mark. Like most technologists, I first hit Google with the error code and had no luck. I found a similar error code which suggested that it had something to do with a storage I/O issue. The issue did not seem driver related, so I began to look into firmware and BIOS updates for the server.</description>
+    </item>
+    
+    <item>
+      <title>Virtualization</title>
+      <link>https://bdwyertech.net/2011/09/01/virtualization/</link>
+      <pubDate>Thu, 01 Sep 2011 12:15:55 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/01/virtualization/</guid>
+      <description>At the moment, a major trend in the IT industry is the push towards virtualization. In addition to being a large, quickly growing social movement, the push to &amp;ldquo;go green&amp;rdquo; is a major focus of many industries &amp;amp; organizations looking to maintain or improve their public image by reducing their carbon footprint. Virtualization is one way the IT industry is &amp;ldquo;going green&amp;rdquo;.
+At first, you might ask yourself why virtualize? From a system administrator&amp;rsquo;s standpoint, the modularity of virtual machines is impeccable.</description>
+    </item>
+    
+    <item>
+      <title>HP Mini311 Overclocking</title>
+      <link>https://bdwyertech.net/2011/08/31/12/</link>
+      <pubDate>Wed, 31 Aug 2011 21:35:56 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/08/31/12/</guid>
+      <description>In late 2009, I was among the first HP Mini311 owners to gain overclocking ability. I actually helped pioneer the first technique. The HP Mini311 was and still is (in my opinion) the best netbook on the market. It uses an Intel Atom processor but contains the Nvidia Ion GPU. The Mini311 was one of the first and only netbooks to contain Nvidia&amp;rsquo;s Ion GPU, which is the equivalent of an Nvidia 9400m.</description>
+    </item>
+    
+    <item>
+      <title>Hello world!</title>
+      <link>https://bdwyertech.net/2011/08/30/hello-world/</link>
+      <pubDate>Tue, 30 Aug 2011 23:51:58 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/08/30/hello-world/</guid>
+      <description>I have created this site to share my ideas, encounters, and solutions to technology problems. I have a lot of information and guides which I&amp;rsquo;ve created and stored in my Microsoft OneNote notebook throughout the years. Some of it is only pertinent to me, but as I encounter challenges while performing various tasks, I document my solutions. I have found that this documentation can save a lot of time when repeating the task again.</description>
+    </item>
+    
+  </channel>
+</rss>

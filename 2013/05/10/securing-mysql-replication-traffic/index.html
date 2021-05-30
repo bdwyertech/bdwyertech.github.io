@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="If you ever find the need to replicate MySQL traffic up to a service such as Amazon AWS or want to replicate from site-to-site without establishing a VPN tunnel, you can secure the traffic using SSL. I have found this to be especially helpful in the case of configuring AWS instances for replication.
+The current MySQL server RPM packages available from Percona and others have SSL support built in, you simply need to configure it.">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Securing MySQL Replication Traffic"/>
+<meta name="twitter:description" content="If you ever find the need to replicate MySQL traffic up to a service such as Amazon AWS or want to replicate from site-to-site without establishing a VPN tunnel, you can secure the traffic using SSL. I have found this to be especially helpful in the case of configuring AWS instances for replication.
+The current MySQL server RPM packages available from Percona and others have SSL support built in, you simply need to configure it."/>
+
+    <meta property="og:title" content="Securing MySQL Replication Traffic" />
+<meta property="og:description" content="If you ever find the need to replicate MySQL traffic up to a service such as Amazon AWS or want to replicate from site-to-site without establishing a VPN tunnel, you can secure the traffic using SSL. I have found this to be especially helpful in the case of configuring AWS instances for replication.
+The current MySQL server RPM packages available from Percona and others have SSL support built in, you simply need to configure it." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2013/05/10/securing-mysql-replication-traffic/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2013-05-10T22:06:54&#43;00:00" />
+<meta property="article:modified_time" content="2013-05-10T22:06:54&#43;00:00" />
+
+
+
+    <title>
+  Securing MySQL Replication Traffic · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2013/05/10/securing-mysql-replication-traffic/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2013/05/10/securing-mysql-replication-traffic/">
+              Securing MySQL Replication Traffic
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2013-05-10T22:06:54Z'>
+                May 10, 2013
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              4-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="https://bdwyertech.net/categories/database/">Database</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p>If you ever find the need to replicate MySQL traffic up to a service such as Amazon AWS or want to replicate from site-to-site without establishing a VPN tunnel, you can secure the traffic using SSL.  I have found this to be especially helpful in the case of configuring AWS instances for replication.</p>
+<p>The current MySQL server RPM packages available from Percona and others have SSL support built in, you simply need to configure it.</p>
+<h3 id="create-certificates">
+  Create Certificates
+  <a class="heading-link" href="#create-certificates">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>You&rsquo;ll need to have OpenSSL installed to generate these certificates.</p>
+<p><em><strong>Make sure you utilize a unique common name (CN) on each of the generated certificates, otherwise they will not work!</strong></em></p>
+<p><em><strong>UPDATE! : Make sure the MySQL User has permissions to walk the SSL Certificate folder!!!  This would be a chmod +x on the folder.  Granting the execute bit on a folder allows the user or group to &lsquo;walk&rsquo; the folder, IE, see it&rsquo;s contents! chown/chmod 750 the folder, chmod 640 the certs/keys, and chown root:mysql the keys as well.</strong></em></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># USE DIFFERENT COMMON NAMES FOR ALL CERTS!!!!</span>
+
+<span class="c1">#Make directory</span>
+mkdir -p /etc/mysql/newcerts <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /etc/mysql/newcerts
+
+<span class="c1">#Generate CA Certs</span>
+openssl genrsa <span class="m">2048</span> &gt; ca-key.pem
+openssl req -new -x509 -nodes -days <span class="m">3650</span> -key ca-key.pem &gt; ca-cert.pem
+
+<span class="c1">#Generate Server Certs</span>
+openssl req -newkey rsa:2048 -days <span class="m">3650</span> -nodes -keyout server-key.pem -out server-req.pem
+openssl rsa -in server-key.pem -out server-key.pem
+openssl x509 -req -in server-req.pem -days <span class="m">3650</span> -CA ca-cert.pem -CAkey ca-key.pem -set_serial <span class="m">01</span> -out server-cert.pem
+
+<span class="c1">#Generate Client Certs</span>
+openssl req -newkey rsa:2048 -days <span class="m">3650</span> -nodes -keyout client-key.pem -out client-req.pem
+openssl rsa -in client-key.pem -out client-key.pem
+openssl x509 -req -in client-req.pem -days <span class="m">3650</span> -CA ca-cert.pem -CAkey ca-key.pem -set_serial <span class="m">01</span> -out client-cert.pem
+
+<span class="c1">#Verify the Certificates</span>
+openssl verify -CAfile ca-cert.pem server-cert.pem client-cert.pem
+</code></pre></div><h3 id="place-certificates-on-mysql-servers">
+  Place Certificates on MySQL Servers
+  <a class="heading-link" href="#place-certificates-on-mysql-servers">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>Place the certificates on each MySQL Server participating in replication. Make sure you create the folder /etc/mysql/certs on each server first.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#On each server</span>
+mkdir -p /etc/mysql/certs
+<span class="c1">#Copy certs to all servers using rsync or scp (See Example Below)</span>
+scp /etc/mysql/newcerts/ca-cert.pem root@10.0.1.234:/etc/mysql/certs/
+scp /etc/mysql/newcerts/server-cert.pem root@10.0.1.234:/etc/mysql/certs/
+scp /etc/mysql/newcerts/server-key.pem root@10.0.1.234:/etc/mysql/certs/
+scp /etc/mysql/newcerts/client-cert.pem root@10.0.1.234:/etc/mysql/certs/
+scp /etc/mysql/newcerts/client-key.pem root@10.0.1.234:/etc/mysql/certs/<span class="o">[</span>/code<span class="o">]</span>
+</code></pre></div><h2 id="edit-configuration-files-mycnf">
+  Edit Configuration Files (my.cnf)
+  <a class="heading-link" href="#edit-configuration-files-mycnf">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>On the master server, make the following edits to my.cnf.  You should be familiar with configuring MySQL replication before attempting to add SSL to the configuration.  Your server-id and other variables will likely vary depending on your environment and how you have your existing replication set up.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#Configure Master</span>
+mkdir -p /data/mysql/binlog/ <span class="o">&amp;&amp;</span> chown mysql:mysql /data/mysql/binlog/
+
+<span class="c1">#Edit my.cnf</span>
+ssl
+ssl-cipher<span class="o">=</span>AES128-SHA
+ssl-ca<span class="o">=</span>/etc/mysql/certs/ca-cert.pem
+ssl-cert<span class="o">=</span>/etc/mysql/certs/server-cert.pem
+ssl-key<span class="o">=</span>/etc/mysql/certs/server-key.pem
+server-id<span class="o">=</span><span class="m">10</span>
+log-slave-updates<span class="o">=</span><span class="m">0</span>
+
+<span class="nv">log_bin</span><span class="o">=</span>/data/mysql/binlog/mysql-bin.log
+<span class="nv">log_bin_index</span><span class="o">=</span>/data/mysql/binlog/mysql-bin.log.index
+<span class="nv">expire_logs_days</span><span class="o">=</span><span class="m">7</span>
+<span class="nv">max_binlog_cache_size</span><span class="o">=</span>128M
+<span class="nv">binlog_format</span><span class="o">=</span>row
+</code></pre></div><p>On the slave server, your configuration should look something like this.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#Configure Slave</span>
+mkdir -p /data/mysql/relaylog/ <span class="o">&amp;&amp;</span> chown mysql:mysql /data/mysql/relaylog/
+
+<span class="c1">#Edit my.cnf</span>
+ssl
+ssl-ca<span class="o">=</span>/etc/mysql/certs/ca-cert.pem
+server-id<span class="o">=</span><span class="m">20</span>
+master-connect-retry<span class="o">=</span><span class="m">60</span>
+log-slave-updates<span class="o">=</span><span class="m">1</span>
+<span class="nv">relay_log</span>           <span class="o">=</span> /data/mysql/relaylog/mysql-relay-bin
+<span class="nv">relay_log_index</span>     <span class="o">=</span> /data/mysql/relaylog/mysql-relay-bin.index
+<span class="nv">relay_log_space_limit</span> <span class="o">=</span> 1000M
+replicate-ignore-db<span class="o">=</span>mysql,ndbinfo,information_schema,performance_schema
+</code></pre></div><h2 id="finalize-configuration-and-activate-replication">
+  Finalize Configuration and Activate Replication
+  <a class="heading-link" href="#finalize-configuration-and-activate-replication">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>Now comes the fun part, actually making the replication happen.</p>
+<p>Start the master server, create the slave user, and execute a mysqldump if you haven&rsquo;t already.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#Create Slave User on Master server</span>
+GRANT REPLICATION SLAVE ON *.* TO <span class="s1">&#39;slave_user&#39;</span>@<span class="s1">&#39;%&#39;</span> IDENTIFIED BY <span class="s1">&#39;slave_password&#39;</span> REQUIRE SSL<span class="p">;</span>
+FLUSH PRIVILEGES<span class="p">;</span>
+
+<span class="c1">#do a MySQL Backup</span>
+<span class="c1"># 1. Flush Tables with Read Lock;</span>
+<span class="c1"># 2. In a new SSH session, Execute Backup with mysqldump, xtrabackup, or ndb_mgm if using MySQL Cluster</span>
+<span class="c1"># 3. show master status \G</span>
+<span class="c1"># 4. Unlock tables;</span>
+</code></pre></div><p>Start the slave, restore the backup and configure the Master settings.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#First, restore the backup of the master.  Then, execute a CHANGE MASTER command, paying special attention to the SSL settings.</span>
+
+CHANGE MASTER TO <span class="nv">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;10.0.1.234&#39;</span>, <span class="nv">MASTER_PORT</span><span class="o">=</span>3306, <span class="nv">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;slave_user&#39;</span>, <span class="nv">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;slave_password&#39;</span>, <span class="nv">MASTER_LOG_FILE</span><span class="o">=</span><span class="s1">&#39;mysql-bin.000001&#39;</span>, <span class="nv">MASTER_LOG_POS</span><span class="o">=</span>123, <span class="nv">MASTER_SSL</span><span class="o">=</span>1, <span class="nv">MASTER_SSL_CERT</span><span class="o">=</span><span class="s1">&#39;/etc/mysql/certs/client-cert.pem&#39;</span>, <span class="nv">MASTER_SSL_KEY</span><span class="o">=</span><span class="s1">&#39;/etc/mysql/certs/client-key.pem&#39;</span><span class="p">;</span>
+
+<span class="c1">#Activate the slave</span>
+START SLAVE<span class="p">;</span>
+
+<span class="c1">#Check Slave Status</span>
+SHOW SLAVE STATUS<span class="se">\G</span>
+</code></pre></div><p>At this point, you have configured MySQL replication with SSL. You should further protect your replication traffic with firewall settings limiting connections only from authorized source IP&rsquo;s.</p>
+<h2 id="setting-auto-increments">
+  Setting Auto Increments
+  <a class="heading-link" href="#setting-auto-increments">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>On another note, if you are looking to configure MySQL multi-master replication, whether it be MySQL or MySQL Cluster, you need to know how to make use of autoincrement values to prevent row collision.</p>
+<p>These values are specified in my.cnf as auto_increment_increment and auto_increment_offset.  The increment value should be set to the number of instances you intend to run, for example, auto_increment_increment=2 for a co-master situation.  On the first server, you would set auto_increment_offset=1 and the second server auto_increment_offset=2.</p>
+<p>In a MySQL Cluster environment with multiple master clusters, you would follow the same suit.  Set the increment to the number of master clusters.  In a circular replication, three master cluster deployment, you would set auto_increment_increment=3 on all mysqld nodes in all three clusters.  In cluster one, you would set all mysqld nodes with auto_increment_offset=1.  Cluster two would utilize auto_increment_offset=2, and cluster three would  utilize auto_increment_offset=3.</p>
+<p>The auto_increment_increment and auto_increment_offset values can be changed on the fly using  SET GLOBAL.  Make sure you set these values correctly and you utilize the auto_increment function on non-unique tables!</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

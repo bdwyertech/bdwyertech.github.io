@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Security on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/security/</link>
+    <description>Recent content in Security on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 Mar 2016 16:00:49 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Switch Security - DHCP Snooping, IP Source Guard and Dynamic ARP Inspection</title>
+      <link>https://bdwyertech.net/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/</link>
+      <pubDate>Wed, 02 Mar 2016 16:00:49 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/</guid>
+      <description>A few years back, I was designing an Enterprise MDM strategy for iPhone deployments. At some point, I was browsing the Apple Enterprise iOS forum and saw a post about an iOS bug where devices sometimes retain a previously assigned IP (from another network) when joining a new network. In this case, someone was joining a network with a retained IP which coincided with the organization&amp;rsquo;s e-mail server. When this occurred, it apparently disabled e-mail service throughout the organization.</description>
+    </item>
+    
+    <item>
+      <title>AWS - Globally Adjusting ELB SSL Policy</title>
+      <link>https://bdwyertech.net/2015/04/09/aws-globally-adjusting-elb-ssl-policy/</link>
+      <pubDate>Thu, 09 Apr 2015 22:17:54 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2015/04/09/aws-globally-adjusting-elb-ssl-policy/</guid>
+      <description>A while back, I had to adjust the policy of all Elastic Load Balancers in my organization to disable SSLv3 due to the POODLE exploit. This can be an error-prone task if done by hand, especially if your architecture spans multiple regions and/or more than a handful of ELBs. The nice thing about cloud architecture, is that nearly everything can be automated and/or scripted. For that reason, I went ahead and wrote a PowerShell script to handle this.</description>
+    </item>
+    
+    <item>
+      <title>AWS - Highly-Available NAT in VPC</title>
+      <link>https://bdwyertech.net/2014/06/16/aws-highly-available-nat-in-vpc/</link>
+      <pubDate>Mon, 16 Jun 2014 16:52:45 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/06/16/aws-highly-available-nat-in-vpc/</guid>
+      <description>Like most sysadmins, one of my primary responsibilities is ensuring high-availability in our environments. Recently, I&amp;rsquo;ve been working a lot more with Amazon AWS. Amazon recently began forcing new accounts to make use of VPC. When you create a VPC, an Internet Gateway must be provisioned to route traffic to the Internet. VPC&amp;rsquo;s utilize subnet constructs for virtual networking. Subnets are assigned a routing table, and in the case of a Public subnet, the default route of this table is pointed at the Internet Gateway.</description>
+    </item>
+    
+    <item>
+      <title>Branch Office Connections - GRE over IPSec VPN</title>
+      <link>https://bdwyertech.net/2012/02/25/branch-office-connections/</link>
+      <pubDate>Sat, 25 Feb 2012 22:58:33 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/02/25/branch-office-connections/</guid>
+      <description>While studying for the CCNP Route exam, I noticed that GRE Tunneling and IPSec were mentioned as topics, however configuration of the two was never really covered in the certification guide. In addition, I did not see any labs involving this type of scenario, so I decided to create my own. Hopefully this provides some insight to others about how to configure GRE Tunnels over IPsec. Don&amp;rsquo;t feel bad if this takes you a while, setting up this scenario and writing this up took a whole Saturday afternoon.</description>
+    </item>
+    
+    <item>
+      <title>VMware ESXi &amp; Intel SR1550AL Servers</title>
+      <link>https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/</link>
+      <pubDate>Fri, 02 Sep 2011 12:00:51 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/</guid>
+      <description>I recently encountered an issue when running an ESXi 4.1 environment where I was getting a Purple Screen of Death at right about the 24 hour uptime mark. Like most technologists, I first hit Google with the error code and had no luck. I found a similar error code which suggested that it had something to do with a storage I/O issue. The issue did not seem driver related, so I began to look into firmware and BIOS updates for the server.</description>
+    </item>
+    
+  </channel>
+</rss>

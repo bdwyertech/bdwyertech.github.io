@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hardware &amp;amp; Electronics on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/hardware-amp-electronics/</link>
+    <description>Recent content in Hardware &amp;amp; Electronics on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Sep 2011 20:07:41 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/hardware-amp-electronics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dell PowerEdge 2950</title>
+      <link>https://bdwyertech.net/2011/09/10/dell-poweredge-2950/</link>
+      <pubDate>Sat, 10 Sep 2011 20:07:41 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/10/dell-poweredge-2950/</guid>
+      <description>So recently I decided I wanted a server of my own which I could run VMware ESXi on at home. Previously, my personal &amp;ldquo;server&amp;rdquo; was just an old tower system composed of whatever extra components I had laying around the house. It had a few old hard drives, 4Gb DDR, an Athlon 4000+, and one fan&amp;hellip; Obviously, it has become antiquated, so its time for an upgrade!
+While working with server gear in the field, I have found Intel&amp;rsquo;s RMM and HP&amp;rsquo;s iLO Out-of-Band management solutions to be extremely helpful and a technology that I just had to have in my next personal sandbox.</description>
+    </item>
+    
+  </channel>
+</rss>

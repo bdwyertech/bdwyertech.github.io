@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="A while back, I had to adjust the policy of all Elastic Load Balancers in my organization to disable SSLv3 due to the POODLE exploit. This can be an error-prone task if done by hand, especially if your architecture spans multiple regions and/or more than a handful of ELBs. The nice thing about cloud architecture, is that nearly everything can be automated and/or scripted. For that reason, I went ahead and wrote a PowerShell script to handle this.">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AWS - Globally Adjusting ELB SSL Policy"/>
+<meta name="twitter:description" content="A while back, I had to adjust the policy of all Elastic Load Balancers in my organization to disable SSLv3 due to the POODLE exploit. This can be an error-prone task if done by hand, especially if your architecture spans multiple regions and/or more than a handful of ELBs. The nice thing about cloud architecture, is that nearly everything can be automated and/or scripted. For that reason, I went ahead and wrote a PowerShell script to handle this."/>
+
+    <meta property="og:title" content="AWS - Globally Adjusting ELB SSL Policy" />
+<meta property="og:description" content="A while back, I had to adjust the policy of all Elastic Load Balancers in my organization to disable SSLv3 due to the POODLE exploit. This can be an error-prone task if done by hand, especially if your architecture spans multiple regions and/or more than a handful of ELBs. The nice thing about cloud architecture, is that nearly everything can be automated and/or scripted. For that reason, I went ahead and wrote a PowerShell script to handle this." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2015/04/09/aws-globally-adjusting-elb-ssl-policy/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2015-04-09T22:17:54&#43;00:00" />
+<meta property="article:modified_time" content="2015-04-09T22:17:54&#43;00:00" />
+
+
+
+    <title>
+  AWS - Globally Adjusting ELB SSL Policy · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2015/04/09/aws-globally-adjusting-elb-ssl-policy/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2015/04/09/aws-globally-adjusting-elb-ssl-policy/">
+              AWS - Globally Adjusting ELB SSL Policy
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2015-04-09T22:17:54Z'>
+                April 9, 2015
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              3-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="https://bdwyertech.net/categories/aws/">AWS</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/cloud/">Cloud</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/powershell/">PowerShell</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/security/">Security</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p>A while back, I had to adjust the policy of all Elastic Load Balancers in my organization to disable SSLv3 due to the POODLE exploit. This can be an error-prone task if done by hand, especially if your architecture spans multiple regions and/or more than a handful of ELBs. The nice thing about cloud architecture, is that nearly everything can be  automated and/or scripted.  For that reason, I went ahead and wrote a PowerShell script to handle this.</p>
+<p>Most other write-ups I have seen do not take into account Stickiness policies, which are also applied to listeners.  If you run the <em><strong>Set-ELBLoadBalancerPolicyOfListener</strong></em> cmdlet with only an SSL policy applied, <em>it will remove any other existing listener policies</em>.  It is important to check the ELB for other policies, and make sure they are reapplied.  There is logic in this script that handles that.</p>
+<p>It is important to note that this script makes use of Amazon&rsquo;s template SSL Negotation Policies, but could be adapted to make use of your own.</p>
+<p>As of 4/9/15, you cannot simply set the ELB policy to a newer reference policy, although AWS documentation states otherwise.  For this reason, a new policy must be created which references the AWS Reference-Security-Policy of choice.  You can retrieve a list of available reference policies with the <em><strong>Get-ELBLoadBalancerPolicy</strong></em> cmdlet.</p>
+<p>Code also available on my <a href="https://gist.github.com/bdwyertech/7c4f1fc60210a44e8567">GitHub</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="c"># AWS Global ELB SSL Policy</span>
+<span class="c"># Brian Dwyer - Intelligent Digital Services - 4/5/15</span>
+
+<span class="c"># Variables</span>
+<span class="nv">$PolicyName</span><span class="p">=</span><span class="s2">&#34;SSL-POLICY--</span><span class="p">$(</span><span class="nb">Get-Date</span> <span class="n">-Format</span> <span class="nb">yy-MM</span><span class="n">-ddTHHmmss</span><span class="p">)</span><span class="s2">&#34;</span>
+<span class="nv">$ELBReferencePolicy</span><span class="p">=</span><span class="s1">&#39;ELBSecurityPolicy-2015-03&#39;</span>
+
+<span class="c"># Dependencies</span>
+<span class="nb">Import-Module</span> <span class="n">AWSPowerShell</span>
+
+
+
+<span class="nb">Write-Host</span> <span class="s1">&#39;Finding AWS Regions containing ELBs...&#39;</span>
+
+<span class="nv">$RegionsWithELBs</span> <span class="p">=</span> <span class="p">@{}</span>
+
+<span class="k">ForEach</span> <span class="p">(</span> <span class="nv">$region</span> <span class="k">in</span> <span class="p">(</span><span class="nb">Get-EC2Region</span><span class="p">).</span><span class="n">RegionName</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$ELB_Count</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancer</span> <span class="n">-Region</span> <span class="nv">$region</span><span class="p">).</span><span class="n">count</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="nv">$ELB_Count</span> <span class="o">-ge</span> <span class="n">1</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$RegionsWithELBs</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="nv">$region</span><span class="p">,</span> <span class="nv">$ELB_Count</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Display ELB Regions &amp; Count</span>
+<span class="nv">$tformat</span> <span class="p">=</span> <span class="p">@{</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Name</span><span class="p">};</span><span class="n">Label</span><span class="p">=</span><span class="s2">&#34;Region&#34;</span><span class="p">},</span> <span class="p">@{</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Value</span><span class="p">};</span><span class="n">Label</span><span class="p">=</span><span class="s2">&#34;ELB Count&#34;</span><span class="p">}</span>
+<span class="nv">$RegionsWithELBs</span><span class="p">.</span><span class="n">GetEnumerator</span><span class="p">()</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">Value</span> <span class="n">-Descending</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="nv">$tformat</span> <span class="n">-AutoSize</span>
+
+
+
+
+<span class="k">ForEach</span> <span class="p">(</span> <span class="nv">$region</span> <span class="k">in</span> <span class="nv">$RegionsWithELBs</span><span class="p">.</span><span class="n">Keys</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c"># Verify reference policy existence in region</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancerPolicy</span> <span class="n">-Region</span> <span class="nv">$region</span><span class="p">).</span><span class="n">PolicyName</span> <span class="o">-contains</span> <span class="nv">$ELBReferencePolicy</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&#34;Modifying ELBs in region: &#39;$region&#39;&#34;</span>
+
+        <span class="c"># Loop through the ELBs</span>
+        <span class="k">ForEach</span> <span class="p">(</span> <span class="nv">$lb</span> <span class="k">in</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancer</span> <span class="n">-Region</span> <span class="nv">$region</span> <span class="p">).</span><span class="n">LoadBalancerName</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c"># Verify ELB serves HTTPS</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancer</span> <span class="n">-Region</span> <span class="nv">$region</span> <span class="n">-LoadBalancerName</span> <span class="nv">$lb</span><span class="p">).</span><span class="n">ListenerDescriptions</span><span class="p">.</span><span class="n">Listener</span><span class="p">.</span><span class="n">Protocol</span> <span class="o">-contains</span> <span class="s1">&#39;HTTPS&#39;</span> <span class="p">)</span>
+            <span class="p">{</span>
+
+                <span class="c"># Find Existing Policies (App/Cookie Stickiness, etc.)</span>
+
+                <span class="nv">$PoliciesToApply</span> <span class="p">=</span> <span class="p">@(</span><span class="nv">$PolicyName</span><span class="p">)</span>
+
+                <span class="k">ForEach</span> <span class="p">(</span> <span class="nv">$currentpolicy</span> <span class="k">in</span> <span class="p">((</span><span class="nb">Get-ELBLoadBalancer</span> <span class="n">-Region</span> <span class="nv">$region</span> <span class="n">-LoadBalancerName</span> <span class="nv">$lb</span><span class="p">).</span><span class="n">ListenerDescriptions</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Listener</span><span class="p">.</span><span class="n">Protocol</span> <span class="o">-contains</span> <span class="s1">&#39;HTTPS&#39;</span><span class="p">}).</span><span class="n">PolicyNames</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancerPolicy</span> <span class="n">-Region</span> <span class="nv">$region</span> <span class="n">-LoadBalancerName</span> <span class="nv">$lb</span> <span class="n">-PolicyName</span> <span class="nv">$currentpolicy</span><span class="p">).</span><span class="n">PolicyTypeName</span> <span class="o">-ne</span> <span class="s1">&#39;SSLNegotiationPolicyType&#39;</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="nv">$PoliciesToApply</span> <span class="p">+=</span> <span class="p">@(</span><span class="nv">$currentpolicy</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+
+                <span class="c"># Configure SSL Policy</span>
+                <span class="nb">Write-Host</span> <span class="s2">&#34;Creating &#39;$PolicyName&#39; from &#39;$ELBReferencePolicy&#39; for $lb&#34;</span>
+                <span class="nb">New-ELBLoadBalancerPolicy</span> <span class="n">-Region</span> <span class="nv">$region</span> <span class="n">-LoadBalancerName</span> <span class="nv">$lb</span> <span class="n">-PolicyName</span> <span class="nv">$PolicyName</span> <span class="p">`</span>
+                  <span class="n">-PolicyTypeName</span> <span class="n">SSLNegotiationPolicyType</span> <span class="p">`</span>
+                  <span class="n">-PolicyAttribute</span> <span class="p">@{</span> <span class="n">AttributeName</span><span class="p">=</span><span class="s2">&#34;Reference-Security-Policy&#34;</span><span class="p">;</span><span class="n">AttributeValue</span><span class="p">=</span><span class="s2">&#34;$ELBReferencePolicy&#34;</span><span class="p">}</span> <span class="p">`</span>
+                  <span class="n">-Force</span>
+                <span class="nb">Write-Host</span> <span class="s2">&#34;Activating policy &#39;$PolicyName&#39; for ELB: $lb&#34;</span>
+                <span class="nb">Set-ELBLoadBalancerPolicyOfListener</span> <span class="n">-Region</span> <span class="s2">&#34;$region&#34;</span> <span class="n">-LoadBalancerName</span> <span class="s2">&#34;$lb&#34;</span> <span class="n">-LoadBalancerPort</span> <span class="n">443</span> <span class="n">-PolicyName</span> <span class="nv">$PoliciesToApply</span>
+
+                <span class="c"># Cleanup Old Policies</span>
+                <span class="k">ForEach</span> <span class="p">(</span><span class="nv">$policy</span> <span class="k">in</span> <span class="p">(</span><span class="nb">Get-ELBLoadBalancerPolicy</span> <span class="n">-Region</span> <span class="s2">&#34;$region&#34;</span> <span class="n">-LoadBalancerName</span> <span class="s2">&#34;$lb&#34;</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">PolicyTypeName</span> <span class="o">-eq</span> <span class="s1">&#39;SSLNegotiationPolicyType&#39;</span><span class="p">}).</span><span class="n">PolicyName</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="nv">$policy</span> <span class="o">-ne</span> <span class="nv">$PolicyName</span> <span class="o">-and</span> <span class="nv">$policy</span> <span class="o">-ne</span> <span class="nv">$ELBReferencePolicy</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="nb">Write-Host</span> <span class="s2">&#34;Removing old policy &#39;$policy&#39; from ELB: $lb&#34;</span>
+                        <span class="nb">Remove-ELBLoadBalancerPolicy</span> <span class="n">-Region</span> <span class="s2">&#34;$region&#34;</span> <span class="n">-LoadBalancerName</span> <span class="s2">&#34;$lb&#34;</span> <span class="n">-PolicyName</span> <span class="nv">$policy</span> <span class="n">-Force</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">Else</span>
+    <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&#34;Region $region does not contain policy $ELBReferencePolicy&#34;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

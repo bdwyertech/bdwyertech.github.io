@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="It has been almost 3 years since I wrote Branch Office Connections – GRE over IPSec VPN! For those of you who are familiar with Cisco certification, that means time to renew! Anyway, I&rsquo;m coming back now and looking at this lab, I noticed that we are preferring the serial link for traffic! In this day and age, the serial link would likely be the fallback, and a faster, cheaper GRE/IPSEC VPN would likely be the preferable route!">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="UPDATE: Branch Office Connections – GRE over IPSec VPN"/>
+<meta name="twitter:description" content="It has been almost 3 years since I wrote Branch Office Connections – GRE over IPSec VPN! For those of you who are familiar with Cisco certification, that means time to renew! Anyway, I&rsquo;m coming back now and looking at this lab, I noticed that we are preferring the serial link for traffic! In this day and age, the serial link would likely be the fallback, and a faster, cheaper GRE/IPSEC VPN would likely be the preferable route!"/>
+
+    <meta property="og:title" content="UPDATE: Branch Office Connections – GRE over IPSec VPN" />
+<meta property="og:description" content="It has been almost 3 years since I wrote Branch Office Connections – GRE over IPSec VPN! For those of you who are familiar with Cisco certification, that means time to renew! Anyway, I&rsquo;m coming back now and looking at this lab, I noticed that we are preferring the serial link for traffic! In this day and age, the serial link would likely be the fallback, and a faster, cheaper GRE/IPSEC VPN would likely be the preferable route!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2014/11/07/update-branch-office-connections-gre-over-ipsec-vpn/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2014-11-07T19:19:22&#43;00:00" />
+<meta property="article:modified_time" content="2014-11-07T19:19:22&#43;00:00" />
+
+
+
+    <title>
+  UPDATE: Branch Office Connections – GRE over IPSec VPN · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2014/11/07/update-branch-office-connections-gre-over-ipsec-vpn/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2014/11/07/update-branch-office-connections-gre-over-ipsec-vpn/">
+              UPDATE: Branch Office Connections – GRE over IPSec VPN
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2014-11-07T19:19:22Z'>
+                November 7, 2014
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              3-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="https://bdwyertech.net/categories/certification/">Certification</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/cisco/">Cisco</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/networking/">Networking</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p><a href="https://bdwyertech.files.wordpress.com/2012/02/022512_2257_branchoffic1.png"><img src="https://bdwyertech.files.wordpress.com/2012/02/022512_2257_branchoffic1.png" alt="022512_2257_BranchOffic1.png">
+</a></p>
+<p>It has been almost 3 years since I wrote <a href="http://bdwyertech.wordpress.com/2012/02/25/branch-office-connections/"><em>Branch Office Connections – GRE over IPSec VPN</em></a>!  For those of you who are familiar with Cisco certification, that means time to renew!  Anyway, I&rsquo;m coming back now and looking at this lab, I noticed that we are preferring the serial link for traffic!  In this day and age, the serial link would likely be the fallback, and a faster, cheaper GRE/IPSEC VPN would likely be the preferable route!  Anyway, to accomplish this, we need to look at EIGRP and its determination of the best route.  EIGRP uses bandwidth, delay, reliability, load, and MTU. Essentially, bandwidth and delay are what we are going to play with here; hopefully your ISP is reliable, and not over-provisioned.  Manipulation of bandwidth and delay will affect the feasible route&rsquo;s metric, and in turn affect which route EIGRP will prefer.  Manipulation of these values will not affect the actual throughput or latency on the link, they are purely for manipulating routing decisions, as we are doing here.</p>
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/tun0_bw.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/tun0_bw.png" alt="tun0_bw">
+</a></p>
+<p>When I fired this lab back up, I found that the default bandwidth on the Tunnel interface was 9kbps! Actually, I used <em>bandwidth inherit</em> incorrectly; this configuration does not cause Tunnel0 to inherit the bandwidth of the FastEthernet interface.  <em><strong>Bandwidth inherit</strong></em> would be used on sub-interfaces, to inherit the bandwidth of the primary interface. A tunnel <em>is not</em> a sub-interface of the transmitting/receiving PHY&rsquo;s. Anyway, we should make sure we declare a higher bandwidth and lower delay than the Serial backup on these Tunnel interfaces.</p>
+<p>Cisco uses tens of microseconds as unit of measure for delay. <em>**1 millisecond = 1000 **<strong>microseconds</strong></em>, so <em><strong>1 millisecond = 100 tens of microseconds</strong></em>.  So lets say you have a 50 millisecond ping between your branch office and HQ, you would use a delay value of 5000.  FastEthernet&rsquo;s default bandwidth is 100,000kbps, so we&rsquo;ll use that for our tunnel bandwidth.</p>
+<p><strong>On R4:</strong></p>
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r4_bw_delay.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r4_bw_delay.png" alt="R4_bw_delay">
+</a></p>
+<p><strong>R4&rsquo;s Routing Table - Before &amp; After</strong></p>
+<p><strong><em>Before</em></strong></p>
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r4_before.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r4_before.png" alt="R4_before">
+</a></p>
+<p><em><strong>After</strong></em></p>
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r4_after.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r4_after.png" alt="R4_after">
+</a></p>
+<p>At this point, our Branch Office is routing egress traffic destined for the Enterprise Core over the GRE/IPSEC tunnel.  Lets go ahead and see what the routing table looks like on the other side, on R2.</p>
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r2_before.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r2_before.png" alt="R2_before">
+</a></p>
+<p>Aha!  The Enterprise Core is still routing traffic destined for the Branch Office over the Serial link.  Why is this? Well, R2 still doesn&rsquo;t realize that the Tunnel interface has a higher bandwidth and lower latency.  Let&rsquo;s go ahead and fix that.</p>
+<p>_**<a href="https://bdwyertech.files.wordpress.com/2014/11/r2_bw_delay.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r2_bw_delay.png" alt="R2_bw_delay">
+</a>**_</p>
+<p><em><strong>After</strong></em></p>
+<p><a href="https://bdwyertech.files.wordpress.com/2014/11/r2_after.png"><img src="https://bdwyertech.files.wordpress.com/2014/11/r2_after.png" alt="R2_after">
+</a></p>
+<p>Bingo.  We&rsquo;ve fixed it all up.  It is critical that any interface metric manipulations are performed on both sides of the link, otherwise the result is a non-symmetrical traffic pattern, which may result in confusion and difficult troubleshooting weeks, months, or years down the road.</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

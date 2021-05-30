@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="At the moment, a major trend in the IT industry is the push towards virtualization. In addition to being a large, quickly growing social movement, the push to &ldquo;go green&rdquo; is a major focus of many industries &amp; organizations looking to maintain or improve their public image by reducing their carbon footprint. Virtualization is one way the IT industry is &ldquo;going green&rdquo;.
+At first, you might ask yourself why virtualize? From a system administrator&rsquo;s standpoint, the modularity of virtual machines is impeccable.">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Virtualization"/>
+<meta name="twitter:description" content="At the moment, a major trend in the IT industry is the push towards virtualization. In addition to being a large, quickly growing social movement, the push to &ldquo;go green&rdquo; is a major focus of many industries &amp; organizations looking to maintain or improve their public image by reducing their carbon footprint. Virtualization is one way the IT industry is &ldquo;going green&rdquo;.
+At first, you might ask yourself why virtualize? From a system administrator&rsquo;s standpoint, the modularity of virtual machines is impeccable."/>
+
+    <meta property="og:title" content="Virtualization" />
+<meta property="og:description" content="At the moment, a major trend in the IT industry is the push towards virtualization. In addition to being a large, quickly growing social movement, the push to &ldquo;go green&rdquo; is a major focus of many industries &amp; organizations looking to maintain or improve their public image by reducing their carbon footprint. Virtualization is one way the IT industry is &ldquo;going green&rdquo;.
+At first, you might ask yourself why virtualize? From a system administrator&rsquo;s standpoint, the modularity of virtual machines is impeccable." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2011/09/01/virtualization/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2011-09-01T12:15:55&#43;00:00" />
+<meta property="article:modified_time" content="2011-09-01T12:15:55&#43;00:00" />
+
+
+
+    <title>
+  Virtualization · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2011/09/01/virtualization/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2011/09/01/virtualization/">
+              Virtualization
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2011-09-01T12:15:55Z'>
+                September 1, 2011
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              4-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="https://bdwyertech.net/categories/virtualization/">Virtualization</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p>At the moment, a major trend in the IT industry is the push towards virtualization.  In addition to being a  large, quickly growing social movement, the push to &ldquo;go green&rdquo; is a major focus of many industries &amp; organizations looking to maintain or improve their public image by reducing their carbon footprint.  Virtualization is one way the IT industry is &ldquo;going green&rdquo;.</p>
+<p>At first, you might ask yourself why virtualize?  From a system administrator&rsquo;s standpoint, the modularity of virtual machines is impeccable.  You can easily migrate services from one hypervisor to another, not having to worry about drivers or any major compatibility issues.  Everything remains intact after a proper transition from one host to another; no reconfiguration necessary.  This modularity takes a huge burden off a system administrator who would usually be concerned with these things when migrating a service to a new server.  For example, if a company increases in size and needs higher performance hardware to run a certain service, normally this would mean migrating the service to a fresh OS install on a new server.  You could not simply place the old hard drive into the new server and expect it to work.  The differences in hardware would require a fresh OS installation and even the possible danger of incompatibility with the older software.</p>
+<p>Now, let’s say that machine was virtualized and its host&rsquo;s specifications were inadequate.  A new, more powerful server would require only a hypervisor to be installed to be ready to run the VM.  The actual virtual machine could then be migrated from the old machine with a few keystrokes.  After adjusting the privileged domain&rsquo;s configuration to match that of the original host, the service in question could then be returned to its original state.  In practice, the time it takes to migrate virtual machines is considerably less than migrating physical hosts.  In addition, this ease of migration allows for virtual machines to be moved around amongst hosts in an attempt to achieve the most efficient use of resources possible.  If you have a few services that don&rsquo;t see much usage, you can host them all on a single machine.  If one of those services suddenly becomes more in demand, it can be migrated to another host with more free resources available.</p>
+<p>This modularity is enticing and also entails ease of incorporating high-availability.  When type-one hypervisors are clustered, they can add redundancy to a virtual machine.  For example, if you had two Hyper-V&rsquo;s clustered and attached to commonly available storage such as a SAN, if one of the cluster members was to crash, the virtual machines running on it would automatically continue running on the second member.  How this works is similar to how Cisco incorporates HSRP.  Each host has an IP address, but the two share a virtual IP address.  This virtual IP address is the only IP a client sees when accessing a service hosted on the cluster.  When managed, they appear as a single VM host.  Virtual machines are migrated to the cluster the same way you migrate a VM from one host to another.  You can choose which machine will primarily host the VM, but when failover occurs it will be automatically migrated to another available cluster member.  Even though you can pick which machine will host your VM, it is accessed through the cluster&rsquo;s virtual IP, regardless.  The best thing about Hyper-V is that this functionality is included in its purchase price - free!</p>
+<p>VMware HA is similar but requires licensing.  VMware vMotion and Storage vMotion drive vCenter&rsquo;s HA and also offer the ability to quickly migrate VM&rsquo;s with not only their live state information, but also their associated virtual disks.  VMware&rsquo;s vCenter can also be used to dynamically move VM&rsquo;s from host to host and actually power up and power down hosts as VM demand for resources increases and decreases.</p>
+<p>In addition to all of these benefits, virtualization is also more economical.  Because you can host multiple virtual machines on a single host, what used to require a dozen or more servers may now only require two or three powerful servers.  In doing this, you have less hardware to maintain, more free space and best of all, less power usage.  In today’s economy where every dollar counts, this is important.  Money can be saved by virtualizing.  You can go so far as to virtualize your desktop environment as well, but more about that another day.</p>
+<p>In today&rsquo;s world, it&rsquo;s pretty easy to see why virtualization has gotten so much attention so quickly.  It offers many real benefits on many fronts.  It is administrator friendly, accountant friendly and even environmentalist friendly.  It&rsquo;s not too often you see something new that provides gratification to all three of these types simultaneously!</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

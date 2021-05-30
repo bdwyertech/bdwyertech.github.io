@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DigitalOcean on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/digitalocean/</link>
+    <description>Recent content in DigitalOcean on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 30 Oct 2015 21:49:28 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/digitalocean/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DigitalOcean, Chef and Ohai - Retrieving a Droplet&#39;s Private IP Address</title>
+      <link>https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/</link>
+      <pubDate>Fri, 30 Oct 2015 21:49:28 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/</guid>
+      <description>Recently, I attempted to use the Ohai value for node[&#39;cloud_v2&#39;][&#39;local_ipv4&#39;] and node[&#39;cloud&#39;][&#39;local_ipv4&#39;][&#39;ip_address&#39;] to determine the Private IP address of my Cloud-based nodes in a Chef cookbook. Unfortunately, it does not work accurately for DigitalOcean instances any longer.
+According to DigitalOcean documentation, if Private Networking is enabled, the IP will be assigned to eth1. Recently, I noticed that a second Private IP address has begun to be assigned to the eth0 interface.</description>
+    </item>
+    
+  </channel>
+</rss>

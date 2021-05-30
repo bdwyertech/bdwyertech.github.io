@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Windows on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/windows/</link>
+    <description>Recent content in Windows on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Feb 2016 08:30:43 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/windows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Windows 7 SP1 - Slow Windows Updates</title>
+      <link>https://bdwyertech.net/2016/02/24/windows-7-sp1-slow-windows-updates/</link>
+      <pubDate>Wed, 24 Feb 2016 08:30:43 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2016/02/24/windows-7-sp1-slow-windows-updates/</guid>
+      <description>As an MCITP I&amp;rsquo;m well-versed in Group Policy and what not, but building a clean Windows base image with all updates applied and some prerequisite software has always always been a relatively manual, inconsistent, and annoying process. I recently did a major overhaul of our Operations Network/Server Infrastructure and figured there&amp;rsquo;s no better time to give my trusty Chef, Packer &amp;amp; Vagrant tool set a shot with our workstations.
+Currently, I&amp;rsquo;ve got my OS X &amp;amp; *nix infrastructure under the control of Chef, and I&amp;rsquo;ve got e2e OS build &amp;amp; deployment processes in place (Packer -&amp;gt; Vagrant -&amp;gt; Chef ).</description>
+    </item>
+    
+    <item>
+      <title>How to Empty the Active Directory Recycling Bin</title>
+      <link>https://bdwyertech.net/2013/01/22/how-to-empty-the-active-directory-recycling-bin/</link>
+      <pubDate>Tue, 22 Jan 2013 16:38:28 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2013/01/22/how-to-empty-the-active-directory-recycling-bin/</guid>
+      <description>One of the coolest new features in Server 2008 R2 and 2012 is the ability to recover deleted Active Directory objects. Your forest functional level must be at least 2008 R2 in order to activate this feature. Server 2008 R2 introduced the AD Administrative Center which provides a nice GUI to restore deleted objects after activated. However, eventually one might want to permanently empty the contents of this recycling bin. There is no way to do this via the GUI.</description>
+    </item>
+    
+  </channel>
+</rss>

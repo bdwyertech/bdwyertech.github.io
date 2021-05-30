@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="So while studying for CCNP Route, I came across the concept of IP SLA and utilizing probes to check availability of next-hop addresses prior to instating them inside a route-map. An objective was to have two ISP&rsquo;s listed in a route-map statement, and set all traffic originating from the local router with a next-hop IP of ISP1 as long as it was deemed reachable by the IP SLA tracker probe status.">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cisco IP SLA"/>
+<meta name="twitter:description" content="So while studying for CCNP Route, I came across the concept of IP SLA and utilizing probes to check availability of next-hop addresses prior to instating them inside a route-map. An objective was to have two ISP&rsquo;s listed in a route-map statement, and set all traffic originating from the local router with a next-hop IP of ISP1 as long as it was deemed reachable by the IP SLA tracker probe status."/>
+
+    <meta property="og:title" content="Cisco IP SLA" />
+<meta property="og:description" content="So while studying for CCNP Route, I came across the concept of IP SLA and utilizing probes to check availability of next-hop addresses prior to instating them inside a route-map. An objective was to have two ISP&rsquo;s listed in a route-map statement, and set all traffic originating from the local router with a next-hop IP of ISP1 as long as it was deemed reachable by the IP SLA tracker probe status." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2012/02/20/cisco-ip-sla/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2012-02-20T23:18:45&#43;00:00" />
+<meta property="article:modified_time" content="2012-02-20T23:18:45&#43;00:00" />
+
+
+
+    <title>
+  Cisco IP SLA · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2012/02/20/cisco-ip-sla/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2012/02/20/cisco-ip-sla/">
+              Cisco IP SLA
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2012-02-20T23:18:45Z'>
+                February 20, 2012
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              3-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="https://bdwyertech.net/categories/certification/">Certification</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/networking/">Networking</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p>So while studying for CCNP Route, I came across the concept of IP SLA and utilizing probes to check availability of next-hop addresses prior to instating them inside a route-map.  An objective was to have two ISP&rsquo;s listed in a route-map statement, and set all traffic originating from the local router with a next-hop IP of ISP1 as long as it was deemed reachable by the IP SLA tracker probe status.</p>
+<p><strong>Diagram</strong></p>
+<p><img src="https://bdwyertech.net/2012/02/isp.png" alt=""></p>
+<p>**The Configuration (****Cisco 2691 - IOS **ADVENTERPRISE <strong>12.4(15)T14)</strong></p>
+<p><strong>Define IP SLA Policy</strong>
+PolicyRouter(config)#ip sla 1
+PolicyRouter(config-ip-sla)icmp-echo 200.1.1.2 source-interface Serial0/0
+PolicyRouter(config-ip-sl.a-echo)#timeout 1000
+PolicyRouter(config-ip-sla-echo)#frequency 3</p>
+<p><strong>Start Probe</strong>
+PolicyRouter(config)#ip sla schedule 1 start-time now life forever</p>
+<p><strong>Track Probe Status</strong>
+PolicyRouter(config)#track 1 rtr 1 reachability</p>
+<p><strong>ACL</strong>
+PolicyRouter(config)#ip access-list extended ROUTER
+PolicyRouter(config-ext-nacl)#permit ip any any</p>
+<p><strong>Route Map</strong>
+PolicyRouter(config)#route-map ROUTER-TRAFFIC 10
+PolicyRouter(config-route-map)#match ip address ROUTER
+PolicyRouter(config-route-map)#set ip next-hop verify-availability 200.1.1.2 10 track 1
+PolicyRouter(config-route-map)#set ip next-hop 201.1.1.2</p>
+<hr>
+<p>**Apply Policy-Based Routing to Locally Generated Traffic
+**PolicyRouter(config)#ip local policy route-map ROUTER-TRAFFIC</p>
+<h2 id="result">
+  Result
+  <a class="heading-link" href="#result">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p><strong>Route Map Status</strong></p>
+<p><img src="https://bdwyertech.net/2012/02/untitled-picture4.png" alt=""></p>
+<p><strong>Traceroute with Both ISP&rsquo;s Reachable</strong></p>
+<p><img src="https://bdwyertech.net/2012/02/down.png" alt=""></p>
+<p>** Traceroute with ISP1 Down**</p>
+<p><img src="https://bdwyertech.net/2012/02/up.png" alt=""></p>
+<p>The result was good.  The next probe was working and traffic was being routed fine.  The fail-over to ISP2 upon failure of Serial0/0 also works fine.</p>
+<h2 id="the-problem">
+  <strong>The Problem</strong>
+  <a class="heading-link" href="#the-problem">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>When Serial0/0 comes back on-line, the PBR sticks with the route through ISP2.  After looking at the route map again after the failover and the restoration of Serial0/0, I saw that the tracker was still registering the next-hop as down.</p>
+<p><img src="https://bdwyertech.net/2012/02/untitled-picture5.png" alt=""></p>
+<p><img src="https://bdwyertech.net/2012/02/untitled-picture6.png" alt=""></p>
+<p>I did some testing and noticed that pings to 200.1.1.2 would fail.  This is because of the route-map applied to locally generated traffic.  The locally-generated ICMP-echo probes were being set with the route-map&rsquo;s active next-hop interface, sending the probe incorrectly to ISP2.  For the purpose of the probe, it is necessary the probe traffic to be permitted to travel to the correct next-hop of ISP1 regardless of where other traffic is destined.</p>
+<h2 id="solution">
+  Solution
+  <a class="heading-link" href="#solution">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>To correct this issue, I created an ACL to catch the probe traffic and inserted a sequence above the current statement in the route-map.  This sequence allows the probe traffic to utilize the correct destination rather than be affected by the fail-over next-hop functionality.</p>
+<p><strong>ACL</strong>
+PolicyRouter(config)#ip access-list extended RTR_PING_S0/0
+PolicyRouter(config-ext-nacl)#permit icmp host 200.1.1.1 host 200.1.1.2 echo</p>
+<p><strong>Route Map</strong>
+PolicyRouter(config)#route-map ROUTER-TRAFFIC 5
+PolicyRouter(config-route-map)#match ip address RTR_PING_S0/0</p>
+<h2 id="result-1">
+  Result
+  <a class="heading-link" href="#result-1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p><img src="https://bdwyertech.net/2012/02/untitled-picture7.png" alt=""></p>
+<p>This fix resulted in next-hop redundancy including preempting when the specified next-hop ISP comes back on-line.  This could be applied to a router with more ISP connections, so long as an ACL and route-map are created with respect to the necessary traffic-flow characteristics.</p>
+<p><strong>NOTE: Be very careful applying route-maps to locally-generated traffic.  You must be aware of the implications to router functionality.</strong></p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

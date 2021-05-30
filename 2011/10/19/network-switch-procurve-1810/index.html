@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="Recently, I decided I would like to acquire a quality, managed switch for my home environment. I wanted something which supported Gigabit Ethernet, Flow Control and Jumbo Frames. These features would complement my Dell PE 2950 ESXi box by providing high performance and future expandability.
+At the moment, quality managed gigabit switches are expensive. 10/100 managed switches can easily be acquired on eBay for a decent price, however gigabit models are often seen for upwards of $500 used.">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Network Switch - ProCurve 1810"/>
+<meta name="twitter:description" content="Recently, I decided I would like to acquire a quality, managed switch for my home environment. I wanted something which supported Gigabit Ethernet, Flow Control and Jumbo Frames. These features would complement my Dell PE 2950 ESXi box by providing high performance and future expandability.
+At the moment, quality managed gigabit switches are expensive. 10/100 managed switches can easily be acquired on eBay for a decent price, however gigabit models are often seen for upwards of $500 used."/>
+
+    <meta property="og:title" content="Network Switch - ProCurve 1810" />
+<meta property="og:description" content="Recently, I decided I would like to acquire a quality, managed switch for my home environment. I wanted something which supported Gigabit Ethernet, Flow Control and Jumbo Frames. These features would complement my Dell PE 2950 ESXi box by providing high performance and future expandability.
+At the moment, quality managed gigabit switches are expensive. 10/100 managed switches can easily be acquired on eBay for a decent price, however gigabit models are often seen for upwards of $500 used." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2011/10/19/network-switch-procurve-1810/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2011-10-19T17:42:53&#43;00:00" />
+<meta property="article:modified_time" content="2011-10-19T17:42:53&#43;00:00" />
+
+
+
+    <title>
+  Network Switch - ProCurve 1810 · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2011/10/19/network-switch-procurve-1810/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2011/10/19/network-switch-procurve-1810/">
+              Network Switch - ProCurve 1810
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2011-10-19T17:42:53Z'>
+                October 19, 2011
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              3-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="https://bdwyertech.net/categories/hardware-electronics/">Hardware &amp; Electronics</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/networking/">Networking</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p><a href="https://bdwyertech.net/2011/10/1810g.jpeg"><img src="https://bdwyertech.net/2011/10/1810g.jpeg?w=150" alt="HP ProCurve 1810G">
+</a>Recently, I decided I would like to acquire a quality, managed switch for my home environment.  I wanted something which supported Gigabit Ethernet, Flow Control and Jumbo Frames.  These features would complement my Dell PE 2950 ESXi box by providing high performance and future expandability.</p>
+<p>At the moment, quality managed gigabit switches are expensive.  10/100 managed switches can easily be acquired on eBay for a decent price, however gigabit models are often seen for upwards of $500 used.  Initially I wanted to go the Cisco route, but even 2960G&rsquo;s were way out of my price range.  I have worked with HP ProCurve 2510G&rsquo;s and 2900&rsquo;s in a vSphere environment and was impressed, therefore I began to look towards HP.  I soon discovered that although the ProCurves were more reasonably priced, they were still out of my price range.  During this search, I discovered the web-managed ProCurve 1800 and 1810 models.  They had all of the features I was looking for at a price point that cannot be beat.  In addition, they are covered by the lifetime HP ProCurve warranty.</p>
+<p>I ended up purchasing a 24-port 1810G for around $200.  Immediately after unboxing, I flashed it with the latest firmware which irons out some bugs present in initial releases.  I then set up a few VLAN&rsquo;s and a trunk port to my ESXi box.  As a CCNA, I find HP terminology interesting as they call VLAN trunk ports &ldquo;tagged&rdquo; ports, and what they call Trunking is actually referred to as link aggregation in Cisco terms.  In addition, the equivalent of a Cisco native VLAN is referred to as the untagged VLAN on HP gear.  If you are familiar with Cisco gear, this is an important differentiation to make note of if working with HP gear for the first time.</p>
+<p>The web interface of the 1810 is smooth and facilitates easy access to management functions.  However, I really wish HP provided a console port.  There is a fellow <a href="http://www.happyhacking.org/Happy_Hacking/Blog/Entries/2010/3/20_HP_ProCurve_1810G_Take_2.html">here</a> who disassembled his 1810G-8 and found that the internal board has headers for a console port and that this switch is based off of a Broadcom chipset.  Being that the hardware support is there, I wish it included console access.</p>
+<p>Overall, the 1810 is a great switch for high-performance home labs, small businesses, and maybe as access switches in an enterprise.  It is feature rich, affordable and has a lifetime warranty.</p>
+<h3 id="heading">
+  
+  <a class="heading-link" href="#heading">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<h1 id="update-xbox-users-read-this">
+  <strong>UPDATE</strong>!!!  Xbox users, read this!
+  <a class="heading-link" href="#update-xbox-users-read-this">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h1>
+<p>For those of you using one of these switches with an Xbox 360, you must Disable the AutoDoS functionality in order to connect to Xbox Live!  I was going nuts making adjustments on my pfSense box trying to get this thing connected, then decided for the hell of it to try another switch.  Magically, the Xbox worked, therefore I knew it was the switch.  I disabled the security functions of the switch one at a time and narrowed it down to AutoDoS.  This feature enables detection and blocking of a plethora of attack signatures, however they cannot be turned on or off individually.  For this reason, this feature must be disabled in its entirety.</p>
+<p><a href="https://bdwyertech.net/2011/10/auto-dos.jpg"><img src="https://bdwyertech.net/2011/10/auto-dos.jpg" alt="">
+</a></p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

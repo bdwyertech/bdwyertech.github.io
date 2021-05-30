@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Networking on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/networking/</link>
+    <description>Recent content in Networking on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 Mar 2016 16:00:49 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/networking/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Switch Security - DHCP Snooping, IP Source Guard and Dynamic ARP Inspection</title>
+      <link>https://bdwyertech.net/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/</link>
+      <pubDate>Wed, 02 Mar 2016 16:00:49 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2016/03/02/switch-security-dhcp-snooping-ip-source-guard-and-dynamic-arp-inspection-2/</guid>
+      <description>A few years back, I was designing an Enterprise MDM strategy for iPhone deployments. At some point, I was browsing the Apple Enterprise iOS forum and saw a post about an iOS bug where devices sometimes retain a previously assigned IP (from another network) when joining a new network. In this case, someone was joining a network with a retained IP which coincided with the organization&amp;rsquo;s e-mail server. When this occurred, it apparently disabled e-mail service throughout the organization.</description>
+    </item>
+    
+    <item>
+      <title>DigitalOcean, Chef and Ohai - Retrieving a Droplet&#39;s Private IP Address</title>
+      <link>https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/</link>
+      <pubDate>Fri, 30 Oct 2015 21:49:28 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/</guid>
+      <description>Recently, I attempted to use the Ohai value for node[&#39;cloud_v2&#39;][&#39;local_ipv4&#39;] and node[&#39;cloud&#39;][&#39;local_ipv4&#39;][&#39;ip_address&#39;] to determine the Private IP address of my Cloud-based nodes in a Chef cookbook. Unfortunately, it does not work accurately for DigitalOcean instances any longer.
+According to DigitalOcean documentation, if Private Networking is enabled, the IP will be assigned to eth1. Recently, I noticed that a second Private IP address has begun to be assigned to the eth0 interface.</description>
+    </item>
+    
+    <item>
+      <title>VLAN Security - VLAN Access Control List&#39;s (VACL)</title>
+      <link>https://bdwyertech.net/2014/12/09/vlan-security-vlan-access-control-lists-vacl/</link>
+      <pubDate>Wed, 10 Dec 2014 02:21:11 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/12/09/vlan-security-vlan-access-control-lists-vacl/</guid>
+      <description>I&amp;rsquo;ve been studying to renew my CCNP as of recently, and I decided to create a refresher blog post about the implementation of VACLs.
+VLAN Access Control Lists (VACLs) can be used to implement Access Control at both Layer 2 and Layer 3. Typically, access lists are applied to ingress or egress traffic on a routed, L3 interface. VACL&amp;rsquo;s allow you to apply the filtering to all packets, regardless of direction.</description>
+    </item>
+    
+    <item>
+      <title>UPDATE: Branch Office Connections – GRE over IPSec VPN</title>
+      <link>https://bdwyertech.net/2014/11/07/update-branch-office-connections-gre-over-ipsec-vpn/</link>
+      <pubDate>Fri, 07 Nov 2014 19:19:22 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/11/07/update-branch-office-connections-gre-over-ipsec-vpn/</guid>
+      <description>It has been almost 3 years since I wrote Branch Office Connections – GRE over IPSec VPN! For those of you who are familiar with Cisco certification, that means time to renew! Anyway, I&amp;rsquo;m coming back now and looking at this lab, I noticed that we are preferring the serial link for traffic! In this day and age, the serial link would likely be the fallback, and a faster, cheaper GRE/IPSEC VPN would likely be the preferable route!</description>
+    </item>
+    
+    <item>
+      <title>AWS - Highly-Available NAT in VPC</title>
+      <link>https://bdwyertech.net/2014/06/16/aws-highly-available-nat-in-vpc/</link>
+      <pubDate>Mon, 16 Jun 2014 16:52:45 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/06/16/aws-highly-available-nat-in-vpc/</guid>
+      <description>Like most sysadmins, one of my primary responsibilities is ensuring high-availability in our environments. Recently, I&amp;rsquo;ve been working a lot more with Amazon AWS. Amazon recently began forcing new accounts to make use of VPC. When you create a VPC, an Internet Gateway must be provisioned to route traffic to the Internet. VPC&amp;rsquo;s utilize subnet constructs for virtual networking. Subnets are assigned a routing table, and in the case of a Public subnet, the default route of this table is pointed at the Internet Gateway.</description>
+    </item>
+    
+    <item>
+      <title>Branch Office Connections - GRE over IPSec VPN</title>
+      <link>https://bdwyertech.net/2012/02/25/branch-office-connections/</link>
+      <pubDate>Sat, 25 Feb 2012 22:58:33 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/02/25/branch-office-connections/</guid>
+      <description>While studying for the CCNP Route exam, I noticed that GRE Tunneling and IPSec were mentioned as topics, however configuration of the two was never really covered in the certification guide. In addition, I did not see any labs involving this type of scenario, so I decided to create my own. Hopefully this provides some insight to others about how to configure GRE Tunnels over IPsec. Don&amp;rsquo;t feel bad if this takes you a while, setting up this scenario and writing this up took a whole Saturday afternoon.</description>
+    </item>
+    
+    <item>
+      <title>Cisco IP SLA</title>
+      <link>https://bdwyertech.net/2012/02/20/cisco-ip-sla/</link>
+      <pubDate>Mon, 20 Feb 2012 23:18:45 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/02/20/cisco-ip-sla/</guid>
+      <description>So while studying for CCNP Route, I came across the concept of IP SLA and utilizing probes to check availability of next-hop addresses prior to instating them inside a route-map. An objective was to have two ISP&amp;rsquo;s listed in a route-map statement, and set all traffic originating from the local router with a next-hop IP of ISP1 as long as it was deemed reachable by the IP SLA tracker probe status.</description>
+    </item>
+    
+    <item>
+      <title>Update - Been Busy</title>
+      <link>https://bdwyertech.net/2012/01/22/update-been-busy/</link>
+      <pubDate>Sun, 22 Jan 2012 20:31:41 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/01/22/update-been-busy/</guid>
+      <description>It&amp;rsquo;s been a while since I last posted to this blog, so I figured I would post an update. I have been very busy lately working to complete my internship requirements to graduate from college while also studying for the MCITP Enterprise Administrator exam. I should have the latter done in a week or two and will begin studying for the CCNP Route exam.
+I have added some new equipment to the lab, including a Dell 4220 42u server rack, Cisco 2821, and another 16gb RAM to my server bringing it to 32gb.</description>
+    </item>
+    
+    <item>
+      <title>Cisco IOS - show run linenum</title>
+      <link>https://bdwyertech.net/2011/11/10/cisco-ios-show-run-linenum/</link>
+      <pubDate>Fri, 11 Nov 2011 04:01:16 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/11/10/cisco-ios-show-run-linenum/</guid>
+      <description>So I discovered a nifty little trick recently for Cisco IOS. You can get line numbers to appear alongside your configuration when doing a show run! I found this to be awesome, although I do not think it is available on all IOS since my 3550&amp;rsquo;s running 12.2(44) do not have this feature. My 1841 running the latest 15.1(4) is the device I used to discover it. Rather than doing a simple show run, give show run linenum a shot.</description>
+    </item>
+    
+    <item>
+      <title>Network Switch - ProCurve 1810</title>
+      <link>https://bdwyertech.net/2011/10/19/network-switch-procurve-1810/</link>
+      <pubDate>Wed, 19 Oct 2011 17:42:53 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/10/19/network-switch-procurve-1810/</guid>
+      <description>Recently, I decided I would like to acquire a quality, managed switch for my home environment. I wanted something which supported Gigabit Ethernet, Flow Control and Jumbo Frames. These features would complement my Dell PE 2950 ESXi box by providing high performance and future expandability.
+At the moment, quality managed gigabit switches are expensive. 10/100 managed switches can easily be acquired on eBay for a decent price, however gigabit models are often seen for upwards of $500 used.</description>
+    </item>
+    
+    <item>
+      <title>Dell PowerEdge 2950</title>
+      <link>https://bdwyertech.net/2011/09/10/dell-poweredge-2950/</link>
+      <pubDate>Sat, 10 Sep 2011 20:07:41 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/10/dell-poweredge-2950/</guid>
+      <description>So recently I decided I wanted a server of my own which I could run VMware ESXi on at home. Previously, my personal &amp;ldquo;server&amp;rdquo; was just an old tower system composed of whatever extra components I had laying around the house. It had a few old hard drives, 4Gb DDR, an Athlon 4000+, and one fan&amp;hellip; Obviously, it has become antiquated, so its time for an upgrade!
+While working with server gear in the field, I have found Intel&amp;rsquo;s RMM and HP&amp;rsquo;s iLO Out-of-Band management solutions to be extremely helpful and a technology that I just had to have in my next personal sandbox.</description>
+    </item>
+    
+    <item>
+      <title>VMware ESXi &amp; Intel SR1550AL Servers</title>
+      <link>https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/</link>
+      <pubDate>Fri, 02 Sep 2011 12:00:51 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/</guid>
+      <description>I recently encountered an issue when running an ESXi 4.1 environment where I was getting a Purple Screen of Death at right about the 24 hour uptime mark. Like most technologists, I first hit Google with the error code and had no luck. I found a similar error code which suggested that it had something to do with a storage I/O issue. The issue did not seem driver related, so I began to look into firmware and BIOS updates for the server.</description>
+    </item>
+    
+  </channel>
+</rss>

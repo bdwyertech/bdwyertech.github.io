@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Virtualization on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/virtualization/</link>
+    <description>Recent content in Virtualization on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 19 Jul 2013 19:46:22 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/virtualization/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OS X - Excessive CPU Usage while running as a VM</title>
+      <link>https://bdwyertech.net/2013/07/19/os-x-excessive-cpu-usage-while-running-as-a-vm/</link>
+      <pubDate>Fri, 19 Jul 2013 19:46:22 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2013/07/19/os-x-excessive-cpu-usage-while-running-as-a-vm/</guid>
+      <description>After installing OS X as a VM running the Server role, I have noticed excessive CPU usage while idling. I have narrowed this down to the default screensaver which runs on the login page. Even if you disable this screensaver as a user, it will not disable it for the login screen. I have found that the only way to resolve this is to actually delete the screensaver file itself! Here is how to do it.</description>
+    </item>
+    
+    <item>
+      <title>Online Upgrade from ESXi 5.0 to 5.1 Using Host Profiles and CLI</title>
+      <link>https://bdwyertech.net/2013/01/28/online-upgrade-from-esxi-5-0-to-5-1-using-host-profiles-and-cli/</link>
+      <pubDate>Mon, 28 Jan 2013 22:26:49 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2013/01/28/online-upgrade-from-esxi-5-0-to-5-1-using-host-profiles-and-cli/</guid>
+      <description>On a standalone ESXi box or in a small environment not running vSphere Update Manager, the best way to update your hosts is via SSH CLI. I recently discovered a way to use this patching method to perform a version upgrade for 5.0 to 5.1 using host profiles rather than using the interactive installer, aka the install CD. VMware hosts their standard host profiles on the web, so these can be utilized to perform the 5.</description>
+    </item>
+    
+    <item>
+      <title>Update - Been Busy</title>
+      <link>https://bdwyertech.net/2012/01/22/update-been-busy/</link>
+      <pubDate>Sun, 22 Jan 2012 20:31:41 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/01/22/update-been-busy/</guid>
+      <description>It&amp;rsquo;s been a while since I last posted to this blog, so I figured I would post an update. I have been very busy lately working to complete my internship requirements to graduate from college while also studying for the MCITP Enterprise Administrator exam. I should have the latter done in a week or two and will begin studying for the CCNP Route exam.
+I have added some new equipment to the lab, including a Dell 4220 42u server rack, Cisco 2821, and another 16gb RAM to my server bringing it to 32gb.</description>
+    </item>
+    
+    <item>
+      <title>VMware vSphere Client - Clear Recent Connections (RDP Also)</title>
+      <link>https://bdwyertech.net/2011/09/14/vmware-vsphere-client-clear-recent-connections/</link>
+      <pubDate>Wed, 14 Sep 2011 21:47:50 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/14/vmware-vsphere-client-clear-recent-connections/</guid>
+      <description>Today I figured out how to empty the recent connections for the VMware vSphere Client. After a while, these begin to add up and I do not like having useless IP addresses and DNS names from experimental ESXi boxes appearing in my client when I attempt to log in. I searched the registry for some no longer functional servers and I found some keys in HKCU which contained the recently connected hosts.</description>
+    </item>
+    
+    <item>
+      <title>Dell PowerEdge 2950</title>
+      <link>https://bdwyertech.net/2011/09/10/dell-poweredge-2950/</link>
+      <pubDate>Sat, 10 Sep 2011 20:07:41 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/10/dell-poweredge-2950/</guid>
+      <description>So recently I decided I wanted a server of my own which I could run VMware ESXi on at home. Previously, my personal &amp;ldquo;server&amp;rdquo; was just an old tower system composed of whatever extra components I had laying around the house. It had a few old hard drives, 4Gb DDR, an Athlon 4000+, and one fan&amp;hellip; Obviously, it has become antiquated, so its time for an upgrade!
+While working with server gear in the field, I have found Intel&amp;rsquo;s RMM and HP&amp;rsquo;s iLO Out-of-Band management solutions to be extremely helpful and a technology that I just had to have in my next personal sandbox.</description>
+    </item>
+    
+    <item>
+      <title>VMware ESXi &amp; Intel SR1550AL Servers</title>
+      <link>https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/</link>
+      <pubDate>Fri, 02 Sep 2011 12:00:51 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/</guid>
+      <description>I recently encountered an issue when running an ESXi 4.1 environment where I was getting a Purple Screen of Death at right about the 24 hour uptime mark. Like most technologists, I first hit Google with the error code and had no luck. I found a similar error code which suggested that it had something to do with a storage I/O issue. The issue did not seem driver related, so I began to look into firmware and BIOS updates for the server.</description>
+    </item>
+    
+    <item>
+      <title>Virtualization</title>
+      <link>https://bdwyertech.net/2011/09/01/virtualization/</link>
+      <pubDate>Thu, 01 Sep 2011 12:15:55 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/01/virtualization/</guid>
+      <description>At the moment, a major trend in the IT industry is the push towards virtualization. In addition to being a large, quickly growing social movement, the push to &amp;ldquo;go green&amp;rdquo; is a major focus of many industries &amp;amp; organizations looking to maintain or improve their public image by reducing their carbon footprint. Virtualization is one way the IT industry is &amp;ldquo;going green&amp;rdquo;.
+At first, you might ask yourself why virtualize? From a system administrator&amp;rsquo;s standpoint, the modularity of virtual machines is impeccable.</description>
+    </item>
+    
+  </channel>
+</rss>

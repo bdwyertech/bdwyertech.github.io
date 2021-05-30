@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="The recent release of the Chef Development Kit for Windows has been great for my work flow. If you do not have your own Ruby installed on the system, you probably want to use the Ruby bundled with ChefDK. For beginners, you can operate inside this environment by prepending &lsquo;chef exec&rsquo; to any Ruby commands you may want to run. Eventually, you might want to install your own Ruby Gems. This can be a problem, if you do not have certain environmental variables set.">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ChefDK on Windows - Environmental Variables"/>
+<meta name="twitter:description" content="The recent release of the Chef Development Kit for Windows has been great for my work flow. If you do not have your own Ruby installed on the system, you probably want to use the Ruby bundled with ChefDK. For beginners, you can operate inside this environment by prepending &lsquo;chef exec&rsquo; to any Ruby commands you may want to run. Eventually, you might want to install your own Ruby Gems. This can be a problem, if you do not have certain environmental variables set."/>
+
+    <meta property="og:title" content="ChefDK on Windows - Environmental Variables" />
+<meta property="og:description" content="The recent release of the Chef Development Kit for Windows has been great for my work flow. If you do not have your own Ruby installed on the system, you probably want to use the Ruby bundled with ChefDK. For beginners, you can operate inside this environment by prepending &lsquo;chef exec&rsquo; to any Ruby commands you may want to run. Eventually, you might want to install your own Ruby Gems. This can be a problem, if you do not have certain environmental variables set." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2014/11/06/chefdk-on-windows-environmental-variables/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2014-11-06T17:00:13&#43;00:00" />
+<meta property="article:modified_time" content="2014-11-06T17:00:13&#43;00:00" />
+
+
+
+    <title>
+  ChefDK on Windows - Environmental Variables · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2014/11/06/chefdk-on-windows-environmental-variables/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2014/11/06/chefdk-on-windows-environmental-variables/">
+              ChefDK on Windows - Environmental Variables
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2014-11-06T17:00:13Z'>
+                November 6, 2014
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              2-minute read
+            </span>
+          </div>
+          
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p>The recent release of the Chef Development Kit for Windows has been great for my work flow. If you do not have your own Ruby installed on the system, you probably want to use the Ruby bundled with ChefDK. For beginners, you can operate inside this environment by prepending &lsquo;chef exec&rsquo; to any Ruby commands you may want to run. Eventually, you might want to install your own Ruby Gems. This can be a problem, if you do not have certain environmental variables set.</p>
+<p>Here, I include a PowerShell script which sets or removes the environmental variables required to use ChefDK&rsquo;s Ruby as your local environment&rsquo;s Ruby. I make use of the local user&rsquo;s %PATH% variable, which will always be appended to the system&rsquo;s %PATH%. We also create a User environmental variable called CHEFDK_RUBY, which will be appended to the local user&rsquo;s %PATH%. A few other Ruby-related variables are set based on recommendations set forth in the <a href="https://www.getchef.com/blog/2014/11/04/the-chefdk-on-windows-survival-guide/">ChefDK on Windows Survival Guide</a>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="c"># Filename: Set-ChefDK_Enviro_Vars.ps1</span>
+<span class="c"># Brian Dwyer - Intelligent Digital Services - 11/5/14</span>
+
+<span class="c"># ***USAGE***</span>
+<span class="c"># To Setup the ChefDK Ruby Variables</span>
+<span class="c"># ./Set-ChefDK_Enviro_Vars.ps1 set</span>
+
+<span class="c"># To Remove the ChefDK Ruby Variables</span>
+<span class="c"># ./Set-ChefDK_Enviro_Vars.ps1 unset</span>
+
+<span class="c"># System-Wide Environmental Variables</span>
+<span class="nv">$System_Vars</span><span class="p">=</span><span class="s1">&#39;HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment&#39;</span>
+
+<span class="c"># User-Specific Environmental Variables</span>
+<span class="nv">$User_Vars</span><span class="p">=</span><span class="s1">&#39;HKCU:\Environment&#39;</span>
+
+<span class="c"># Make Sure we don&#39;t expand/evaluate environmental variables on the return</span>
+<span class="nv">$DoNotExpand</span><span class="p">=</span><span class="no">[Microsoft.WIN32.RegistryValueOptions]</span><span class="p">::</span><span class="n">DoNotExpandEnvironmentNames</span>
+
+<span class="c"># Check if ChefDK is installed</span>
+<span class="k">If</span> <span class="p">(!</span><span class="nv">$env:Path</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="s1">&#39;chefdk\bin&#39;</span><span class="p">))</span>
+  <span class="p">{</span>
+    <span class="nb">echo </span><span class="s2">&#34;&#34;</span>
+    <span class="nb">echo </span><span class="s2">&#34;/======| Error: ChefDK does not seem to be installed. |=====\&#34;</span>
+    <span class="nb">echo </span><span class="s2">&#34;&#34;</span>
+    <span class="n">pause</span>
+    <span class="n">exit</span>
+  <span class="p">}</span>
+
+<span class="c"># Get ChefDK Installation Directory</span>
+<span class="nv">$ChefDK_DIR</span> <span class="p">=</span> <span class="nv">$env:Path</span><span class="p">.</span><span class="n">Split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span> <span class="o">-like</span> <span class="s2">&#34;*chefdk\bin&#34;</span> <span class="p">|</span> <span class="nb">Out-String</span> <span class="n">-Stream</span> <span class="p">|</span> <span class="nb">Split-Path</span> <span class="n">-Parent</span>
+
+<span class="c"># Determine ChefDK Ruby Version</span>
+<span class="nv">$ChefDK_RubyVer</span> <span class="p">=</span> <span class="nb">Get-ChildItem</span> <span class="n">-Name</span> <span class="nv">$ChefDK_DIR</span><span class="p">\</span><span class="n">embedded</span><span class="p">\</span><span class="n">lib</span><span class="p">\</span><span class="n">ruby</span><span class="p">\</span><span class="n">gems</span>
+
+<span class="c"># Setup</span>
+<span class="k">If</span> <span class="p">(</span> <span class="nv">$args</span><span class="p">[</span><span class="n">0</span><span class="p">]</span> <span class="o">-eq</span> <span class="s1">&#39;set&#39;</span> <span class="p">)</span>
+  <span class="p">{</span>
+  <span class="nb">echo </span><span class="s2">&#34;/======| Setting up Registry Keys... |=====\&#34;</span>
+  <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;CHEFDK_RUBY&#39;</span> <span class="n">-Value</span> <span class="s2">&#34;$env:USERPROFILE\.chefdk\gem\ruby\$ChefDK_RubyVer\bin;$ChefDK_DIR\embedded\bin&#34;</span>
+  <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;GEM_ROOT&#39;</span> <span class="n">-Value</span> <span class="s2">&#34;$ChefDK_DIR\embedded\lib\ruby\gems\$ChefDK_RubyVer&#34;</span>
+  <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;GEM_HOME&#39;</span> <span class="n">-Value</span> <span class="s2">&#34;$env:USERPROFILE\.chefdk\gem\ruby\$ChefDK_RubyVer&#34;</span>
+  <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;GEM_PATH&#39;</span> <span class="n">-Value</span> <span class="s2">&#34;$env:USERPROFILE\.chefdk\gem\ruby\$ChefDK_RubyVer;$ChefDK_DIR\lib\ruby\gems\$ChefDK_RubyVer&#34;</span>
+  <span class="k">If</span> <span class="p">(!(</span><span class="nb">Get-Item</span> <span class="nv">$User_Vars</span><span class="p">).</span><span class="n">GetValue</span><span class="p">(</span><span class="s1">&#39;PATH&#39;</span><span class="p">,</span><span class="s1">&#39;Default&#39;</span><span class="p">,</span><span class="nv">$DoNotExpand</span><span class="p">).</span><span class="n">Contains</span><span class="p">(</span><span class="s1">&#39;CHEFDK_RUBY&#39;</span><span class="p">))</span>
+   <span class="p">{</span>
+   <span class="k">If</span> <span class="p">(((</span><span class="nb">Get-ItemProperty</span> <span class="nv">$User_Vars</span><span class="p">).</span><span class="n">PATH</span><span class="p">)</span> <span class="o">-eq</span> <span class="nv">$null</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;PATH&#39;</span> <span class="n">-Value</span> <span class="s1">&#39;%CHEFDK_RUBY%&#39;</span>
+    <span class="p">}</span>
+   <span class="k">Else</span>
+    <span class="p">{</span>
+    <span class="nv">$NewVal</span><span class="p">=(</span><span class="nb">Get-Item</span> <span class="nv">$User_Vars</span><span class="p">).</span><span class="n">GetValue</span><span class="p">(</span><span class="s1">&#39;PATH&#39;</span><span class="p">,</span><span class="s1">&#39;Default&#39;</span><span class="p">,</span><span class="nv">$DoNotExpand</span><span class="p">)</span> <span class="p">+</span> <span class="s1">&#39;;%CHEFDK_RUBY%&#39;</span>
+    <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;PATH&#39;</span> <span class="n">-Value</span> <span class="nv">$NewVal</span>
+    <span class="p">}</span>
+   <span class="p">}</span>
+  <span class="n">pause</span>
+  <span class="n">exit</span>
+  <span class="p">}</span>
+<span class="k">Elseif</span> <span class="p">(</span> <span class="nv">$args</span><span class="p">[</span><span class="n">0</span><span class="p">]</span> <span class="o">-eq</span> <span class="s1">&#39;unset&#39;</span> <span class="p">)</span>
+  <span class="p">{</span>
+  <span class="nb">echo </span><span class="s2">&#34;/======| Removing Registry Keys... |=====\&#34;</span>
+  <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;PATH&#39;</span> <span class="n">-Value</span> <span class="p">(</span><span class="nb">Get-Item</span> <span class="nv">$User_Vars</span><span class="p">).</span><span class="n">GetValue</span><span class="p">(</span><span class="s1">&#39;PATH&#39;</span><span class="p">,</span><span class="s1">&#39;Default&#39;</span><span class="p">,</span><span class="nv">$DoNotExpand</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;;%CHEFDK_RUBY%&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+  <span class="nb">Set-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;PATH&#39;</span> <span class="n">-Value</span> <span class="p">(</span><span class="nb">Get-Item</span> <span class="nv">$User_Vars</span><span class="p">).</span><span class="n">GetValue</span><span class="p">(</span><span class="s1">&#39;PATH&#39;</span><span class="p">,</span><span class="s1">&#39;Default&#39;</span><span class="p">,</span><span class="nv">$DoNotExpand</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%CHEFDK_RUBY%&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+  <span class="nb">Remove-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;CHEFDK_RUBY&#39;</span>
+  <span class="nb">Remove-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;GEM_ROOT&#39;</span>
+  <span class="nb">Remove-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;GEM_HOME&#39;</span>
+  <span class="nb">Remove-ItemProperty</span> <span class="nv">$User_Vars</span> <span class="n">-Name</span> <span class="s1">&#39;GEM_PATH&#39;</span>
+  <span class="n">pause</span>
+  <span class="n">exit</span>
+  <span class="p">}</span>
+ <span class="k">Else</span>
+  <span class="p">{</span>
+  <span class="nb">echo </span><span class="s1">&#39;------------------------------------------------&#39;</span>
+  <span class="nb">echo </span><span class="s2">&#34;|*|  - Set ChefDK Environmental Variables -  |*|&#34;</span>
+  <span class="nb">echo </span><span class="s1">&#39;------------------------------------------------&#39;</span>
+  <span class="nb">echo </span><span class="s2">&#34;|   Use &#39;set&#39; or &#39;unset&#39; to control script     |&#34;</span>
+  <span class="nb">echo </span><span class="s1">&#39;------------------------------------------------&#39;</span>
+  <span class="n">pause</span>
+  <span class="n">exit</span>
+  <span class="p">}</span>
+
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

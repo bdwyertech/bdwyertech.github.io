@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>*nix on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/nix/</link>
+    <description>Recent content in *nix on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 30 Oct 2015 21:49:28 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/nix/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DigitalOcean, Chef and Ohai - Retrieving a Droplet&#39;s Private IP Address</title>
+      <link>https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/</link>
+      <pubDate>Fri, 30 Oct 2015 21:49:28 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2015/10/30/digitalocean-chef-and-ohai-retrieving-a-droplets-private-ip-address/</guid>
+      <description>Recently, I attempted to use the Ohai value for node[&#39;cloud_v2&#39;][&#39;local_ipv4&#39;] and node[&#39;cloud&#39;][&#39;local_ipv4&#39;][&#39;ip_address&#39;] to determine the Private IP address of my Cloud-based nodes in a Chef cookbook. Unfortunately, it does not work accurately for DigitalOcean instances any longer.
+According to DigitalOcean documentation, if Private Networking is enabled, the IP will be assigned to eth1. Recently, I noticed that a second Private IP address has begun to be assigned to the eth0 interface.</description>
+    </item>
+    
+    <item>
+      <title>Chef - Ohai in AWS EC2 VPC</title>
+      <link>https://bdwyertech.net/2015/04/24/chef-ohai-in-aws-ec2-vpc/</link>
+      <pubDate>Fri, 24 Apr 2015 20:18:15 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2015/04/24/chef-ohai-in-aws-ec2-vpc/</guid>
+      <description>This is a quick tip to those of you who are using Chef inside an AWS VPC. The EC2 Ohai plugin does not run by default, which prevents some meaningful node attributes from being collected.
+The EC2-specific node attributes I find most useful are:
+node[&amp;#39;ec2&amp;#39;][&amp;#39;instance_id&amp;#39;] # =&amp;gt; Instance&amp;#39;s ID node[&amp;#39;ec2&amp;#39;][&amp;#39;local_ipv4&amp;#39;] # =&amp;gt; Instance&amp;#39;s IPv4 Address node[&amp;#39;ec2&amp;#39;][&amp;#39;placement_availability_zone&amp;#39;] # =&amp;gt; Instance&amp;#39;s Region &amp;amp; Availability Zone node[&amp;#39;ec2&amp;#39;][&amp;#39;ami_id&amp;#39;] # =&amp;gt; Instance&amp;#39;s Baseline AMI To get your instances inside a VPC to pick up meaningful node attributes related to EC2, you have to create an Ohai hint file for the EC2 plugin.</description>
+    </item>
+    
+    <item>
+      <title>Apple Configurator - Backup &amp; Restoration</title>
+      <link>https://bdwyertech.net/2014/06/10/apple-configurator-backup-restoration/</link>
+      <pubDate>Tue, 10 Jun 2014 22:15:01 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/06/10/apple-configurator-backup-restoration/</guid>
+      <description>I work a bit with Apple Configurator to provision, supervise and join various Apple devices to mobile device management (MDM) servers. One thing not integrated into Apple Configurator is the ability to backup and restore data easily. The need for this might arise if you have a remote operator who may need to remotely provision devices, or if you&amp;rsquo;d like to hand off a set configuration to a client. Hopefully, the below bash script makes life a little easier in this regard.</description>
+    </item>
+    
+    <item>
+      <title>Chef - &#39;Wrapper&#39; Cookbooks and Execution Order</title>
+      <link>https://bdwyertech.net/2014/02/03/chef-wrapper-cookbooks-and-execution-order/</link>
+      <pubDate>Tue, 04 Feb 2014 04:15:14 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/02/03/chef-wrapper-cookbooks-and-execution-order/</guid>
+      <description>Recently, I&amp;rsquo;ve been experimenting with Chef for Configuration Management. One of the greatest thing&amp;rsquo;s about Chef is the concept of &amp;lsquo;Wrapper&amp;rsquo; or &amp;lsquo;Application&amp;rsquo; cookbooks, which basically make use of existing community cookbook code. These community cookbooks, wherever they are sourced, are referred to as &amp;lsquo;Library&amp;rsquo; cookbooks. Basically, rather than forking the cookbook and adjusting it yourself, you write a &amp;lsquo;Wrapper&amp;rsquo; for the Library cookbook in order to facilitate desired changes. These changes are typically just overriding attributes, but sometimes you might have to take it a step further.</description>
+    </item>
+    
+    <item>
+      <title>OS X - Excessive CPU Usage while running as a VM</title>
+      <link>https://bdwyertech.net/2013/07/19/os-x-excessive-cpu-usage-while-running-as-a-vm/</link>
+      <pubDate>Fri, 19 Jul 2013 19:46:22 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2013/07/19/os-x-excessive-cpu-usage-while-running-as-a-vm/</guid>
+      <description>After installing OS X as a VM running the Server role, I have noticed excessive CPU usage while idling. I have narrowed this down to the default screensaver which runs on the login page. Even if you disable this screensaver as a user, it will not disable it for the login screen. I have found that the only way to resolve this is to actually delete the screensaver file itself! Here is how to do it.</description>
+    </item>
+    
+    <item>
+      <title>Apple Profile Manager – Mountain Lion Migration</title>
+      <link>https://bdwyertech.net/2012/08/15/apple-profile-manager-mountain-lion-migration/</link>
+      <pubDate>Wed, 15 Aug 2012 21:45:06 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/08/15/apple-profile-manager-mountain-lion-migration/</guid>
+      <description>Recently I had the pleasure of migrating an OSX Lion server to Mountain Lion. It’s primary function was an MDM server for Apple devices. Basically, the upgrade process involves upgrading to Mountain Lion followed by installing the updated Lion Server app.
+Primarily, my interactions with the Apple Server have been for Profile Manager functionality. In Lion, the Profile Manager utilized a PostgreSQL backend with a datastore located in /usr/share/devicemgr/backend/. iOS applications and other push to device material were located in the ‘/backend/file_store/’ directory named as their MD5 checksum equivalent.</description>
+    </item>
+    
+    <item>
+      <title>Nagios &amp; NagVis MySQL Troubleshooting (ndomod &amp; ndo2db)</title>
+      <link>https://bdwyertech.net/2012/04/30/nagios-nagvis-mysql-troubleshooting-ndomod-ndo2db/</link>
+      <pubDate>Mon, 30 Apr 2012 20:30:15 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/04/30/nagios-nagvis-mysql-troubleshooting-ndomod-ndo2db/</guid>
+      <description>UPDATE Check out OMD for an RPM based, easy to install and update variant of Nagios which includes other utilities as well. This will save a tremendous amount of time to deployment. www.omdistro.org
+Recently I setup a Nagios box to monitor an organization&amp;rsquo;s network and network services. Nagios is extremely flexible and can poll pretty much any network connected device by configuring service checks. The service checks are like plugins and can poll devices via SNMP, Ping, HTTP, etc.</description>
+    </item>
+    
+  </channel>
+</rss>

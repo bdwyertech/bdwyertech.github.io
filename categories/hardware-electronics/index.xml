@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hardware &amp; Electronics on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/hardware-electronics/</link>
+    <description>Recent content in Hardware &amp; Electronics on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 22 Jan 2012 20:31:41 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/hardware-electronics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Update - Been Busy</title>
+      <link>https://bdwyertech.net/2012/01/22/update-been-busy/</link>
+      <pubDate>Sun, 22 Jan 2012 20:31:41 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/01/22/update-been-busy/</guid>
+      <description>It&amp;rsquo;s been a while since I last posted to this blog, so I figured I would post an update. I have been very busy lately working to complete my internship requirements to graduate from college while also studying for the MCITP Enterprise Administrator exam. I should have the latter done in a week or two and will begin studying for the CCNP Route exam.
+I have added some new equipment to the lab, including a Dell 4220 42u server rack, Cisco 2821, and another 16gb RAM to my server bringing it to 32gb.</description>
+    </item>
+    
+    <item>
+      <title>Network Switch - ProCurve 1810</title>
+      <link>https://bdwyertech.net/2011/10/19/network-switch-procurve-1810/</link>
+      <pubDate>Wed, 19 Oct 2011 17:42:53 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/10/19/network-switch-procurve-1810/</guid>
+      <description>Recently, I decided I would like to acquire a quality, managed switch for my home environment. I wanted something which supported Gigabit Ethernet, Flow Control and Jumbo Frames. These features would complement my Dell PE 2950 ESXi box by providing high performance and future expandability.
+At the moment, quality managed gigabit switches are expensive. 10/100 managed switches can easily be acquired on eBay for a decent price, however gigabit models are often seen for upwards of $500 used.</description>
+    </item>
+    
+    <item>
+      <title>VMware ESXi &amp; Intel SR1550AL Servers</title>
+      <link>https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/</link>
+      <pubDate>Fri, 02 Sep 2011 12:00:51 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/</guid>
+      <description>I recently encountered an issue when running an ESXi 4.1 environment where I was getting a Purple Screen of Death at right about the 24 hour uptime mark. Like most technologists, I first hit Google with the error code and had no luck. I found a similar error code which suggested that it had something to do with a storage I/O issue. The issue did not seem driver related, so I began to look into firmware and BIOS updates for the server.</description>
+    </item>
+    
+    <item>
+      <title>HP Mini311 Overclocking</title>
+      <link>https://bdwyertech.net/2011/08/31/12/</link>
+      <pubDate>Wed, 31 Aug 2011 21:35:56 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2011/08/31/12/</guid>
+      <description>In late 2009, I was among the first HP Mini311 owners to gain overclocking ability. I actually helped pioneer the first technique. The HP Mini311 was and still is (in my opinion) the best netbook on the market. It uses an Intel Atom processor but contains the Nvidia Ion GPU. The Mini311 was one of the first and only netbooks to contain Nvidia&amp;rsquo;s Ion GPU, which is the equivalent of an Nvidia 9400m.</description>
+    </item>
+    
+  </channel>
+</rss>

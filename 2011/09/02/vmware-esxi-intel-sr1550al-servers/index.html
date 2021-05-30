@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="I recently encountered an issue when running an ESXi 4.1 environment where I was getting a Purple Screen of Death at right about the 24 hour uptime mark. Like most technologists, I first hit Google with the error code and had no luck. I found a similar error code which suggested that it had something to do with a storage I/O issue. The issue did not seem driver related, so I began to look into firmware and BIOS updates for the server.">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VMware ESXi &amp; Intel SR1550AL Servers"/>
+<meta name="twitter:description" content="I recently encountered an issue when running an ESXi 4.1 environment where I was getting a Purple Screen of Death at right about the 24 hour uptime mark. Like most technologists, I first hit Google with the error code and had no luck. I found a similar error code which suggested that it had something to do with a storage I/O issue. The issue did not seem driver related, so I began to look into firmware and BIOS updates for the server."/>
+
+    <meta property="og:title" content="VMware ESXi &amp; Intel SR1550AL Servers" />
+<meta property="og:description" content="I recently encountered an issue when running an ESXi 4.1 environment where I was getting a Purple Screen of Death at right about the 24 hour uptime mark. Like most technologists, I first hit Google with the error code and had no luck. I found a similar error code which suggested that it had something to do with a storage I/O issue. The issue did not seem driver related, so I began to look into firmware and BIOS updates for the server." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2011-09-02T12:00:51&#43;00:00" />
+<meta property="article:modified_time" content="2011-09-02T12:00:51&#43;00:00" />
+
+
+
+    <title>
+  VMware ESXi &amp; Intel SR1550AL Servers · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2011/09/02/vmware-esxi-intel-sr1550al-servers/">
+              VMware ESXi &amp; Intel SR1550AL Servers
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2011-09-02T12:00:51Z'>
+                September 2, 2011
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              3-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="https://bdwyertech.net/categories/hardware-electronics/">Hardware &amp; Electronics</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/networking/">Networking</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/security/">Security</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/virtualization/">Virtualization</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p><a href="https://bdwyertech.net/2011/09/psod1.jpg"><img src="https://bdwyertech.net/2011/09/psod1.jpg?w=150" alt="">
+</a>I recently encountered an issue when running an ESXi 4.1 environment where I was getting a Purple Screen of Death at right about the 24 hour uptime mark.  Like most technologists, I first hit Google with the error code and had no luck.  I found a similar error code which suggested that it had something to do with a storage I/O issue.  The issue did not seem driver related, so I began to look into firmware and BIOS updates for the server.</p>
+<p>After some investigation, I realized that there were four BIOS/firmware&rsquo;s in my SR1550 which needed updating.  After trying to do them all manually, I found a nifty utility called the <a href="http://www.intel.com/Products/Server/Software/ida/ida-overview.htm">Intel Deployment Assistant</a>.  The Intel DA utility is a bootable CD that allows you to configure many different features, including the ability connect to the Internet to check and download the latest BIOS/firmware updates and install them automatically.  This worked great and I found out that the system had two year old BIOS and firmwares and the current build numbers were much newer.  So, I let the utility do its thing, but one update kept failing.  I tried it on all three of the SR1550&rsquo;s and had the same issue on all of them; the HSC/backplane firmware would not update.</p>
+<p>At this point, I started looking for older revisions of the Hot Swap Controller firmware figuring that the jump from revision 1.41 to 2.15 was too great.  There were many revisions between 1.41 and 2.15, but they were not available on Intel&rsquo;s website.  Finally, after a lot of searching, I found an Intel document that confirmed my suspicion that I need to upgrade to a different older update prior to jumping to 2.15.  Alas, I decided I had to get into contact with Intel about this issue.</p>
+<p>At this point, I&rsquo;m sitting in the server room and its already after six and my stomach is growling.  I had no phone reception in the server room so I tried a button to chat with an Intel support representative.  Much to my surprise, after about 10 minutes, the guy I was in contact had a solution.  Although he could not locate the firmware revision I needed, he located an internal document that stated if I disconnected the RMM2 and then proceeded with the upgrade to 2.15, it should work.  So I popped open the server, disconnected the RMM2 module, booted up, manually launched the update from a DR-DOS boot-disk and much to my surprise, it worked!</p>
+<p>For those of you who do not know what the Intel RMM is, it is a Remote Management Module that allows you to have out-of-band control of the server.  As a matter of fact, it offers an IP-based KVM over SSL through a Java applet, and it even allows you to remotely mount and boot the server to ISO images&hellip; How awesome is that!   After that little bugger gave me all that headache, I decided to give it a try and it is great.  You use a little utility called <a href="http://downloadcenter.intel.com/Detail_Desc.aspx?agr=Y&amp;DwnldID=14689&amp;lang=engGpIc8qXqt1ssARbRQ&amp;sig2=AT_xo58rnplZICKWxqm5eA">psetup</a> to configure IP and login settings, and then your good to go!</p>
+<p>Anyway, yes, after updating all of those firmwares, I now have over 180 days uptime on the ESXi boxes.  I hope this helps any other SR15xx, SR25xx users out there that may be encountering stability issues with ESXi.</p>
+<p><a href="https://bdwyertech.net/2011/09/rmm2.jpg"><img src="https://bdwyertech.net/2011/09/rmm2.jpg?w=150" alt="">
+</a><a href="https://bdwyertech.net/2011/09/hsc.jpg">  </a><a href="https://bdwyertech.net/2011/09/hsc.jpg"><img src="https://bdwyertech.net/2011/09/hsc.jpg?w=150" alt="">
+</a>  <a href="https://bdwyertech.net/2011/09/hsc.jpg">
+</a></p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

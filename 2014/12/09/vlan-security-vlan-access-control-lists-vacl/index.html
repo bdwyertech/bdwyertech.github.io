@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="I&rsquo;ve been studying to renew my CCNP as of recently, and I decided to create a refresher blog post about the implementation of VACLs.
+VLAN Access Control Lists (VACLs) can be used to implement Access Control at both Layer 2 and Layer 3. Typically, access lists are applied to ingress or egress traffic on a routed, L3 interface. VACL&rsquo;s allow you to apply the filtering to all packets, regardless of direction.">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VLAN Security - VLAN Access Control List&#39;s (VACL)"/>
+<meta name="twitter:description" content="I&rsquo;ve been studying to renew my CCNP as of recently, and I decided to create a refresher blog post about the implementation of VACLs.
+VLAN Access Control Lists (VACLs) can be used to implement Access Control at both Layer 2 and Layer 3. Typically, access lists are applied to ingress or egress traffic on a routed, L3 interface. VACL&rsquo;s allow you to apply the filtering to all packets, regardless of direction."/>
+
+    <meta property="og:title" content="VLAN Security - VLAN Access Control List&#39;s (VACL)" />
+<meta property="og:description" content="I&rsquo;ve been studying to renew my CCNP as of recently, and I decided to create a refresher blog post about the implementation of VACLs.
+VLAN Access Control Lists (VACLs) can be used to implement Access Control at both Layer 2 and Layer 3. Typically, access lists are applied to ingress or egress traffic on a routed, L3 interface. VACL&rsquo;s allow you to apply the filtering to all packets, regardless of direction." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2014/12/09/vlan-security-vlan-access-control-lists-vacl/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2014-12-10T02:21:11&#43;00:00" />
+<meta property="article:modified_time" content="2014-12-10T02:21:11&#43;00:00" />
+
+
+
+    <title>
+  VLAN Security - VLAN Access Control List&#39;s (VACL) · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2014/12/09/vlan-security-vlan-access-control-lists-vacl/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2014/12/09/vlan-security-vlan-access-control-lists-vacl/">
+              VLAN Security - VLAN Access Control List&#39;s (VACL)
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2014-12-10T02:21:11Z'>
+                December 10, 2014
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              3-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="https://bdwyertech.net/categories/certification/">Certification</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/cisco/">Cisco</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/networking/">Networking</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p>I&rsquo;ve been studying to renew my CCNP as of recently, and I decided to create a refresher blog post about the implementation of VACLs.</p>
+<p>VLAN Access Control Lists (VACLs) can be used to implement Access Control at both Layer 2 and Layer 3. Typically, access lists are applied to ingress or egress traffic on a routed, L3 interface. VACL&rsquo;s allow you to apply the filtering to all packets, regardless of direction.</p>
+<p>VACL&rsquo;s are created and applied in a similar manner to route-maps and policy-based routing, in the sense that you create a VLAN access-map, and then apply the VLAN access-maps to VLAN&rsquo;s with a filter statement. Lets see an example.</p>
+<p>I have pre-created VLAN 123 with an L3 interface address of 10.123.123.1/24. I have joined a port to this VLAN, and connected a PC with an IP address of 10.123.123.124/24.</p>
+<h1 id="ip-based-vacl">
+  IP-based VACL
+  <a class="heading-link" href="#ip-based-vacl">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h1>
+<p>For a Layer 3, IP-based VACL, we must first create a regular ACL. This ACL will either contain IP&rsquo;s to permit, or IP&rsquo;s to block. Remember that by default, an implicit &lsquo;deny all&rsquo; is in place, so unless you explicitly allow, the packets will be denied.  The implicit &lsquo;deny all&rsquo; can be counteracted with an explicit &lsquo;allow all&rsquo; at the tail end of the ACL. In this case, only specifically denied traffic will be denied.</p>
+<p><strong>Create the Access List</strong>
+**<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_1.png" alt="vacl_1">
+ **</p>
+<p><strong>Create the VLAN Access Map</strong>
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_2.png" alt="vacl_2"></p>
+<p><strong>Confirm the VLAN Access Map Configuration</strong>
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_4.png" alt="vacl_4"></p>
+<p><strong>Apply the the VLAN Access Map to specified VLAN(s)</strong>
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_3.png" alt=""></p>
+<p><strong>Confirm the Application of the VLAN Access Map</strong>
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_5.png" alt="vacl_5"></p>
+<p>Lets test the configuration.  We have specifically allowed only 10.123.123.123 to be able to communicate on the VLAN.</p>
+<p>With the IP address set to 10.123.123.123/24, we can successfully ping the L3 interface of the VLAN.
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_6.png" alt="vacl_6"></p>
+<p>With the IP address set to 10.123.123.124/24, we cannot.
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_7.png" alt="vacl_7"></p>
+<p>We now have a functional implementation of a Layer 3 VLAN Access Control List!  Now, lets delve into how similar functionality can be achieved at Layer 2.</p>
+<h1 id="mac-based-vacl">
+  MAC-based VACL
+  <a class="heading-link" href="#mac-based-vacl">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h1>
+<p>Layer 2 filtering simply involves substituting MAC Access Control Lists for IP Access Control Lists.  MAC ACL&rsquo;s are very similar to IP ACL&rsquo;s, and extended MAC ACL&rsquo;s can even make use of wildcard masks.  Wildcard masks might be used if you wanted to restrict traffic to a certain vendor&rsquo;s MAC OUI. Under typical circumstances, the first 24 bits of a MAC address are known as an Organizationally Unique Identifier, and are assigned to vendors by the IEEE under ISO/IEC 8802 standards.  Anyway, on to the example.</p>
+<p>First, clear out the existing VLAN access map with a no vlan access-map FILTER_NAME.</p>
+<p>We need to make a MAC ACL.  In this case, I am specifically denying my laptop&rsquo;s MAC address.  I have blurted out part of the MAC for security purposes.  I didn&rsquo;t, but you&rsquo;d probably want to add an allow any any statement if you only want to block specific MAC addresses.</p>
+<p><strong>Create the MAC Access Control List</strong>
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_8.png" alt="vacl_8"></p>
+<p><strong>Confirm the MAC ACL Creation</strong></p>
+<p><img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_91.png" alt="vacl_9"></p>
+<p><strong>Create the VLAN Access Map</strong>
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_10.png" alt="vacl_10"></p>
+<p><strong>Confirm Application of VLAN Access-Map</strong>
+<img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_12.png" alt="vacl_12"></p>
+<p><img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_13.png" alt="vacl_13"></p>
+<p><strong>Confirm Functionality of MAC-based VLAN Access-Map</strong></p>
+<p><img src="https://bdwyertech.files.wordpress.com/2014/12/vacl_7.png" alt="vacl_7"></p>
+<p>There we have it!  We have successfully implemented both IP-based and MAC-based VACL&rsquo;s.</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

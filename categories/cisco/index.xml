@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cisco on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/cisco/</link>
+    <description>Recent content in Cisco on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 10 Dec 2014 02:21:11 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/cisco/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VLAN Security - VLAN Access Control List&#39;s (VACL)</title>
+      <link>https://bdwyertech.net/2014/12/09/vlan-security-vlan-access-control-lists-vacl/</link>
+      <pubDate>Wed, 10 Dec 2014 02:21:11 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/12/09/vlan-security-vlan-access-control-lists-vacl/</guid>
+      <description>I&amp;rsquo;ve been studying to renew my CCNP as of recently, and I decided to create a refresher blog post about the implementation of VACLs.
+VLAN Access Control Lists (VACLs) can be used to implement Access Control at both Layer 2 and Layer 3. Typically, access lists are applied to ingress or egress traffic on a routed, L3 interface. VACL&amp;rsquo;s allow you to apply the filtering to all packets, regardless of direction.</description>
+    </item>
+    
+    <item>
+      <title>UPDATE: Branch Office Connections – GRE over IPSec VPN</title>
+      <link>https://bdwyertech.net/2014/11/07/update-branch-office-connections-gre-over-ipsec-vpn/</link>
+      <pubDate>Fri, 07 Nov 2014 19:19:22 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/11/07/update-branch-office-connections-gre-over-ipsec-vpn/</guid>
+      <description>It has been almost 3 years since I wrote Branch Office Connections – GRE over IPSec VPN! For those of you who are familiar with Cisco certification, that means time to renew! Anyway, I&amp;rsquo;m coming back now and looking at this lab, I noticed that we are preferring the serial link for traffic! In this day and age, the serial link would likely be the fallback, and a faster, cheaper GRE/IPSEC VPN would likely be the preferable route!</description>
+    </item>
+    
+  </channel>
+</rss>

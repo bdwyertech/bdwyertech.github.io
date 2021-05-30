@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AWS on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/aws/</link>
+    <description>Recent content in AWS on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Apr 2015 20:18:15 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Chef - Ohai in AWS EC2 VPC</title>
+      <link>https://bdwyertech.net/2015/04/24/chef-ohai-in-aws-ec2-vpc/</link>
+      <pubDate>Fri, 24 Apr 2015 20:18:15 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2015/04/24/chef-ohai-in-aws-ec2-vpc/</guid>
+      <description>This is a quick tip to those of you who are using Chef inside an AWS VPC. The EC2 Ohai plugin does not run by default, which prevents some meaningful node attributes from being collected.
+The EC2-specific node attributes I find most useful are:
+node[&amp;#39;ec2&amp;#39;][&amp;#39;instance_id&amp;#39;] # =&amp;gt; Instance&amp;#39;s ID node[&amp;#39;ec2&amp;#39;][&amp;#39;local_ipv4&amp;#39;] # =&amp;gt; Instance&amp;#39;s IPv4 Address node[&amp;#39;ec2&amp;#39;][&amp;#39;placement_availability_zone&amp;#39;] # =&amp;gt; Instance&amp;#39;s Region &amp;amp; Availability Zone node[&amp;#39;ec2&amp;#39;][&amp;#39;ami_id&amp;#39;] # =&amp;gt; Instance&amp;#39;s Baseline AMI To get your instances inside a VPC to pick up meaningful node attributes related to EC2, you have to create an Ohai hint file for the EC2 plugin.</description>
+    </item>
+    
+    <item>
+      <title>AWS - Globally Adjusting ELB SSL Policy</title>
+      <link>https://bdwyertech.net/2015/04/09/aws-globally-adjusting-elb-ssl-policy/</link>
+      <pubDate>Thu, 09 Apr 2015 22:17:54 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2015/04/09/aws-globally-adjusting-elb-ssl-policy/</guid>
+      <description>A while back, I had to adjust the policy of all Elastic Load Balancers in my organization to disable SSLv3 due to the POODLE exploit. This can be an error-prone task if done by hand, especially if your architecture spans multiple regions and/or more than a handful of ELBs. The nice thing about cloud architecture, is that nearly everything can be automated and/or scripted. For that reason, I went ahead and wrote a PowerShell script to handle this.</description>
+    </item>
+    
+    <item>
+      <title>AWS - Highly-Available NAT in VPC</title>
+      <link>https://bdwyertech.net/2014/06/16/aws-highly-available-nat-in-vpc/</link>
+      <pubDate>Mon, 16 Jun 2014 16:52:45 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/06/16/aws-highly-available-nat-in-vpc/</guid>
+      <description>Like most sysadmins, one of my primary responsibilities is ensuring high-availability in our environments. Recently, I&amp;rsquo;ve been working a lot more with Amazon AWS. Amazon recently began forcing new accounts to make use of VPC. When you create a VPC, an Internet Gateway must be provisioned to route traffic to the Internet. VPC&amp;rsquo;s utilize subnet constructs for virtual networking. Subnets are assigned a routing table, and in the case of a Public subnet, the default route of this table is pointed at the Internet Gateway.</description>
+    </item>
+    
+  </channel>
+</rss>

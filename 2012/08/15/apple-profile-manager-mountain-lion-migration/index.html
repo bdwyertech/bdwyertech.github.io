@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="Recently I had the pleasure of migrating an OSX Lion server to Mountain Lion. It’s primary function was an MDM server for Apple devices. Basically, the upgrade process involves upgrading to Mountain Lion followed by installing the updated Lion Server app.
+Primarily, my interactions with the Apple Server have been for Profile Manager functionality. In Lion, the Profile Manager utilized a PostgreSQL backend with a datastore located in /usr/share/devicemgr/backend/. iOS applications and other push to device material were located in the ‘/backend/file_store/’ directory named as their MD5 checksum equivalent.">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Apple Profile Manager – Mountain Lion Migration"/>
+<meta name="twitter:description" content="Recently I had the pleasure of migrating an OSX Lion server to Mountain Lion. It’s primary function was an MDM server for Apple devices. Basically, the upgrade process involves upgrading to Mountain Lion followed by installing the updated Lion Server app.
+Primarily, my interactions with the Apple Server have been for Profile Manager functionality. In Lion, the Profile Manager utilized a PostgreSQL backend with a datastore located in /usr/share/devicemgr/backend/. iOS applications and other push to device material were located in the ‘/backend/file_store/’ directory named as their MD5 checksum equivalent."/>
+
+    <meta property="og:title" content="Apple Profile Manager – Mountain Lion Migration" />
+<meta property="og:description" content="Recently I had the pleasure of migrating an OSX Lion server to Mountain Lion. It’s primary function was an MDM server for Apple devices. Basically, the upgrade process involves upgrading to Mountain Lion followed by installing the updated Lion Server app.
+Primarily, my interactions with the Apple Server have been for Profile Manager functionality. In Lion, the Profile Manager utilized a PostgreSQL backend with a datastore located in /usr/share/devicemgr/backend/. iOS applications and other push to device material were located in the ‘/backend/file_store/’ directory named as their MD5 checksum equivalent." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2012/08/15/apple-profile-manager-mountain-lion-migration/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2012-08-15T21:45:06&#43;00:00" />
+<meta property="article:modified_time" content="2012-08-15T21:45:06&#43;00:00" />
+
+
+
+    <title>
+  Apple Profile Manager – Mountain Lion Migration · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2012/08/15/apple-profile-manager-mountain-lion-migration/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2012/08/15/apple-profile-manager-mountain-lion-migration/">
+              Apple Profile Manager – Mountain Lion Migration
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2012-08-15T21:45:06Z'>
+                August 15, 2012
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              2-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="https://bdwyertech.net/categories/nix/">*nix</a>
+      <span class="separator">•</span>
+    <a href="https://bdwyertech.net/categories/tweaks/">Tweaks</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p>Recently I had the pleasure of migrating an OSX Lion server to Mountain Lion.  It’s primary function was an MDM server for Apple devices.  Basically, the upgrade process involves upgrading to Mountain Lion followed by installing the updated Lion Server app.</p>
+<p>Primarily, my interactions with the Apple Server have been for Profile Manager functionality.  In Lion, the Profile Manager utilized a PostgreSQL backend with a datastore located in /usr/share/devicemgr/backend/.  iOS applications and other push to device material were located in the ‘/backend/file_store/’ directory named as their MD5 checksum equivalent.  Logs for the devicemgr service were located in the ‘/backend/logs/’ directory.</p>
+<p>In Mountain Lion Server, what used to be located in /usr/share/ is now packed into the Server Application itself.  For example, the same ‘/devicemgr/backend/’ is now located at ‘/Applications/Server.app/Contents/ServerRoot/backend/file_store/’.  The iOS applications and other push material are now located at ‘/var/devicemgr/ServiceData/Data/FileStore/’.</p>
+<p>This knowledge is critical if you encounter an issue with the Profile Manager; there is not much info to go on if you have a problem.  In Lion, I had seen cases where the Profile Manager would for an unknown reason delete applications I was trying to push, causing managed devices to be unable to receive the application.</p>
+<p>In the case of Mountain Lion Server, I encountered the following issue with devices post-upgrade when trying to upload an updated version of an application.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">_ProfileManager[217] &lt;Error&gt;: Caught unhandled exception undefined method `get_all_devices&#39; for nil:NilClass at …’_
+</code></pre></div><p>To me, this sounded like a nonexistent remnant of Lion was being referenced to.  To some people, this might sound like a good time to reset the Profile Manager with the wipeDB.sh script.  However, this would require you to rejoin all devices to the MDM.  In this case, there was only a single application which the MDM was being used to deploy, so I figured I would try clearing the Postgres tables containing the application information and see what happened.  After running the following commands, I was able to upload my application and push without the ‘<em>undefined method’</em> error as show above.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo psql –U _postgres –d device_management
+DELETE from public.ios_applications<span class="p">;</span> SELECT setval<span class="o">(</span><span class="s1">&#39;ios_applications_id_seq&#39;</span>, 1<span class="o">)</span><span class="p">;</span> DELETE from ios_application_library_item_relations<span class="p">;</span> SELECT setval<span class="o">(</span><span class="s1">&#39;ios_application_library_item_relations_id_seq&#39;</span>, 1<span class="o">)</span><span class="p">;</span>
+/q
+serveradmin stop devicemgr
+serveradmin start devicemgr
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

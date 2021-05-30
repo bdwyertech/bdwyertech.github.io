@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Certification on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/certification/</link>
+    <description>Recent content in Certification on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 10 Dec 2014 02:21:11 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/certification/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VLAN Security - VLAN Access Control List&#39;s (VACL)</title>
+      <link>https://bdwyertech.net/2014/12/09/vlan-security-vlan-access-control-lists-vacl/</link>
+      <pubDate>Wed, 10 Dec 2014 02:21:11 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/12/09/vlan-security-vlan-access-control-lists-vacl/</guid>
+      <description>I&amp;rsquo;ve been studying to renew my CCNP as of recently, and I decided to create a refresher blog post about the implementation of VACLs.
+VLAN Access Control Lists (VACLs) can be used to implement Access Control at both Layer 2 and Layer 3. Typically, access lists are applied to ingress or egress traffic on a routed, L3 interface. VACL&amp;rsquo;s allow you to apply the filtering to all packets, regardless of direction.</description>
+    </item>
+    
+    <item>
+      <title>UPDATE: Branch Office Connections – GRE over IPSec VPN</title>
+      <link>https://bdwyertech.net/2014/11/07/update-branch-office-connections-gre-over-ipsec-vpn/</link>
+      <pubDate>Fri, 07 Nov 2014 19:19:22 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/11/07/update-branch-office-connections-gre-over-ipsec-vpn/</guid>
+      <description>It has been almost 3 years since I wrote Branch Office Connections – GRE over IPSec VPN! For those of you who are familiar with Cisco certification, that means time to renew! Anyway, I&amp;rsquo;m coming back now and looking at this lab, I noticed that we are preferring the serial link for traffic! In this day and age, the serial link would likely be the fallback, and a faster, cheaper GRE/IPSEC VPN would likely be the preferable route!</description>
+    </item>
+    
+    <item>
+      <title>Branch Office Connections - GRE over IPSec VPN</title>
+      <link>https://bdwyertech.net/2012/02/25/branch-office-connections/</link>
+      <pubDate>Sat, 25 Feb 2012 22:58:33 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/02/25/branch-office-connections/</guid>
+      <description>While studying for the CCNP Route exam, I noticed that GRE Tunneling and IPSec were mentioned as topics, however configuration of the two was never really covered in the certification guide. In addition, I did not see any labs involving this type of scenario, so I decided to create my own. Hopefully this provides some insight to others about how to configure GRE Tunnels over IPsec. Don&amp;rsquo;t feel bad if this takes you a while, setting up this scenario and writing this up took a whole Saturday afternoon.</description>
+    </item>
+    
+    <item>
+      <title>Cisco IP SLA</title>
+      <link>https://bdwyertech.net/2012/02/20/cisco-ip-sla/</link>
+      <pubDate>Mon, 20 Feb 2012 23:18:45 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/02/20/cisco-ip-sla/</guid>
+      <description>So while studying for CCNP Route, I came across the concept of IP SLA and utilizing probes to check availability of next-hop addresses prior to instating them inside a route-map. An objective was to have two ISP&amp;rsquo;s listed in a route-map statement, and set all traffic originating from the local router with a next-hop IP of ISP1 as long as it was deemed reachable by the IP SLA tracker probe status.</description>
+    </item>
+    
+    <item>
+      <title>Passed 70-647 MCITP Server 2008 Enterprise Administrator</title>
+      <link>https://bdwyertech.net/2012/01/28/passed-70-647-mcitp-server-2008-enterprise-administrator/</link>
+      <pubDate>Sun, 29 Jan 2012 04:30:22 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2012/01/28/passed-70-647-mcitp-server-2008-enterprise-administrator/</guid>
+      <description>I passed the MCITP Server 2008 Enterprise Administrator exam earlier today. As the second generation of Microsoft certification, I am hoping that it correlates well with the retired and well-respected MCSE. It was an interesting process and I feel I learned a good bit about Microsoft enterprise solutions, especially the new technologies that earlier iterations of their products did not have.
+I used Microsoft training materials for the all exams as well as the Sybex Windows Server 2008 R2 Complete.</description>
+    </item>
+    
+  </channel>
+</rss>

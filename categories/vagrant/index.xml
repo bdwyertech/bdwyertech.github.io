@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vagrant on bdwyertech.net</title>
+    <link>https://bdwyertech.net/categories/vagrant/</link>
+    <description>Recent content in Vagrant on bdwyertech.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 12 Sep 2014 21:14:15 +0000</lastBuildDate><atom:link href="https://bdwyertech.net/categories/vagrant/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Chef &amp; Berkshelf - SSL Certificate Validation Error on Windows</title>
+      <link>https://bdwyertech.net/2014/09/12/chef-berkshelf-ssl-certificate-validation-error-on-windows/</link>
+      <pubDate>Fri, 12 Sep 2014 21:14:15 +0000</pubDate>
+      
+      <guid>https://bdwyertech.net/2014/09/12/chef-berkshelf-ssl-certificate-validation-error-on-windows/</guid>
+      <description>When using Windows, Chef, Vagrant and Berkshelf, you may encounter an issue with certificate validation. The error you may encounter is as follows:
+Faraday::SSLError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed The problem is Ruby is expecting the SSL_CERT_FILE environmental variable to be set. This should point to a CA bundle to use for SSL certificate validation. If this is not set, certificate validation will fail. You can adjust the Berkshelf configuration to not verify SSL certificates, but I have found this setting to be problematic and sporadically not work.</description>
+    </item>
+    
+  </channel>
+</rss>

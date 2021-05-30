@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="Brian Dwyer">
+    <meta name="description" content="On a standalone ESXi box or in a small environment not running vSphere Update Manager, the best way to update your hosts is via SSH CLI. I recently discovered a way to use this patching method to perform a version upgrade for 5.0 to 5.1 using host profiles rather than using the interactive installer, aka the install CD. VMware hosts their standard host profiles on the web, so these can be utilized to perform the 5.">
+    <meta name="keywords" content="blog,devops,cloud,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Online Upgrade from ESXi 5.0 to 5.1 Using Host Profiles and CLI"/>
+<meta name="twitter:description" content="On a standalone ESXi box or in a small environment not running vSphere Update Manager, the best way to update your hosts is via SSH CLI. I recently discovered a way to use this patching method to perform a version upgrade for 5.0 to 5.1 using host profiles rather than using the interactive installer, aka the install CD. VMware hosts their standard host profiles on the web, so these can be utilized to perform the 5."/>
+
+    <meta property="og:title" content="Online Upgrade from ESXi 5.0 to 5.1 Using Host Profiles and CLI" />
+<meta property="og:description" content="On a standalone ESXi box or in a small environment not running vSphere Update Manager, the best way to update your hosts is via SSH CLI. I recently discovered a way to use this patching method to perform a version upgrade for 5.0 to 5.1 using host profiles rather than using the interactive installer, aka the install CD. VMware hosts their standard host profiles on the web, so these can be utilized to perform the 5." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bdwyertech.net/2013/01/28/online-upgrade-from-esxi-5-0-to-5-1-using-host-profiles-and-cli/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2013-01-28T22:26:49&#43;00:00" />
+<meta property="article:modified_time" content="2013-01-28T22:26:49&#43;00:00" />
+
+
+
+    <title>
+  Online Upgrade from ESXi 5.0 to 5.1 Using Host Profiles and CLI · bdwyertech.net
+</title>
+
+    
+      <link rel="canonical" href="https://bdwyertech.net/2013/01/28/online-upgrade-from-esxi-5-0-to-5-1-using-host-profiles-and-cli/">
+    
+
+    <link rel="preload" href="https://bdwyertech.net/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="https://bdwyertech.net/css/coder.min.93c41bf1e522f85ecda7355985f09000f71fc1d64dda9f74051b0fa06210e93f.css" integrity="sha256-k8Qb8eUi&#43;F7NpzVZhfCQAPcfwdZN2p90BRsPoGIQ6T8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=32&amp;d=mm&amp;r=G" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/b81f2060225e491802457e61ddeaec12?s=16&amp;d=mm&amp;r=G" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://bdwyertech.net/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://bdwyertech.net/images/apple-touch-icon.png">
+
+    
+
+    <meta name="generator" content="Hugo 0.83.1" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light"
+        onload=""
+  >
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://bdwyertech.net/">
+      bdwyertech.net
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/portfolio/">Portfolio</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://bdwyertech.net/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://bdwyertech.net/2013/01/28/online-upgrade-from-esxi-5-0-to-5-1-using-host-profiles-and-cli/">
+              Online Upgrade from ESXi 5.0 to 5.1 Using Host Profiles and CLI
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2013-01-28T22:26:49Z'>
+                January 28, 2013
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              One-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="https://bdwyertech.net/categories/virtualization/">Virtualization</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <p>On a standalone ESXi box or in a small environment not running vSphere Update Manager, the best way to update your hosts is via SSH CLI.  I recently discovered a way to use this patching method to perform a version upgrade for 5.0 to 5.1 using host profiles rather than using the interactive installer, aka the install CD.  VMware hosts their standard host profiles on the web, so these can be utilized to perform the 5.0 to 5.1 upgrade with minimal downtime; all that you&rsquo;ll have to do is apply the profile and reboot, just like a normal patch. Remember to migrate any important VM&rsquo;s off the host in question prior to running these operations.</p>
+<p><strong>1. Enable HTTP Client Firewall Exception</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">esxcli network firewall ruleset <span class="nb">set</span> -e <span class="nb">true</span> -r httpClient
+</code></pre></div><p><strong>2. List Profiles</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">esxcli software sources profile list -d https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml
+</code></pre></div><p><strong>3. Choose and Apply a Profile</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">esxcli software profile install -d https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml -p ESXi-5.1.0-799733-standard
+</code></pre></div><ul>
+<li>If changing profiles, you might need to add the arguement <strong><em>&ndash;ok-to-remove</em></strong></li>
+</ul>
+<h4 id="4-reboot-voila-youre-running-51">
+  4. Reboot. Voila, you&rsquo;re running 5.1!
+  <a class="heading-link" href="#4-reboot-voila-youre-running-51">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<h4 id="update-10113">
+  <strong>UPDATE 10/1/13:</strong>
+  <a class="heading-link" href="#update-10113">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>You can utilize this same methodology to upgrade from ESXi 5.1 to 5.5&hellip; Simply use the ESXi 5.5 profile for installation from the VMware depot.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">esxcli software profile install -d https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml -p ESXi-5.5.0-1331820-standard
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bdwyertech-net" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>My place to record ideas and encounters with technology</p>
+      
+      
+        ©
+        
+        2021
+         Brian Dwyer 
+      
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+      
+      <script src="https://bdwyertech.net/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js" integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>
